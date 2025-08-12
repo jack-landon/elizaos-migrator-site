@@ -8,6 +8,7 @@ export default function Header() {
         height={20}
         src="/header/header-logo.svg"
         alt="header-logo"
+        draggable={false}
       />
       <div className="mr-0 lg:mr-55 relative -mt-8">
         <Image
@@ -17,6 +18,7 @@ export default function Header() {
           height={50}
           width={154}
           alt="header-eliza-icon"
+          draggable={false}
         />
       </div>
     </div>
