@@ -55,7 +55,7 @@ export default function RootLayout({
       <body
         className={`${NHaasFont.className} antialiased`}
       >
-        <div className="p-15">
+        <div>
 
         <Header />
         {children}

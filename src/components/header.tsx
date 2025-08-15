@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <div className="flex flex-row justify-between">
+    <div className="p-12 flex flex-row justify-between">
       <Image
         width={120}
         height={20}
