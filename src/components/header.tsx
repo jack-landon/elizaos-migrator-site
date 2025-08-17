@@ -10,7 +10,7 @@ export default function Header() {
         alt="header-logo"
         draggable={false}
       />
-      <div className="mr-0 lg:mr-55 relative -mt-8">
+      <div className="mr-0 lg:mr-55 relative">
         <Image
           src="/header/eliza-icon-text.png"
           priority
