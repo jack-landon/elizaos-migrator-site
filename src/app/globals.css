@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 body {
-  background-color: #000214;
+  background-color: #000321;
 }
 
 @theme inline {

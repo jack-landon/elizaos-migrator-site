@@ -1,8 +1,10 @@
 import Image from "next/image";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="relative h-[90.5vh] bg-red-500 w-full overflow-hidden">
+    <div className="relative h-[90.5vh] w-full overflow-hidden">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"
         autoPlay
@@ -17,7 +19,7 @@ export default function Hero() {
       </video>
 
       {/* Overlay with dark tint (makes text readable) */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 " />
 
       <div className="relative p-12 text-white grid grid-cols-2 h-full">
         {/* Left Column */}
@@ -46,9 +48,12 @@ export default function Hero() {
             </div>
 
             <div className="flex flex-col gap-0">
-              <button className="rounded-sm bg-white text-black text-[25px] relative font-bold w-[230px] h-[60px] flex items-center justify-center">
+              <Link href="/migrate">
+
+              <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black text-[25px] relative font-bold w-[230px] h-[60px] flex items-center justify-center">
                 Start Migration
-              </button>
+              </Button>
+              </Link>
             </div>
           </div>
         </div>
