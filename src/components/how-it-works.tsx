@@ -69,17 +69,19 @@ interface IStepsProps {
 
 function Steps({ step, title, description }: IStepsProps) {
   return (
-    <div className="border-t w-2/3 border-[#002FFF] flex items-center gap-4 sm:gap-6 pt-0">
+    <div className="border-t w-2/3 border-[#002FFF] flex items-start gap-4 sm:gap-6 pt-5">
       {/* Step Number */}
-      <span
-        className="text-white font-thin leading-none 
-      text-[48px] sm:text-[72px] md:text-[90px] lg:text-[125px]"
-      >
-        {step}
-      </span>
+      <div className="w-1/5">
+        <span
+          className="text-white font-thin leading-none 
+        text-[48px] sm:text-[72px] md:text-[90px] lg:text-[125px]"
+        >
+          {step}
+        </span>
+      </div>
 
       {/* Title + Description */}
-      <div className="ml-4 sm:ml-8 lg:ml-20">
+      <div className="ml-4 w-full sm:ml-8 lg:ml-2">
         <h2
           className="text-white font-normal leading-tight 
         text-[20px] sm:text-[28px] md:text-[34px] lg:text-[42px]"
