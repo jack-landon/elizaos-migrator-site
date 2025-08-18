@@ -70,24 +70,29 @@ interface IStepsProps {
 function Steps({ step, title, description }: IStepsProps) {
   return (
     <div className="border-t w-2/3 border-[#002FFF] flex items-center gap-4 sm:gap-6 pt-0">
-    {/* Step Number */}
-    <span className="text-white font-thin leading-none 
-      text-[48px] sm:text-[72px] md:text-[90px] lg:text-[125px]">
-      {step}
-    </span>
-  
-    {/* Title + Description */}
-    <div className="ml-4 sm:ml-8 lg:ml-20">
-      <h2 className="text-white font-normal leading-tight 
-        text-[20px] sm:text-[28px] md:text-[34px] lg:text-[42px]">
-        {title}
-      </h2>
-      <p className="text-[#6D6D6D] max-w-sm sm:max-w-md 
-        text-[14px] sm:text-[18px] md:text-[20px] lg:text-[24px]">
-        {description}
-      </p>
+      {/* Step Number */}
+      <span
+        className="text-white font-thin leading-none 
+      text-[48px] sm:text-[72px] md:text-[90px] lg:text-[125px]"
+      >
+        {step}
+      </span>
+
+      {/* Title + Description */}
+      <div className="ml-4 sm:ml-8 lg:ml-20">
+        <h2
+          className="text-white font-normal leading-tight 
+        text-[20px] sm:text-[28px] md:text-[34px] lg:text-[42px]"
+        >
+          {title}
+        </h2>
+        <p
+          className="text-[#6D6D6D] max-w-sm sm:max-w-md 
+        text-[14px] sm:text-[18px] md:text-[20px] lg:text-[24px]"
+        >
+          {description}
+        </p>
+      </div>
     </div>
-  </div>
-  
   );
 }
