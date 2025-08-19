@@ -1,9 +1,101 @@
+"use client";
+
+import { useRef, useState } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+
+ChartJS.register(ArcElement, Tooltip);
+
 export default function TokenOmics() {
-  return (<div className="relative lg:h-[80vh] w-full bg-[#01071f]">
-   <div className="p-12 space-y-4">
-    <h1 className="text-white font-bold text-[60px] uppercase">tokenomics</h1>
-    <p className="text-[28px] font-normal text-white max-w-xl">$ELIZA is the upgraded governance and utility token of the ElizaOS protocol. Holding it unlocks access to governance, staking, contributor rewards, and future protocol utility.</p>
-   </div>
-  </div>
-  )
+  const chartRef = useRef<any>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
+  const baseColors = [
+    "#0B35F1",
+    "#D60BF1",
+    "#820BF1",
+    "#7D94FA",
+    "#7D94FA",
+    "#2E4DD9",
+    "#3E5FF6",
+    "#637EF8",
+    "#7D94FA",
+  ];
+
+  const data = {
+    labels: [
+      "Community",
+      "Current Holders",
+      "LP Services",
+      "DAO trsry",
+      "E. Reserve",
+      "POL",
+      "Core Team",
+      "SAFT",
+    ],
+    datasets: [
+      {
+        data: [65, 5, 5, 5, 5, 5, 5, 5],
+        backgroundColor: baseColors.map((c, i) =>
+          hoverIndex === null ? c : hoverIndex === i ? c : c + "55"
+        ),
+        borderColor: "#01071f",
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const options: any = {
+    cutout: "70%",
+    plugins: {
+      legend: { display: false }, // disable built-in legend
+    },
+    animation: false,
+  };
+
+  return (
+    <div className="relative h-[90vh] w-full bg-[#01071f] flex flex-col">
+      {/* Header + text */}
+      <div className="mt-12 px-12 space-y-4">
+        <h1 className="text-white font-bold text-[60px] uppercase">
+          tokenomics
+        </h1>
+        <p className="text-[28px] font-normal text-white max-w-xl">
+          $ELIZA is the upgraded governance and utility token of the ElizaOS
+          protocol. Holding it unlocks access to governance, staking,
+          contributor rewards, and future protocol utility.
+        </p>
+      </div>
+
+      {/* Chart + Legend */}
+      <div className="grid grid-cols-3 items-start px-12 lg:px-0">
+        {/* Chart */}
+        <div className="h-[800px] grid col-span-2 w-full justify-items-end">
+          <Doughnut ref={chartRef} data={data} options={options} />
+        </div>
+
+        {/* Custom Legend (This is the key change) */}
+        <div className="place-items-center grid grid-cols-1">
+          <div className="w-full max-w-[480px] flex flex-col gap-8">
+            {data.labels.map((label, i) => (
+              <div
+                key={i}
+                className="flex items-center border-b-2 border-[#0B35F1] space-x-2 cursor-pointer"
+                onMouseEnter={() => setHoverIndex(i)}
+                onMouseLeave={() => setHoverIndex(null)}
+              >
+                <span
+                  className={`text-[28px] mb-3 font-semibold ${
+                    hoverIndex === i ? "text-white" : "text-white text-[28px]"
+                  }`}
+                >
+                  {data.datasets[0].data[i]}% - {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -4,7 +4,6 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
-  import { CirclePlus, CircleMinus } from "lucide-react"
   
   const faqs = [
     {
