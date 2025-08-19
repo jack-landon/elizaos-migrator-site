@@ -46,7 +46,7 @@ export default function TokenOmics() {
   };
 
   const options: any = {
-    cutout: "70%",
+    cutout: "60%",
     plugins: {
       legend: { display: false }, // disable built-in legend
     },
@@ -54,9 +54,9 @@ export default function TokenOmics() {
   };
 
   return (
-    <div className="relative h-[90vh] w-full bg-[#01071f] flex flex-col">
+    <div className="grid grid-cols-3 relative h-[70vh] w-full bg-[#01071f] ">
       {/* Header + text */}
-      <div className="mt-12 px-12 space-y-4">
+      <div className="grid col-span-1 h-fit mt-12 px-12 space-y-4">
         <h1 className="text-white font-bold text-[60px] uppercase">
           tokenomics
         </h1>
@@ -68,32 +68,32 @@ export default function TokenOmics() {
       </div>
 
       {/* Chart + Legend */}
-      <div className="grid grid-cols-3 items-start px-12 lg:px-0">
+      <div className="grid col-span-1 items-center justify-start px-12 lg:px-0">
         {/* Chart */}
-        <div className="h-[800px] grid col-span-2 w-full justify-items-end">
+        <div className="h-[700px]  w-[700px]">
           <Doughnut ref={chartRef} data={data} options={options} />
         </div>
 
         {/* Custom Legend (This is the key change) */}
-        <div className="place-items-center grid grid-cols-1">
-          <div className="w-full max-w-[480px] flex flex-col gap-8">
-            {data.labels.map((label, i) => (
-              <div
-                key={i}
-                className="flex items-center border-b-2 border-[#0B35F1] space-x-2 cursor-pointer"
-                onMouseEnter={() => setHoverIndex(i)}
-                onMouseLeave={() => setHoverIndex(null)}
+      </div>
+      <div className="place-items-center grid grid-cols-1">
+        <div className="w-full max-w-[480px] flex flex-col gap-8">
+          {data.labels.map((label, i) => (
+            <div
+              key={i}
+              className="flex items-center border-b-2 border-[#0B35F1] space-x-2 cursor-pointer"
+              onMouseEnter={() => setHoverIndex(i)}
+              onMouseLeave={() => setHoverIndex(null)}
+            >
+              <span
+                className={`text-[28px] mb-3 font-normal ${
+                  hoverIndex === i ? "text-white" : "text-white text-[28px]"
+                }`}
               >
-                <span
-                  className={`text-[28px] mb-3 font-semibold ${
-                    hoverIndex === i ? "text-white" : "text-white text-[28px]"
-                  }`}
-                >
-                  {data.datasets[0].data[i]}% - {label}
-                </span>
-              </div>
-            ))}
-          </div>
+                {data.datasets[0].data[i]}% - {label}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
