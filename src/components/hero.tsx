@@ -29,7 +29,7 @@ export default function Hero() {
               <h1 className="text-white font-bold text-[91px] leading-tight">
                 A NEW ERA
               </h1>
-              {/* this is temporary untill I get the font files */}
+              {/* this is temporary until I get the font files */}
               <Image
                 className="mt-4"
                 src="/hero/begins.svg"
@@ -49,20 +49,30 @@ export default function Hero() {
 
             <div className="flex flex-col gap-0">
               <Link href="/migrate">
-
-              <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black text-[25px] relative font-bold w-[230px] h-[60px] flex items-center justify-center">
-                Start Migration
-              </Button>
+                <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black text-[25px] relative font-bold w-[230px] h-[60px] flex items-center justify-center">
+                  Start Migration
+                </Button>
               </Link>
             </div>
           </div>
         </div>
+
+        {/* Hero image */}
         <Image
           className="absolute bottom-0 right-0 w-auto max-w-[600px] md:max-w-[800px] lg:max-w-[1200px] h-auto object-contain"
           src="/hero/eliza-hero.png"
           height={1200}
           width={1200}
           alt="hero-image"
+        />
+
+        {/* Banner image on the complete right, hidden on mobile */}
+        <Image
+          className="absolute top-0 right-0 hidden md:block h-full object-cover"
+          src="/hero/eliza-banner.svg"
+          height={1785}
+          width={17}
+          alt="eliza-banner"
         />
       </div>
     </div>
