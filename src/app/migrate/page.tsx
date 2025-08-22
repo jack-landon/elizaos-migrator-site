@@ -8,7 +8,7 @@ export default function Page() {
       {/* Main content */}
       <div className="h-[70vh] grid place-items-center z-10">
         <Card className="p-4 w-full bg-[#0B35F11A] border-none h-full rounded-sm max-w-[680px] max-h-[610px]">
-            <Swap />
+          <Swap />
         </Card>
       </div>
 
@@ -18,7 +18,7 @@ export default function Page() {
         alt="Background"
         width={1920}
         height={1080}
-        className="absolute h-[800px] bottom-0 left-0 w-full object-cover z-0"
+        className="absolute h-[800px] bottom-0 left-0 w-full object-cover z-0 select-none"
         draggable={false}
       />
     </div>
