@@ -4,14 +4,14 @@ import { Input } from "@/components/ui/input";
 
 type SwapConfirmButtonProps = {
   walletConnected: boolean;
-  destination: boolean;
+  selectedDestination: string | null; 
   destinationAddress: string;
   setDestinationAddress: (val: string) => void;
 };
 
 export default function SwapButton({
   walletConnected,
-  destination,
+  selectedDestination,
   destinationAddress,
   setDestinationAddress,
 }: SwapConfirmButtonProps) {
@@ -23,7 +23,7 @@ export default function SwapButton({
     )
   }
 
-  if (!destination) {
+  if (!selectedDestination) {
     return (
       <Button className="items-center bg-[#020826CC] rounded-sm w-[648px] h-[68px] uppercase text-[#616C99] text-[24px] cursor-pointer">
         select destination
@@ -31,7 +31,8 @@ export default function SwapButton({
     )
   }
 
-  if (!destinationAddress) {
+  // Only require destinationAddress if it's not Solana
+  if (selectedDestination !== "solana" && !destinationAddress) {
     return (
       <Input
         value={destinationAddress}
