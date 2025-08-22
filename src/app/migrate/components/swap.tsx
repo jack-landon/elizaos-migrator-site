@@ -3,6 +3,7 @@ import { useState } from "react";
 import SwapButton from "./connect-wallet";
 import DropDownSelect from "./dropdown-select";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default function Swap() {
   const destinations = [
@@ -12,6 +13,7 @@ export default function Swap() {
     { name: "Ethereum", value: "eth", image: "/tokens/ethereum.svg" },
   ];
   const [selectedDestination, setSelectedDestination] = useState<string>("");
+  console.log("selected destinatin -.", selectedDestination);
   const [destinationAddress, setDestinationAddress] = useState<string>("");
   const walletConnected = true;
 
@@ -54,7 +56,7 @@ export default function Swap() {
           25456 <span className="ml-1 font-bold text-white/50">MAX</span>
         </h1>
       </div>
-      <div className="p-6 w-[648px] h-[240px] bg-[#3333334D] rounded-b-sm">
+      <div className="p-6 w-[648px] min-h-[240px] bg-[#3333334D] rounded-b-sm">
         <div className="flex flex-row space-x-2.5 items-center">
           <Image
             src="/tokens/eliza.svg"
@@ -79,6 +81,35 @@ export default function Swap() {
             />
           </div>
         </div>
+        {/* this part should not be visible when selectedDestination is not selected */}
+        {selectedDestination && selectedDestination != "solana" ? (
+          <div className="border-t-1">
+            <div className="items-center mt-3 text-white flex flex-row justify-between">
+              <h1 className="uppercase text-[12px] text-white space-x-4">
+                DESTINATION ADDRESS
+              </h1>
+              <Button
+                onClick={async () =>
+                  setDestinationAddress(await navigator.clipboard.readText())
+                }
+                className="font-normal cursor-pointer bg-transparant hover:bg-white/15 rounded-xs px-1 flex flex-row items-center"
+              >
+                Paste Address{" "}
+                <Image
+                  src="/util-icons/clipboard.svg"
+                  alt="clipboard-icon"
+                  height={16}
+                  width={16}
+                />
+              </Button>
+            </div>
+            <div className="text-center mt-5">
+              <h1 className="uppercase font-semibold text-[17px] text-white/80 ml-3">
+                {destinationAddress}
+              </h1>
+            </div>
+          </div>
+        ) : null}
       </div>
       <div className="justify-center mt-8">
         <SwapButton

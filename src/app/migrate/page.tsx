@@ -7,7 +7,7 @@ export default function Page() {
     <div className=" max-h-screen flex flex-col">
       {/* Main content */}
       <div className="h-[70vh] grid place-items-center z-10">
-        <Card className="p-4 w-full bg-[#0B35F11A] border-none h-full rounded-sm max-w-[680px] max-h-[610px]">
+        <Card className="p-4 w-full bg-[#0B35F11A] border-none rounded-sm max-w-[680px] h-fit max-h-[720px]">
           <Swap />
         </Card>
       </div>
