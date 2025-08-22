@@ -12,10 +12,7 @@ export default function Swap() {
     { name: "Ethereum", value: "eth", image: "/tokens/ethereum.svg" },
   ];
   const [selectedDestination, setSelectedDestination] = useState<string>("");
-  console.log(selectedDestination)
-
   const [destinationAddress, setDestinationAddress] = useState<string>("");
-  console.log("destination", destinationAddress);
   const walletConnected = true;
 
   return (
@@ -53,7 +50,9 @@ export default function Swap() {
             <p className="text-white text-[24px] font-normal">Solana</p>
           </div>
         </div>
-        <h1 className="text-[14px] text-white font-medium">25456 <span className="ml-1 font-bold text-white/50">MAX</span></h1>
+        <h1 className="text-[14px] text-white font-medium">
+          25456 <span className="ml-1 font-bold text-white/50">MAX</span>
+        </h1>
       </div>
       <div className="p-6 w-[648px] h-[240px] bg-[#3333334D] rounded-b-sm">
         <div className="flex flex-row space-x-2.5 items-center">
@@ -74,7 +73,10 @@ export default function Swap() {
 
           <div className="flex flex-col items-end">
             <p className="uppercase mb-2 text-[#CCCCCC]">destination</p>
-            <DropDownSelect onChange={setSelectedDestination} destinations={destinations} />
+            <DropDownSelect
+              onChange={setSelectedDestination}
+              destinations={destinations}
+            />
           </div>
         </div>
       </div>
