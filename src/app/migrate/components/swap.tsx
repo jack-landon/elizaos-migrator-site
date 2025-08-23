@@ -4,6 +4,7 @@ import SwapButton from "./connect-wallet";
 import DropDownSelect from "./dropdown-select";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Swap() {
   const destinations = [
@@ -36,11 +37,12 @@ export default function Swap() {
           <div className="text-[18px] text-white ">1 AI16Z = 6 ELIZA</div>
         </div>
         <div className="flex justify-between items-center">
-          <h1 className="text-[70px] font-light text-[#CCCCCC]">
-            {/* this is the amount you are going to swap(from your wallet) */}
-            --
-          </h1>
-          <div className="flex flex-row space-x-2.5 items-center">
+          <Input
+            type="number"
+            placeholder="0"
+            className="text-[35px] md:text-[70px] h-full md:my-4 font-light text-[#CCCCCC] border-0 focus-visible:ring-0 p-0 "
+          />
+          <div className="flex flex-row space-x-2.5 items-center mr-5">
             {/* <p className="text-[12px] mb-4 text-[#CCCCCC] uppercase">origin</p> */}
             <Image
               src="/tokens/solana.svg"

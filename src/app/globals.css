@@ -6,6 +6,16 @@
 body {
   background-color: #000321;
 }
+/* remove number input arrows from browser*/
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* remove input arrows for firefox */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
