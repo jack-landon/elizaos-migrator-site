@@ -13,14 +13,14 @@ export default function Page() {
       </div>
 
       {/* Background image at the bottom */}
-      <Image
+      {/* <Image
         src="/migrate/bottom-background.png"
         alt="Background"
         width={1920}
         height={1080}
         className="absolute h-[800px] bottom-0 left-0 w-full object-cover z-0 select-none"
         draggable={false}
-      />
+      /> */}
     </div>
   );
 }

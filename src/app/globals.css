@@ -6,6 +6,12 @@
 body {
   background-color: #000321;
 }
+/* this is to prevent the layout shifting when select component is collapsed */
+html body[data-scroll-locked] {
+	overflow-y: scroll !important;
+	margin-right: 0px !important;
+}
+
 /* remove number input arrows from browser*/
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
