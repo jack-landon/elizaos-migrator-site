@@ -1,23 +1,27 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSolanaWallet } from "@/hooks/useSolanaWallet";
 
 type SwapConfirmButtonProps = {
-  walletConnected: boolean;
   selectedDestination: string | null;
   destinationAddress: string;
   setDestinationAddress: (val: string) => void;
 };
 
 export default function SwapButton({
-  walletConnected,
   selectedDestination,
   destinationAddress,
   setDestinationAddress,
 }: SwapConfirmButtonProps) {
-  if (!walletConnected) {
+  const { connect, connected } = useSolanaWallet();
+
+  if (!connected) {
     return (
-      <Button className="items-center bg-[#0B35F1] rounded-sm w-[648px] h-[68px] uppercase text-white text-[24px] cursor-pointer">
+      <Button
+        onClick={connect}
+        className="items-center bg-[#0B35F1] rounded-sm w-[648px] h-[68px] uppercase text-white text-[24px] cursor-pointer"
+      >
         Connect Wallet
       </Button>
     );

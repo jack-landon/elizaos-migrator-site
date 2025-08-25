@@ -5,6 +5,7 @@ import DropDownSelect from "./dropdown-select";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import DisconnectButton from "./disconnect-button";
 
 export default function Swap() {
   const destinations = [
@@ -15,7 +16,6 @@ export default function Swap() {
   ];
   const [selectedDestination, setSelectedDestination] = useState<string>("");
   const [destinationAddress, setDestinationAddress] = useState<string>("");
-  const walletConnected = true;
 
   return (
     <div className="w-full flex flex-col">
@@ -112,13 +112,13 @@ export default function Swap() {
           </div>
         ) : null}
       </div>
-      <div className="justify-center mt-8">
+      <div className="justify-center mt-8 space-y-2">
         <SwapButton
-          walletConnected={walletConnected}
           selectedDestination={selectedDestination}
           destinationAddress={destinationAddress}
           setDestinationAddress={setDestinationAddress}
         />
+        <DisconnectButton />
       </div>
     </div>
   );
