@@ -19,7 +19,7 @@ export default function Swap() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="p-6 w-[648px] h-[240px] bg-[#0B35F14D] rounded-t-sm">
+      <div className="p-6 h-[240px] w-full bg-[#0B35F14D] rounded-t-sm">
         <div className="flex justify-between flex-row space-x-2.5 items-center">
           <div className="flex flex-row items-center space-x-2.5">
             <Image
@@ -57,7 +57,7 @@ export default function Swap() {
           25456 <span className="ml-1 font-bold text-white/50">MAX</span>
         </h1>
       </div>
-      <div className="p-6 w-[648px] min-h-[240px] bg-[#3333334D] rounded-b-sm">
+      <div className="p-6 w-full min-h-[240px] bg-[#3333334D] rounded-b-sm">
         <div className="flex flex-row space-x-2.5 items-center">
           <Image
             src="/tokens/eliza.svg"

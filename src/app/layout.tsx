@@ -51,12 +51,12 @@ export default function RootLayout({
   const pathname = usePathname();
 
   return (
-    <html lang="en">
-      <body className={`${NHaasFont.className} antialiased`}>
+    <html lang="en" className="h-full">
+      <body className={`${NHaasFont.className} antialiased h-full`}>
         <SolanaProvider>
-          <div>
+          <div className="h-full flex flex-col">
             <Header />
-            {children}
+            <main className="flex-1">{children}</main>
           </div>
           {pathname !== "/migrate" && <Footer />}
         </SolanaProvider>

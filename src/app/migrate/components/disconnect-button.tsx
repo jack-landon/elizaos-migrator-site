@@ -19,7 +19,7 @@ export default function DisconnectButton() {
   return (
     <Button
       onClick={disconnect}
-      className="items-center bg-[#0B35F1] rounded-sm w-[648px] h-[68px] uppercase text-white text-[24px] cursor-pointer"
+      className="items-center bg-[#0B35F1] rounded-sm w-full max-w-[648px] h-[68px] uppercase text-white text-[24px] cursor-pointer"
     >
       Disconnect
     </Button>
