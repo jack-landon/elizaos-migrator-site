@@ -2,8 +2,14 @@
 import "./globals.css";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { SolanaProvider } from "@/providers/SolanaProvider";
 import localFont from "next/font/local";
 import { usePathname } from "next/navigation";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 
 const NHaasFont = localFont({
   src: [
@@ -42,6 +48,8 @@ const NHaasFont = localFont({
   display: "swap",
 });
 
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,13 +58,17 @@ export default function RootLayout({
   const pathname = usePathname();
 
   return (
-    <html lang="en">
-      <body className={`${NHaasFont.className} antialiased`}>
-        <div>
-          <Header />
-          {children}
-        </div>
-        {pathname !== "/migrate" && <Footer />}
+    <html lang="en" className="h-full">
+      <body className={`${NHaasFont.className} antialiased h-full`}>
+        <SolanaProvider>
+          <QueryClientProvider client={queryClient}>
+            <div className="h-full flex flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+            </div>
+            {pathname !== "/migrate" && <Footer />}
+          </QueryClientProvider>
+        </SolanaProvider>
       </body>
     </html>
   );

@@ -4,10 +4,9 @@ import Swap from "./components/swap";
 
 export default function Page() {
   return (
-    <div className=" max-h-screen flex flex-col">
-      {/* Main content */}
-      <div className="h-[70vh] grid place-items-center z-10">
-        <Card className="p-4 w-full bg-[#0B35F11A] border-none rounded-sm max-w-[680px] h-fit max-h-[720px]">
+    <div className="h-full flex flex-col">
+      <div className="grid place-items-center z-10 flex-1 px-4 sm:px-6 py-4 sm:py-8">
+        <Card className="p-4 w-full bg-[#0B35F11A] border-none rounded-sm max-w-[680px] min-h-fit">
           <Swap />
         </Card>
       </div>
