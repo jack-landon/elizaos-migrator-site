@@ -63,18 +63,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className={`${NHaasFont.className} antialiased h-full`}>
-        <SolanaProvider>
-          <TransactionListenerProvider>
-            <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <SolanaProvider>
+            <TransactionListenerProvider>
               <div className="h-full flex flex-col">
                 <Header />
                 <main className="flex-1">{children}</main>
               </div>
               {pathname !== "/migrate" && <Footer />}
-            </QueryClientProvider>
-            <Toaster />
-          </TransactionListenerProvider>
-        </SolanaProvider>
+              <Toaster />
+            </TransactionListenerProvider>
+          </SolanaProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
