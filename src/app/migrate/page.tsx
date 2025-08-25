@@ -12,7 +12,7 @@ export default function Page() {
         </Card>
       </div>
 
-      {/* Background image at the bottom */}
+      {/* Background image at the bottom will be commented out untill I know for certain its final */}
       {/* <Image
         src="/migrate/bottom-background.png"
         alt="Background"

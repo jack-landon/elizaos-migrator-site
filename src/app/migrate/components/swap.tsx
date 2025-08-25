@@ -14,7 +14,6 @@ export default function Swap() {
     { name: "Ethereum", value: "eth", image: "/tokens/ethereum.svg" },
   ];
   const [selectedDestination, setSelectedDestination] = useState<string>("");
-  console.log("selected destinatin -.", selectedDestination);
   const [destinationAddress, setDestinationAddress] = useState<string>("");
   const walletConnected = true;
 
@@ -40,7 +39,7 @@ export default function Swap() {
           <Input
             type="number"
             placeholder="0"
-            className="text-[35px] md:text-[70px] h-full md:my-4 font-light text-[#CCCCCC] border-0 focus-visible:ring-0 p-0 "
+            className="text-[70px] md:text-[70px] h-full my-4 font-light text-[#CCCCCC] border-0 focus-visible:ring-0 p-0 "
           />
           <div className="flex flex-row space-x-2.5 items-center mr-5">
             {/* <p className="text-[12px] mb-4 text-[#CCCCCC] uppercase">origin</p> */}

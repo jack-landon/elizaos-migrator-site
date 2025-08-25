@@ -1,9 +1,14 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+
+  const pathname = usePathname();
+
   return (
-    <div className="p-12 flex flex-row justify-between">
+    <div className="p-12 flex flex-row items-center justify-between w-full">
       <Link href="/">
 
       <Image
@@ -14,7 +19,9 @@ export default function Header() {
         draggable={false}
         />
         </Link>
-      <div className="mr-0 lg:mr-55 relative">
+   {pathname !== "/migrate" && (
+
+      <div className="relative">
         <Image
           src="/header/eliza-icon-text.png"
           priority
@@ -25,6 +32,7 @@ export default function Header() {
           draggable={false}
         />
       </div>
+   )}
     </div>
   );
 }

@@ -1,11 +1,9 @@
-"use client"
+"use client";
 import "./globals.css";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import localFont from "next/font/local";
 import { usePathname } from "next/navigation";
-
-
 
 const NHaasFont = localFont({
   src: [
@@ -53,13 +51,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${NHaasFont.className} antialiased`}
-      >
+      <body className={`${NHaasFont.className} antialiased`}>
         <div>
-
-        <Header />
-        {children}
+          <Header />
+          {children}
         </div>
         {pathname !== "/migrate" && <Footer />}
       </body>
