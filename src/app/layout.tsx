@@ -2,6 +2,7 @@
 import "./globals.css";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { SolanaProvider } from "@/providers/SolanaProvider";
 import localFont from "next/font/local";
 import { usePathname } from "next/navigation";
 
@@ -52,11 +53,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${NHaasFont.className} antialiased`}>
-        <div>
-          <Header />
-          {children}
-        </div>
-        {pathname !== "/migrate" && <Footer />}
+        <SolanaProvider>
+          <div>
+            <Header />
+            {children}
+          </div>
+          {pathname !== "/migrate" && <Footer />}
+        </SolanaProvider>
       </body>
     </html>
   );
