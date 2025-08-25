@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <div className="bg-[#D7D5CA] relative">
+    <div className="bg-[#01071F] relative">
       <div className="grid place-self-center mx-6 md:mx-12 gap-y-12 md:gap-y-24 grid-cols-1 h-full md:grid-cols-2 py-6 mb-12 md:mb-0 md:py-12">
         <div className="col-span-full">
           <Image
@@ -18,40 +18,40 @@ export default function Footer() {
           />
         </div>
         <div className="w-full justify-items-start">
-          <h1 className="text-black text-[36px] uppercase leading-[1.1] font-extrabold">
-            Start <br /> Building
+          <h1 className="text-[#0B35F1] text-[36px] uppercase leading-[1.1] font-extrabold">
+            Start <br /> Migrating
           </h1>
         </div>
         <div className="w-full flex flex-row justify-between md:justify-around justify-items-center">
           <div className="flex text-[24px] flex-col space-y-4">
             <Link
               href="/partners"
-              className="transition-colors font-medium text-[20px] uppercase duration-300 hover:text-[#0B35F1]"
+              className="transition-colors font-medium text-[20px] text-[#0B35F1] uppercase duration-300 hover:text-[#0B35F1]"
             >
               Partners
             </Link>
             <Link
               href="https://docs.elizaos.ai"
-              className="transition-colors font-medium text-[20px] uppercase duration-300 hover:text-[#0B35F1]"
+              className="transition-colors font-medium text-[20px] text-[#0B35F1] uppercase duration-300 hover:text-[#0B35F1]"
               target="_blank"
             >
               Docs
             </Link>
             <Link
               href="https://github.com/elizaos"
-              className="transition-colors font-medium text-[20px] uppercase duration-300 hover:text-[#0B35F1]"
+              className="transition-colors font-medium text-[20px] text-[#0B35F1] uppercase duration-300 hover:text-[#0B35F1]"
               target="_blank"
             >
               Github
             </Link>
             <Link
               href="mailto:inquiries@elizalabs.ai"
-              className="transition-colors font-medium text-[20px] uppercase duration-300 hover:text-[#0B35F1]"
+              className="transition-colors font-medium text-[#0B35F1] text-[20px] uppercase duration-300 hover:text-[#0B35F1]"
             >
               Contact
             </Link>
           </div>
-          <div className="flex text-[24px] flex-col space-y-4">
+          <div className="flex text-[24px] flex-col space-y-6">
             <Link
               target="_blank"
               href="https://github.com/elizaos"
@@ -64,7 +64,7 @@ export default function Footer() {
                 height={36}
                 draggable={false}
               />
-              <h1>Github</h1>
+              <h1 className="text-[#0B35F1] ml-2">Github</h1>
             </Link>
 
             <Link
@@ -79,7 +79,7 @@ export default function Footer() {
                 height={36}
                 draggable={false}
               />
-              <h1>Discord</h1>
+              <h1 className="text-[#0B35F1] ml-2">Discord</h1>
             </Link>
             <Link
               className="flex items-center space-x-2"
@@ -97,7 +97,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="bg-[url('/footer/checker-bar.svg')] bg-repeat w-full h-10 mt-8" />
+      <div className="bg-[url('/footer/checker-bar-2.svg')] bg-repeat w-full h-12 mt-4" />
     </div>
   );
 }
