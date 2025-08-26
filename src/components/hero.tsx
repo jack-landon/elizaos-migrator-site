@@ -68,7 +68,7 @@ export default function Hero() {
           alt="hero-image"
         />
 
-      <HeroBanner />
+      {/* <HeroBanner /> */}
       </div>
     </div>
   );
