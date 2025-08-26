@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import HeroBanner from "./hero-banner";
 
 export default function Hero() {
   return (
-    <div className="relative h-[90.5vh] w-full overflow-hidden">
+    <div className="relative w-full h-[90vh] overflow-hidden">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"
         autoPlay
@@ -21,12 +22,12 @@ export default function Hero() {
       {/* Overlay with dark tint (makes text readable) */}
       <div className="absolute inset-0 " />
 
-      <div className="relative p-12 text-white grid grid-cols-2 h-full">
+      <div className="relative px-6 md:p-12 text-white grid grid-cols-1 xl:grid-cols-2 h-full">
         {/* Left Column */}
-        <div className="text-white flex flex-col">
-          <div className="flex flex-col items-start gap-y-12">
-            <div>
-              <h1 className="text-white font-bold text-[91px] leading-tight">
+        <div className="w-full text-white flex flex-col">
+          <div className="flex flex-col items-start gap-y-5 md:gap-y-12">
+            <div className="w-full">
+              <h1 className="text-white font-bold text-[40px] md:text-[80px] lg:text-[91px] leading-tight">
                 A NEW ERA
               </h1>
               {/* this is temporary until I get the font files */}
@@ -41,7 +42,7 @@ export default function Hero() {
             </div>
 
             <div>
-              <p className="text-[25px] text-white font-normal max-w-xl leading-9">
+              <p className="text-[20px] md:text-[25px] text-white font-normal max-w-xl md:leading-9">
                 Convert your $AI16Z tokens and step into the next phase of
                 ElizaOS — governance, staking, and full protocol access.
               </p>
@@ -49,7 +50,7 @@ export default function Hero() {
 
             <div className="flex flex-col gap-0">
               <Link href="/migrate">
-                <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black text-[25px] relative font-bold w-[230px] h-[60px] flex items-center justify-center">
+                <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black md:text-[25px] relative font-bold w-full h-full max-w-[230px] max-h-[60px] flex items-center justify-center">
                   Start Migration
                 </Button>
               </Link>
@@ -58,22 +59,16 @@ export default function Hero() {
         </div>
 
         {/* Hero image */}
+
         <Image
-          className="absolute bottom-0 right-0 w-auto max-w-[600px] md:max-w-[800px] lg:max-w-[1200px] h-auto object-contain"
+          className="absolute bottom-0 right-0 w-full max-w-[600px] md:max-w-[700px] lg:max-w-[800px] 2xl:max-w-[1000px] h-auto object-contain"
           src="/hero/eliza-hero.png"
           height={1200}
           width={1200}
           alt="hero-image"
         />
 
-        {/* Banner image on the complete right, hidden on mobile */}
-        <Image
-          className="absolute top-0 right-0 hidden md:block h-full object-cover"
-          src="/hero/eliza-banner.svg"
-          height={1785}
-          width={17}
-          alt="eliza-banner"
-        />
+      <HeroBanner />
       </div>
     </div>
   );
