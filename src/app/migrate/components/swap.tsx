@@ -69,22 +69,38 @@ export default function Swap() {
       />
       <div className="p-4 sm:p-6 min-h-[200px] sm:min-h-[240px] w-full bg-[#0B35F14D] rounded-t-sm">
         <div className="flex justify-between flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2.5 items-start sm:items-center">
-          <div className="flex flex-row items-center space-x-2.5">
-            <Image
-              src="/tokens/ai16z.svg"
-              alt="eliza-token"
-              height={42}
-              width={42}
-              draggable={false}
-            />
-            <h1 className="text-white font-medium text-[18px] sm:text-[21px] uppercase">
-              ai16z
-            </h1>
+          <div className="flex flex-row w-full justify-between items-center space-x-2.5">
+            <div className="flex flex-row items-center space-x-2.5">
+              <Image
+                src="/tokens/ai16z.svg"
+                alt="eliza-token"
+                height={42}
+                width={42}
+                draggable={false}
+              />
+              <h1 className="text-white font-medium text-[18px] sm:text-[21px] uppercase">
+                ai16z
+              </h1>
+            </div>
+
+            {/* Solana on mobile (inline with ai16z) */}
+            <div className="flex flex-row space-x-2.5 items-center sm:hidden">
+              <Image
+                src="/tokens/solana.svg"
+                alt="eliza-token"
+                height={42}
+                width={42}
+                draggable={false}
+              />
+              <p className="text-white text-[20px] font-normal">Solana</p>
+            </div>
           </div>
-          <div className="text-[14px] sm:text-[18px] text-white">
+
+          <div className="text-[14px] w-full text-start  sm:text-end sm:w-full md:w-1/3 sm:text-[18px] text-white">
             1 AI16Z = 6 ELIZA
           </div>
         </div>
+
         <div className="flex justify-between items-center flex-col sm:flex-row">
           <Input
             type="number"
@@ -93,7 +109,8 @@ export default function Swap() {
             onChange={(e) => setInputValue(e.target.value)}
             className="text-[50px] sm:text-[60px] md:text-[70px] h-full my-4 font-light text-[#CCCCCC] border-0 focus-visible:ring-0 p-0"
           />
-          <div className="flex flex-row space-x-2.5 items-center mr-0 sm:mr-5">
+
+          <div className="hidden sm:flex flex-row space-x-2.5 items-center mr-0 sm:mr-5">
             <Image
               src="/tokens/solana.svg"
               alt="eliza-token"
@@ -106,7 +123,6 @@ export default function Swap() {
             </p>
           </div>
         </div>
-
         <div className="text-[12px] sm:text-[14px] text-white font-medium flex items-center justify-between">
           <div className="flex items-center space-x-2">
             {isLoading && connected ? (
