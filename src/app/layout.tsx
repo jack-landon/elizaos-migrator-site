@@ -66,7 +66,7 @@ export default function RootLayout({
               <Header />
               <main className="flex-1">{children}</main>
             </div>
-            {pathname !== "/migrate" && <Footer />}
+            {/* {pathname !== "/migrate" && <Footer />} */}
           </QueryClientProvider>
         </SolanaProvider>
       </body>

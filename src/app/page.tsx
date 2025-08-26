@@ -7,8 +7,8 @@ export default function Home() {
     <div>
       <Hero />
       {/* <Partners /> */}
-      <HowItWorks />
-      <TokenOmics />
+      {/* <HowItWorks /> */}
+      {/* <TokenOmics /> */}
       {/* <Faq /> */}
     </div>
   );
