@@ -8,7 +8,7 @@ body {
 }
 /* this is to prevent the layout shifting when select component is collapsed */
 html body[data-scroll-locked] {
-	overflow-y: scroll !important;
+	overflow-y: hidden !important;
 	margin-right: 0px !important;
 }
 

@@ -1,7 +1,8 @@
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet, WalletContextState } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 type SolanaWalletType = {
+  wallet: WalletContextState;
   connect: () => Promise<void>;
   connected: boolean;
   publicKey: string | null;
@@ -9,7 +10,8 @@ type SolanaWalletType = {
 };
 
 export const useSolanaWallet = () => {
-  const { connect, connected, publicKey, disconnect } = useWallet();
+  const wallet = useWallet();
+  const { connect, connected, publicKey, disconnect } = wallet;
   const modal = useWalletModal();
 
   const handleConnect = async () => {
@@ -21,6 +23,7 @@ export const useSolanaWallet = () => {
   };
 
   return {
+    wallet: wallet,
     connect: handleConnect,
     connected,
     publicKey: publicKey ? publicKey.toBase58() : null,
