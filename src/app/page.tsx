@@ -8,7 +8,7 @@ export default function Home() {
     <div>
       <Hero />
       <BackedBySwarm />
-      {/* <HowItWorks /> */}
+      <HowItWorks />
       {/* <TokenOmics /> */}
       {/* <Faq /> */}
     </div>

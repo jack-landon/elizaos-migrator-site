@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function HowItWorks() {
   return (
-    <div className="relative lg:h-[80vh] w-full bg-[#01071f]">
+    <div className="relative lg:h-[70vh] w-full bg-[#01071f]">
       {/* Left-side background image */}
       <div className="absolute inset-y-0 left-0">
         <Image
@@ -47,11 +47,11 @@ export default function HowItWorks() {
           />
           {/* <div className="w-2/3 border-b border-[#002FFF]" /> */}
         </div>
-        <div className="absolute bottom-0 left-0">
+        <div className="absolute bottom-0 left-24">
           <Image
             src="/how-it-works/eliza.png"
-            height={585}
-            width={775}
+            height={682}
+            width={903}
             alt="eliza-image"
             draggable={false}
           />

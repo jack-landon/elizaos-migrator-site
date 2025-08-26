@@ -61,7 +61,7 @@ export default function Hero() {
         {/* Hero image */}
 
         <Image
-          className="absolute bottom-0 right-0 w-full max-w-[600px] md:max-w-[700px] lg:max-w-[800px] 2xl:max-w-[1000px] h-full object-contain"
+          className="absolute bottom-0 right-0 w-full max-w-[600px] md:max-w-[470px] lg:max-w-[700px] 2xl:max-w-[900px] h-auto object-contain"
           src="/hero/eliza-hero-2.png"
           height={1200}
           width={1200}
