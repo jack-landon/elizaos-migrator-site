@@ -53,7 +53,7 @@ export default function TokenOmics() {
       image.src = "/chart/eliza-pictogram.png";
       const x = (chartArea.left + chartArea.right) / 2;
       const y = (chartArea.top + chartArea.bottom) / 2;
-      const size = 255;
+      const size = 200;
 
       image.onload = () => {
         ctx.save();
@@ -74,10 +74,10 @@ export default function TokenOmics() {
   return (
     <div className="mt-12 grid grid-cols-3 relative h-[70vh] w-full bg-[#01071f] space-y-18 xl:space-y-0">
       {/* Header + text */}
-      <div className="grid col-span-3 xl:col-span-1 h-fit mt-0 px-4 lg:px-12 space-y-4">
+      <div className="grid col-span-3 xl:col-span-1 h-fit mt-0 px-4 lg:px-12 space-y-0">
         <h1 className="text-white font-bold text-[24px] uppercase">matrix</h1>
 
-        <h1 className="text-white mt-12 font-bold text-2xl lg:text-[60px] uppercase">
+        <h1 className="text-white mt-4 font-bold text-2xl lg:text-[60px] uppercase">
           tokenomics
         </h1>
         <p className="text-[20px] lg:text-[28px] font-normal text-white w-full lg:max-w-xl">
@@ -89,7 +89,7 @@ export default function TokenOmics() {
 
       {/* Chart */}
       <div className="grid col-span-3 xl:col-span-1 items-center justify-center xl:justify-start px-12 lg:px-0">
-        <div className="h-[450px] w-[450px] lg:w-[700px] lg:h-[700px]">
+        <div className="h-[400px] w-[400px] lg:w-[700px] lg:h-[700px]">
           <Doughnut
             ref={chartRef}
             data={data}
