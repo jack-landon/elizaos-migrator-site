@@ -42,7 +42,7 @@ export default function Hero() {
             </div>
 
             <div>
-              <p className="text-[20px] md:text-[25px] text-white font-normal max-w-xl md:leading-9">
+              <p className="text-[20px] md:text-[28px] text-white font-normal max-w-xl md:leading-9">
                 Convert your $AI16Z tokens and step into the next phase of
                 ElizaOS — governance, staking, and full protocol access.
               </p>
@@ -61,14 +61,14 @@ export default function Hero() {
         {/* Hero image */}
 
         <Image
-          className="absolute bottom-0 right-0 w-full max-w-[600px] md:max-w-[700px] lg:max-w-[800px] 2xl:max-w-[1000px] h-auto object-contain"
-          src="/hero/eliza-hero.png"
+          className="absolute bottom-0 right-0 w-full max-w-[600px] md:max-w-[470px] lg:max-w-[700px] 2xl:max-w-[900px] h-auto object-contain"
+          src="/hero/eliza-hero-2.png"
           height={1200}
           width={1200}
           alt="hero-image"
         />
 
-      <HeroBanner />
+        {/* <HeroBanner /> */}
       </div>
     </div>
   );

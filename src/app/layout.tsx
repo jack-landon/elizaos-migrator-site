@@ -69,8 +69,8 @@ export default function RootLayout({
               <div className="h-full flex flex-col">
                 <Header />
                 <main className="flex-1">{children}</main>
-              </div>
               {pathname !== "/migrate" && <Footer />}
+              </div>
               <Toaster />
             </TransactionListenerProvider>
           </SolanaProvider>

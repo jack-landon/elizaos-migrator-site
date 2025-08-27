@@ -7,7 +7,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <div className="px-6 py-12  md:p-14 flex flex-row items-center justify-between w-full">
+    <div className="px-6 py-12 bg-transparant md:p-14 flex flex-row items-center justify-between w-full">
       <Link href="/">
         <Image
           width={120}
