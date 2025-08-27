@@ -72,13 +72,15 @@ export default function TokenOmics() {
   };
 
   return (
-    <div className="grid grid-cols-3 relative h-[70vh] w-full bg-[#01071f] ">
+    <div className="mt-12 grid grid-cols-3 relative h-[70vh] w-full bg-[#01071f] space-y-18 xl:space-y-0">
       {/* Header + text */}
-      <div className="grid col-span-1 h-fit mt-12 px-12 space-y-4">
-        <h1 className="text-white font-bold text-[60px] uppercase">
+      <div className="grid col-span-3 xl:col-span-1 h-fit mt-0 px-4 lg:px-12 space-y-4">
+        <h1 className="text-white font-bold text-[24px] uppercase">matrix</h1>
+
+        <h1 className="text-white mt-12 font-bold text-2xl lg:text-[60px] uppercase">
           tokenomics
         </h1>
-        <p className="text-[28px] font-normal text-white max-w-xl">
+        <p className="text-[20px] lg:text-[28px] font-normal text-white w-full lg:max-w-xl">
           $ELIZA is the upgraded governance and utility token of the ElizaOS
           protocol. Holding it unlocks access to governance, staking,
           contributor rewards, and future protocol utility.
@@ -86,8 +88,8 @@ export default function TokenOmics() {
       </div>
 
       {/* Chart */}
-      <div className="grid col-span-1 items-center justify-start px-12 lg:px-0">
-        <div className="h-[700px] w-[700px]">
+      <div className="grid col-span-3 xl:col-span-1 items-center justify-center xl:justify-start px-12 lg:px-0">
+        <div className="h-[450px] w-[450px] lg:w-[700px] lg:h-[700px]">
           <Doughnut
             ref={chartRef}
             data={data}
@@ -98,7 +100,7 @@ export default function TokenOmics() {
       </div>
 
       {/* Custom Legend */}
-      <div className="place-items-center grid grid-cols-1">
+      <div className="grid col-span-3 xl:col-span-1 items-center place-items-center 2xl:place-items-center mx-8">
         <div className="w-full max-w-[480px] flex flex-col gap-8">
           {data.labels.map((label, i) => (
             <div

@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <BackedBySwarm />
       <HowItWorks />
-      {/* <TokenOmics /> */}
+      <TokenOmics />
       {/* <Faq /> */}
     </div>
   );
