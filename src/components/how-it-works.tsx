@@ -64,7 +64,7 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* <div className="absolute bottom-0 left-24">
+        {/* <div className="absolute bottom-0 left-55">
           <Image
             src="/how-it-works/eliza.png"
             height={682}
@@ -98,7 +98,7 @@ function Steps({ step, title, description }: IStepsProps) {
       </div>
 
       {/* Title + Description */}
-      <div className="py-3 flex flex-col sm:flex-row w-full items-start sm:items-start justify-between gap-2 sm:gap-4">
+      <div className="py-0 sm:py-3 flex flex-col sm:flex-row w-full items-start sm:items-start justify-between gap-2 sm:gap-4">
         <h2
           className="text-white font-normal leading-tight 
         text-[20px] sm:text-[28px] md:text-[34px] 2xl:text-[42px] w-full sm:w-1/3"
