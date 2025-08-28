@@ -41,8 +41,14 @@ export default function Swap({ swapType }: SwapProps) {
 
   const tokenMint =
     swapType === SwapType.Bridge
-      ? "BrmpEAhbLU7dgpZjzKsHALGXa5mmunzfvFrok9jqZcwc" // ELIZA
-      : "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC"; // AI16Z
+      ? process.env.NEXT_PUBLIC_DESTINATION_TOKEN // ELIZA
+      : process.env.NEXT_PUBLIC_ORIGIN_TOKEN; // AI16Z
+
+  if (!tokenMint) {
+    throw new Error(
+      "Token mint address is not defined in environment variables"
+    );
+  }
 
   const { balance, isLoading } = useBalance({
     address: publicKey?.toString() || "",
