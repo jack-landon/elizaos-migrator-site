@@ -1,3 +1,4 @@
+import Expansion from "@/components/expansion";
 import Hero from "@/components/hero";
 import HowItWorks from "@/components/how-it-works";
 import BackedBySwarm from "@/components/swarm";
@@ -9,6 +10,7 @@ export default function Home() {
       <Hero />
       <BackedBySwarm />
       <HowItWorks />
+      <Expansion />
       <TokenOmics />
       {/* <Faq /> */}
     </div>
