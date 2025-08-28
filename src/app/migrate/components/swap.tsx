@@ -12,14 +12,25 @@ import SelectChainModal from "@/components/modals/select-chain-modal";
 import { useBalance } from "@/hooks/useBalance";
 import { useSolanaWallet } from "@/hooks/useSolanaWallet";
 import { useQueryClient } from "@tanstack/react-query";
+import { SwapType } from "./swap-selector";
 
-export default function Swap() {
+interface SwapProps {
+  swapType: SwapType;
+}
+
+export default function Swap({ swapType }: SwapProps) {
   const destinations = [
     { name: "Base", value: "base", image: "/tokens/base.svg" },
     { name: "Solana", value: "solana", image: "/tokens/solana.svg" },
     { name: "Hyperliquid", value: "hyper", image: "/tokens/hyper.svg" },
     { name: "Ethereum", value: "eth", image: "/tokens/ethereum.svg" },
   ];
+
+  const availableDestinations =
+    swapType === SwapType.Bridge
+      ? destinations.filter((dest) => dest.value !== "solana")
+      : destinations;
+
   const [selectedDestination, setSelectedDestination] = useState<string>("");
   const [destinationAddress, setDestinationAddress] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
@@ -28,14 +39,23 @@ export default function Swap() {
     useState<boolean>(false);
   const queryClient = useQueryClient();
 
+  const tokenMint =
+    swapType === SwapType.Bridge
+      ? process.env.NEXT_PUBLIC_DESTINATION_TOKEN // ELIZA
+      : process.env.NEXT_PUBLIC_ORIGIN_TOKEN; // AI16Z
+
+  if (!tokenMint) {
+    throw new Error(
+      "Token mint address is not defined in environment variables"
+    );
+  }
+
   const { balance, isLoading } = useBalance({
     address: publicKey?.toString() || "",
-    tokenMint: "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC",
+    tokenMint,
   });
 
   useEffect(() => {
-    const tokenMint = "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC";
-
     if (connected && publicKey) {
       const address = publicKey.toString();
       queryClient.invalidateQueries({
@@ -47,7 +67,7 @@ export default function Swap() {
         queryKey: ["tokenBalance"],
       });
     }
-  }, [connected, publicKey, queryClient]);
+  }, [connected, publicKey, queryClient, tokenMint]);
 
   const formatBalance = (balance: number | null) => {
     if (balance === null || balance === 0) return "0";
@@ -67,38 +87,31 @@ export default function Swap() {
         isOpen={selectChainModalOpen}
         setIsModalOpen={setSelectChainModalOpen}
       />
+
       <div className="p-4 sm:p-6 min-h-[200px] sm:min-h-[240px] w-full bg-[#0B35F14D] rounded-t-sm">
         <div className="flex justify-between flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2.5 items-start sm:items-center">
-          <div className="flex flex-row w-full justify-between items-center space-x-2.5">
-            <div className="flex flex-row items-center space-x-2.5">
-              <Image
-                src="/tokens/ai16z.svg"
-                alt="eliza-token"
-                height={42}
-                width={42}
-                draggable={false}
-              />
-              <h1 className="text-white font-medium text-[18px] sm:text-[21px] uppercase">
-                ai16z
-              </h1>
-            </div>
-
-            {/* Solana on mobile (inline with ai16z) */}
-            <div className="flex flex-row space-x-2.5 items-center sm:hidden">
-              <Image
-                src="/tokens/solana.svg"
-                alt="eliza-token"
-                height={42}
-                width={42}
-                draggable={false}
-              />
-              <p className="text-white text-[20px] font-normal">Solana</p>
-            </div>
+          <div className="flex flex-row items-center space-x-2.5">
+            <Image
+              src={
+                swapType === SwapType.Bridge
+                  ? "/tokens/eliza.svg"
+                  : "/tokens/ai16z.svg"
+              }
+              alt="source-token"
+              height={42}
+              width={42}
+              draggable={false}
+            />
+            <h1 className="text-white font-medium text-[18px] sm:text-[21px] uppercase">
+              {swapType === SwapType.Bridge ? "ELIZA" : "AI16Z"}
+            </h1>
           </div>
 
-          <div className="text-[14px] w-full text-start  sm:text-end sm:w-full md:w-1/3 sm:text-[18px] text-white">
-            1 AI16Z = 6 ELIZA
-          </div>
+          {swapType === SwapType.Migrate && (
+            <div className="text-[14px] sm:text-[18px] text-white">
+              1 AI16Z = 6 ELIZA
+            </div>
+          )}
         </div>
 
         <div className="flex justify-between items-center flex-col sm:flex-row">
@@ -109,11 +122,10 @@ export default function Swap() {
             onChange={(e) => setInputValue(e.target.value)}
             className="text-[50px] sm:text-[60px] md:text-[70px] h-full my-4 font-light text-[#CCCCCC] border-0 focus-visible:ring-0 p-0"
           />
-
-          <div className="hidden sm:flex flex-row space-x-2.5 items-center mr-0 sm:mr-5">
+          <div className="flex flex-row space-x-2.5 items-center mr-0 sm:mr-5">
             <Image
               src="/tokens/solana.svg"
-              alt="eliza-token"
+              alt="solana-token"
               height={42}
               width={42}
               draggable={false}
@@ -123,6 +135,7 @@ export default function Swap() {
             </p>
           </div>
         </div>
+
         <div className="text-[12px] sm:text-[14px] text-white font-medium flex items-center justify-between">
           <div className="flex items-center space-x-2">
             {isLoading && connected ? (
@@ -174,20 +187,28 @@ export default function Swap() {
             Eliza
           </h1>
         </div>
+
         <div className="mt-2 flex justify-between items-start flex-col sm:flex-row">
-          <h1 className="text-[50px] sm:text-[60px] md:text-[70px] mt-3 font-light text-[#CCCCCC]">
-            2,300.46
-          </h1>
+          {swapType === SwapType.Migrate ? (
+            <h1 className="text-[50px] sm:text-[60px] md:text-[70px] mt-3 font-light text-[#CCCCCC]">
+              {inputValue ? (parseFloat(inputValue) * 6).toLocaleString() : "0"}
+            </h1>
+          ) : (
+            <h1 className="text-[50px] sm:text-[60px] md:text-[70px] mt-3 font-light text-[#CCCCCC]">
+              {inputValue || "0"}
+            </h1>
+          )}
 
           <div className="flex flex-col items-start sm:items-end mt-4 sm:mt-0">
             <p className="uppercase mb-2 text-[#CCCCCC]">destination</p>
             <DropDownSelect
               onChange={setSelectedDestination}
-              destinations={destinations}
+              destinations={availableDestinations}
             />
           </div>
         </div>
-        {selectedDestination && selectedDestination != "solana" ? (
+
+        {selectedDestination && selectedDestination !== "solana" ? (
           <div className="mt-4 pt-4 border-t border-white/20">
             <div className="items-center text-white flex flex-col sm:flex-row justify-between space-y-2 sm:space-y-0">
               <h1 className="uppercase text-[12px] text-white">
@@ -219,11 +240,13 @@ export default function Swap() {
           </div>
         ) : null}
       </div>
+
       <div className="flex justify-center mt-6 sm:mt-8 space-y-2 flex-col">
         <SwapButton
           selectedDestination={selectedDestination}
           destinationAddress={destinationAddress}
           setDestinationAddress={setDestinationAddress}
+          swapType={swapType}
         />
         <DisconnectButton />
       </div>
