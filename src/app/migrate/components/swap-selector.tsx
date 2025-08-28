@@ -15,7 +15,7 @@ export default function SwapSelector({
   selected,
 }: SwapSelectorProps) {
   return (
-    <div className="flex gap-5 py-4">
+    <div className="flex gap-5 pb-4">
       <button
         className="justify-start flex flex-col align-start space-y-1"
         onClick={() => onChange(SwapType.Migrate)}
