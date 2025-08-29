@@ -11,19 +11,19 @@ export default function Expansion() {
 
   return (
     <div className="relative h-[75vh] lg:max-h-[85vh] lg:h-[85vh] w-full overflow-hidden">
+      <div className="absolute inset-0 bg-[#0B35F1]/80 z-10" />
       {/* Background video */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0 brightness-75 grayscale-100"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 brightness-100"
       >
         <source src="/expansion/solar.mp4" type="video/mp4" />
       </video>
 
       {/* Color overlay */}
-      <div className="absolute inset-0 bg-[#0B35F1]/20 z-10" />
 
       {/* Content */}
       <div className="relative z-20 flex flex-col h-full">
@@ -44,6 +44,7 @@ export default function Expansion() {
         <div className="flex justify-center items-center md:mt-0 lg:mt-24 lg:items-start h-full px-12">
           <div className="flex items-center w-full">
             {images.map((src, i) => (
+              // make these images responsive
               <div key={i} className="flex-1 flex justify-center">
                 <Image
                   src={src}

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import { useState } from "react"
+import * as React from "react";
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { useState } from "react";
 
-import { cn } from "@/lib/utils"
-import { CircleMinusIcon, CirclePlusIcon } from "lucide-react"
+import { cn } from "@/lib/utils";
+import { ChevronDownIcon, CircleMinusIcon, CirclePlusIcon } from "lucide-react";
 
 function Accordion({
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root data-slot="accordion" {...props} />
+  return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
 }
 
 function AccordionItem({
@@ -20,10 +20,10 @@ function AccordionItem({
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn("border-b border-[#EBEBEB1A] last:border-b-0", className)}
+      className={cn("border-b border-[#0B35F1] last:border-b-0", className)}
       {...props}
     />
-  )
+  );
 }
 
 function AccordionTrigger({
@@ -31,30 +31,22 @@ function AccordionTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
-        onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
+          "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className
         )}
         {...props}
       >
         {children}
-        {isOpen ? (
-          <CircleMinusIcon className="text-[#3457F7] pointer-events-none size-7 shrink-0 translate-y-0.5 transition-transform duration-200" />
-        ) : (
-          <CirclePlusIcon className="text-[#3457F7] pointer-events-none size-7 shrink-0 translate-y-0.5 transition-transform duration-200" />
-        )}
+        <ChevronDownIcon className="h-[24px] w-[24px] text-[#0B35F1] pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
-  )
+  );
 }
-
 
 function AccordionContent({
   className,
@@ -69,7 +61,7 @@ function AccordionContent({
     >
       <div className={cn("pt-0 pb-4", className)}>{children}</div>
     </AccordionPrimitive.Content>
-  )
+  );
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };

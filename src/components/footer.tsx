@@ -19,7 +19,7 @@ export default function Footer() {
         </div>
         <div className="w-full justify-items-start">
           <h1 className="text-[#0B35F1] text-[36px] uppercase leading-[1.1] font-extrabold">
-            Start <br /> Migrating
+            Economy Powered <br /> by Intelligence
           </h1>
         </div>
         <div className="w-full flex flex-row justify-between md:justify-around justify-items-center">
