@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
+import Badge from "./badge";
 
 const faqs = [
   {
@@ -58,9 +59,7 @@ export default function Faq() {
   return (
     <div className="relative overflow-hidden px-4 lg:px-12 w-full min-h-full h-[80vh] grid grid-cols-1 lg:grid-cols-2 items-center py-10 bg-[#020B30] leading-tight">
       <div className="h-full lg:h-fit relative lg:place-self-start z-10 space-y-8">
-        <h1 className="uppercase text-white lg:text-[24px] font-medium">
-          Open Index
-        </h1>
+        <Badge title="open index" />
         <h1 className="text-white mt-4 font-bold text-2xl lg:text-4xl xl:text-[54px] uppercase max-w-xl">
           Frequently Asked Questions
         </h1>

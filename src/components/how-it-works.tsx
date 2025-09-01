@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Badge from "./badge";
 
 export default function HowItWorks() {
   return (
@@ -31,9 +32,7 @@ export default function HowItWorks() {
       {/* Content */}
       <div className="relative h-full grid grid-cols-1 xl:grid-cols-2">
         <div className="grid h-fit justify-between p-6 lg:p-12 col-span-1">
-          <p className="text-white uppercase text-[24px] font-medium">
-            Protocol
-          </p>
+          <Badge title="protocol" />
           <h1 className="w-full md:max-w-md mt-9 text-white text-[40px] xl:text-[54px] font-semibold flex flex-col leading-15">
             The Migration Sequence
           </h1>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Badge from "./badge";
 
 export default function Expansion() {
   const images = [
@@ -28,9 +29,7 @@ export default function Expansion() {
       {/* Content */}
       <div className="relative z-20 flex flex-col h-full">
         <div className="grid h-fit justify-between p-6 lg:p-12 col-span-1">
-          <p className="text-white uppercase text-[24px] font-medium">
-            expansion
-          </p>
+          <Badge title="expansion" />
           <h1 className="w-full md:max-w-lg mt-9 text-white text-[40px] xl:text-[54px] font-semibold flex flex-col leading-13">
             The Path Forward is Infinite
           </h1>
