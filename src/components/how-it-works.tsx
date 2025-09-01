@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Badge from "./badge";
 
 export default function HowItWorks() {
   return (
-    <div className="relative lg:h-[70vh] w-full bg-[#01071f]">
+    <div className="relative h-[85vh] w-full bg-[#01071f]">
       {/* Left-side background image */}
       {/* <div className="hidden md:flex  absolute inset-y-0 left-0">
         <Image
@@ -31,10 +32,8 @@ export default function HowItWorks() {
       {/* Content */}
       <div className="relative h-full grid grid-cols-1 xl:grid-cols-2">
         <div className="grid h-fit justify-between p-6 lg:p-12 col-span-1">
-          <p className="text-white uppercase text-[24px] font-medium">
-            Protocol
-          </p>
-          <h1 className="w-full md:max-w-md mt-9 text-white text-[40px] xl:text-[54px] font-semibold flex flex-col ">
+          <Badge title="protocol" />
+          <h1 className="w-full md:max-w-md mt-9 text-white text-[40px] xl:text-[54px] font-semibold flex flex-col leading-15">
             The Migration Sequence
           </h1>
         </div>
@@ -91,7 +90,7 @@ function Steps({ step, title, description }: IStepsProps) {
       <div className="sm:w-1/5">
         <span
           className="text-white font-extralight leading-none 
-        text-[48px] sm:text-[72px] md:text-[90px] 2xl:text-[100px]"
+        text-[48px] sm:text-[72px] md:text-[90px] 2xl:text-[80px]"
         >
           0{step}
         </span>
@@ -101,7 +100,7 @@ function Steps({ step, title, description }: IStepsProps) {
       <div className="py-0 sm:py-3 flex flex-col sm:flex-row w-full items-start sm:items-start justify-between gap-2 sm:gap-4">
         <h2
           className="text-white font-normal leading-tight 
-        text-[20px] sm:text-[28px] md:text-[34px] 2xl:text-[42px] w-full sm:w-1/3"
+        text-[20px] sm:text-[28px] md:text-[34px] 2xl:text-[33px] w-full sm:w-1/3"
         >
           {title}
         </h2>

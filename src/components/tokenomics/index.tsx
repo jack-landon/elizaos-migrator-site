@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Chart } from "chart.js";
+import Badge from "../badge";
 
 ChartJS.register(ArcElement, Tooltip);
 
@@ -72,12 +73,12 @@ export default function TokenOmics() {
   };
 
   return (
-    <div className="mt-12 grid grid-cols-3 relative h-[70vh] w-full bg-[#01071f] space-y-18 xl:space-y-0">
+    <div className="mt-12 grid grid-cols-3 relative h-full 2xl:h-[70vh] w-full bg-[#01071f] space-y-18 xl:space-y-0">
       {/* Header + text */}
       <div className="grid col-span-3 xl:col-span-1 h-fit mt-0 px-4 lg:px-12 space-y-0">
-        <h1 className="text-white font-bold text-[24px] uppercase">matrix</h1>
+        <Badge title="matrix" />
 
-        <h1 className="text-white mt-4 font-bold text-2xl lg:text-[60px] uppercase">
+        <h1 className="text-white mt-4 font-bold text-2xl lg:text-[54px] uppercase">
           tokenomics
         </h1>
         <p className="text-[20px] lg:text-[28px] font-normal text-white w-full lg:max-w-xl">
