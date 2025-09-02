@@ -73,7 +73,7 @@ export default function TokenOmics() {
   };
 
   return (
-    <div className="mt-12 grid grid-cols-3 relative h-full 2xl:h-[70vh] w-full bg-[#01071f] space-y-18 xl:space-y-0">
+    <div className="mt-12 grid grid-cols-3 relative h-full 2xl:h-[90vh] w-full bg-[#01071f] space-y-18 xl:space-y-0">
       {/* Header + text */}
       <div className="grid col-span-3 xl:col-span-1 h-fit mt-0 px-4 lg:px-12 space-y-0">
         <Badge title="matrix" />
@@ -90,7 +90,7 @@ export default function TokenOmics() {
 
       {/* Chart */}
       <div className="grid col-span-3 xl:col-span-1 items-center justify-center xl:justify-start px-12 lg:px-0">
-        <div className="h-[400px] w-[400px] lg:w-[700px] lg:h-[700px]">
+        <div className="h-[400px] w-[400px] 2xl:w-[700px] 2xl:h-[700px]">
           <Doughnut
             ref={chartRef}
             data={data}
