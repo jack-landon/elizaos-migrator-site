@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/solana_migration.json`.
  */
 export type SolanaMigration = {
-  "address": "rQknDS6mKieLRDJFEAwzssv7HKGkerhDQHwe1cPRkTp",
+  "address": "DV5HwDmfrjjM1BuMKvSF4t3MbwYTmHsoyQxLRFaDmdZN",
   "metadata": {
     "name": "solanaMigration",
     "version": "0.1.0",
