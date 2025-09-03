@@ -3,9 +3,9 @@ import Badge from "./badge";
 
 export default function HowItWorks() {
   return (
-    <div className="relative h-[85vh] w-full bg-[#01071f]">
+    <div className="relative h-full 2xl:h-[85vh] w-full ">
       {/* Left-side background image */}
-      {/* <div className="hidden md:flex  absolute inset-y-0 left-0">
+      <div className="hidden md:flex  absolute inset-y-0 left-0">
         <Image
           src="/how-it-works/background.png"
           alt="Decorative strip"
@@ -15,9 +15,9 @@ export default function HowItWorks() {
           width={400}
           draggable={false}
         />
-      </div> */}
+      </div>
       {/* Center background video */}
-      {/* <div className="hidden md:flex absolute -inset-0 justify-center">
+      <div className="hidden -z-10 md:flex absolute -inset-0 justify-center">
         <video
           src="/how-it-works/sequence.mp4"
           autoPlay
@@ -27,7 +27,7 @@ export default function HowItWorks() {
           className="h-full"
           draggable={false}
         />
-      </div> */}
+      </div>
 
       {/* Content */}
       <div className="relative h-full grid grid-cols-1 xl:grid-cols-2">
@@ -63,15 +63,29 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* <div className="absolute bottom-0 left-55">
-          <Image
-            src="/how-it-works/eliza.png"
-            height={682}
-            width={903}
-            alt="eliza-image"
-            draggable={false}
-          />
-        </div> */}
+        <div className="grid col-span-1 lg:hidden ">
+          <div className="">
+            <video
+              src="/how-it-works/sequence.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full"
+              draggable={false}
+            />
+            awd
+          </div>
+          <div className="absolute bottom-0 -left-24 lg:hidden">
+            <Image
+              src="/how-it-works/eliza.png"
+              height={240}
+              width={320}
+              alt="eliza-image"
+              draggable={false}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -85,7 +99,7 @@ interface IStepsProps {
 
 function Steps({ step, title, description }: IStepsProps) {
   return (
-    <div className="border-t w-full lg:w-full 2xl:w-2/3 border-[#002FFF] flex flex-col sm:flex-row items-start gap-4 sm:gap-6 pt-2 mr-0 2xl:mr-12">
+    <div className="border-t w-full lg:w-full 2xl:w-2/3 border-[#002FFF] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
       {/* Step Number */}
       <div className="sm:w-1/5">
         <span
