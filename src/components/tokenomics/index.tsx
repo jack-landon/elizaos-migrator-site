@@ -115,7 +115,7 @@ export default function TokenOmics() {
               </span>
 
               <span
-                className={`md:text-[15px] 2xl:text-[28px] font-normal flex-1 text-start ${
+                className={`md:text-[15px] xl:text-[21px] font-normal flex-1 text-start ${
                   hoverIndex === i ? "text-white" : "text-white"
                 }`}
               >

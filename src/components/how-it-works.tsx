@@ -99,11 +99,11 @@ interface IStepsProps {
 
 function Steps({ step, title, description }: IStepsProps) {
   return (
-    <div className="border-t w-full lg:w-full 2xl:w-2/3 border-[#002FFF] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
+    <div className="border-t w-full lg:w-full 2xl:w-2/3 border-[#FF5800] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
       {/* Step Number */}
       <div className="sm:w-1/5">
         <span
-          className="text-white font-extralight leading-none 
+          className="text-[#FF5800] font-light leading-none 
         text-[48px] sm:text-[72px] md:text-[90px] 2xl:text-[80px]"
         >
           0{step}
