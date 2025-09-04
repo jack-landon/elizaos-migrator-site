@@ -3,6 +3,7 @@ import Faq from "@/components/faq";
 import Hero from "@/components/hero";
 import HeroBar from "@/components/hero-bar";
 import HowItWorks from "@/components/how-it-works";
+import Portal from "@/components/portal";
 import BackedBySwarm from "@/components/swarm";
 import TokenOmics from "@/components/tokenomics";
 
@@ -21,6 +22,7 @@ export default function Home() {
         <HowItWorks />
         <Expansion />
         <TokenOmics />
+        <Portal />
         <Faq />
       </div>
     </div>

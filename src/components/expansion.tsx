@@ -48,8 +48,8 @@ export default function Expansion() {
                 <Image
                   src={src}
                   alt={`expansion-${i + 1}`}
-                  width={src.includes("eliza.png") ? 400 : 100}
-                  height={src.includes("eliza.png") ? 400 : 100}
+                  width={src.includes("eliza.png") ? 150 : 100}
+                  height={src.includes("eliza.png") ? 150 : 100}
                   draggable={false}
                 />
               </div>
