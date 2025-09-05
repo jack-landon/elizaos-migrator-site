@@ -30,6 +30,7 @@ interface CCIPProgressData {
 interface CCIPProgressTrackerProps {
   sourceTransactionHash: string;
   sourceChainSelectorName: string;
+  selectedDestination?: string | null;
   onComplete?: (data: CCIPProgressData) => void;
   onError?: (error: string) => void;
   onClose?: () => void;
@@ -45,6 +46,7 @@ type ProgressStep = {
 export function CCIPProgressTracker({
   sourceTransactionHash,
   sourceChainSelectorName,
+  selectedDestination,
   onComplete,
   onError,
   onClose,
@@ -54,7 +56,6 @@ export function CCIPProgressTracker({
   );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -69,7 +70,6 @@ export function CCIPProgressTracker({
       );
 
       if (response.status === 400) {
-        setRetryCount((prev) => prev + 1);
         // Clear current interval and set a timeout for 400 errors
         if (intervalRef.current) {
           clearTimeout(intervalRef.current);
@@ -136,11 +136,8 @@ export function CCIPProgressTracker({
       clearInterval(intervalRef.current);
     }
 
-    // Initial fetch
+    // Initial fetch - this will set up the appropriate polling mechanism
     fetchProgress();
-
-    // Set up polling interval
-    intervalRef.current = setInterval(fetchProgress, pollInterval);
 
     return () => {
       if (intervalRef.current) {
@@ -149,7 +146,7 @@ export function CCIPProgressTracker({
         intervalRef.current = null;
       }
     };
-  }, [sourceTransactionHash, sourceChainSelectorName, retryCount, isCompleted]);
+  }, [sourceTransactionHash, sourceChainSelectorName, isCompleted]);
 
   const getProgressSteps = (): ProgressStep[] => {
     if (!progressData) {
@@ -260,47 +257,154 @@ export function CCIPProgressTracker({
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const getChainInfo = (chainName: string) => {
-    switch (chainName.toLowerCase()) {
-      case "ethereum-testnet-sepolia":
-      case "ethereum":
-        return {
-          logo: "/tokens/ethereum.svg",
-          name: "Ethereum",
-          alt: "Ethereum",
-        };
-      case "base":
-        return {
-          logo: "/tokens/base.svg",
-          name: "Base",
-          alt: "Base",
-        };
-      case "bsc":
-        return {
-          logo: "/tokens/bsc.svg",
-          name: "BSC",
-          alt: "BSC",
-        };
-      case "solana-devnet":
-      case "solana":
-        return {
-          logo: "/tokens/solana.svg",
-          name: "Solana",
-          alt: "Solana",
-        };
-      case "hyper":
-        return {
-          logo: "/tokens/hyper.svg",
-          name: "Hyperliquid",
-          alt: "Hyperliquid",
-        };
-      default:
-        return {
-          logo: "/tokens/ethereum.svg", // fallback
-          name: chainName,
-          alt: chainName,
-        };
+  const getExplorerUrl = (chainName: string, transactionHash: string) => {
+    const lowerChainName = chainName.toLowerCase();
+    const isDevnet = process.env.NEXT_PUBLIC_NETWORK === 'devnet';
+    
+    if (lowerChainName.includes("base")) {
+      return isDevnet 
+        ? `https://sepolia.basescan.org/tx/${transactionHash}`
+        : `https://basescan.org/tx/${transactionHash}`;
     }
+    
+    if (lowerChainName.includes("bsc") || lowerChainName.includes("binance")) {
+      return isDevnet 
+        ? `https://testnet.bscscan.com/tx/${transactionHash}`
+        : `https://bscscan.com/tx/${transactionHash}`;
+    }
+    
+    if (lowerChainName.includes("hyper")) {
+      return `https://explorer.hyperliquid.xyz/tx/${transactionHash}`;
+    }
+    
+    if (lowerChainName.includes("solana")) {
+      return isDevnet 
+        ? `https://explorer.solana.com/tx/${transactionHash}?cluster=devnet`
+        : `https://explorer.solana.com/tx/${transactionHash}`;
+    }
+    
+    if (lowerChainName.includes("ethereum")) {
+      return isDevnet 
+        ? `https://sepolia.etherscan.io/tx/${transactionHash}`
+        : `https://etherscan.io/tx/${transactionHash}`;
+    }
+
+    // Fallback to selected destination if provided
+    if (selectedDestination) {
+      switch (selectedDestination) {
+        case "base":
+          return isDevnet 
+            ? `https://sepolia.basescan.org/tx/${transactionHash}`
+            : `https://basescan.org/tx/${transactionHash}`;
+        case "bsc":
+          return isDevnet 
+            ? `https://testnet.bscscan.com/tx/${transactionHash}`
+            : `https://bscscan.com/tx/${transactionHash}`;
+        case "eth":
+          return isDevnet 
+            ? `https://sepolia.etherscan.io/tx/${transactionHash}`
+            : `https://etherscan.io/tx/${transactionHash}`;
+        case "hyper":
+          return `https://explorer.hyperliquid.xyz/tx/${transactionHash}`;
+        case "solana":
+          return isDevnet 
+            ? `https://explorer.solana.com/tx/${transactionHash}?cluster=devnet`
+            : `https://explorer.solana.com/tx/${transactionHash}`;
+      }
+    }
+
+    // Final fallback to Ethereum (devnet or mainnet)
+    return isDevnet 
+      ? `https://sepolia.etherscan.io/tx/${transactionHash}`
+      : `https://etherscan.io/tx/${transactionHash}`;
+  };
+
+  const getChainInfo = (chainName: string) => {
+    const lowerChainName = chainName.toLowerCase();
+    
+    // Check if the chain name contains specific patterns
+    if (lowerChainName.includes("base")) {
+      return {
+        logo: "/tokens/base.svg",
+        name: "Base",
+        alt: "Base",
+      };
+    }
+    
+    if (lowerChainName.includes("bsc") || lowerChainName.includes("binance")) {
+      return {
+        logo: "/tokens/bsc.svg",
+        name: "BSC",
+        alt: "BSC",
+      };
+    }
+    
+    if (lowerChainName.includes("hyper")) {
+      return {
+        logo: "/tokens/hyper.svg",
+        name: "Hyperliquid",
+        alt: "Hyperliquid",
+      };
+    }
+    
+    if (lowerChainName.includes("solana")) {
+      return {
+        logo: "/tokens/solana.svg",
+        name: "Solana",
+        alt: "Solana",
+      };
+    }
+    
+    if (lowerChainName.includes("ethereum")) {
+      return {
+        logo: "/tokens/ethereum.svg",
+        name: "Ethereum",
+        alt: "Ethereum",
+      };
+    }
+
+    // Fallback to selected destination if provided
+    if (selectedDestination) {
+      switch (selectedDestination) {
+        case "base":
+          return {
+            logo: "/tokens/base.svg",
+            name: "Base",
+            alt: "Base",
+          };
+        case "bsc":
+          return {
+            logo: "/tokens/bsc.svg",
+            name: "BSC",
+            alt: "BSC",
+          };
+        case "eth":
+          return {
+            logo: "/tokens/ethereum.svg",
+            name: "Ethereum",
+            alt: "Ethereum",
+          };
+        case "hyper":
+          return {
+            logo: "/tokens/hyper.svg",
+            name: "Hyperliquid",
+            alt: "Hyperliquid",
+          };
+        case "solana":
+          return {
+            logo: "/tokens/solana.svg",
+            name: "Solana",
+            alt: "Solana",
+          };
+      }
+    }
+
+    // Final fallback
+    return {
+      logo: "/tokens/ethereum.svg",
+      name: chainName,
+      alt: chainName,
+    };
   };
 
   const steps = getProgressSteps();
@@ -455,7 +559,7 @@ export function CCIPProgressTracker({
                         Destination Transaction:
                       </span>{" "}
                       <a
-                        href={`https://sepolia.etherscan.io/tx/${progressData.receiptTransactionHash}`}
+                        href={getExplorerUrl(progressData.destNetworkName, progressData.receiptTransactionHash)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#FF5800] hover:underline"

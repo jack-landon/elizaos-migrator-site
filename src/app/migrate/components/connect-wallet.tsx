@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useSolanaWallet } from "@/hooks/useSolanaWallet";
 import { useBridge } from "@/hooks/useBridge";
-import { CCIPProgressTracker } from "@/components/ccip-progress-tracker";
+import BridgeProgress from "./bridge-progress";
 import { SwapType } from "./swap-selector";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -198,9 +198,6 @@ export default function SwapButton({
             </Button>
           ) : (
             <div className="text-center">
-              <div className="text-green-400 text-sm mb-2">
-                ✅ Tokens Approved
-              </div>
               <Button
                 onClick={handleBridge}
                 disabled={isDisabled}
@@ -229,30 +226,14 @@ export default function SwapButton({
         </Button>
       )}
 
-      {showProgress && transactionHash && (
-        <div className="mt-6">
-          <CCIPProgressTracker
-            sourceTransactionHash={transactionHash}
-            sourceChainSelectorName="solana-devnet"
-            onComplete={(data) => {
-              toast.success("CCIP Transfer Complete!", {
-                description:
-                  "Your cross-chain transfer has been successfully completed.",
-                duration: 5000,
-              });
-            }}
-            onError={(error) => {
-              console.error("❌ CCIP progress error:", error);
-              toast.error("CCIP Progress Error", {
-                description: error,
-                duration: 5000,
-              });
-            }}
-            onClose={() => {
-              setShowProgress(false);
-            }}
-          />
-        </div>
+      {/* Bridge Progress - Only show for bridge operations */}
+      {swapType === SwapType.Bridge && (
+        <BridgeProgress
+          showProgress={showProgress}
+          transactionHash={transactionHash}
+          selectedDestination={selectedDestination}
+          onClose={() => setShowProgress(false)}
+        />
       )}
     </div>
   );
