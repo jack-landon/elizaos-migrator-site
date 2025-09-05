@@ -21,9 +21,10 @@ interface SwapProps {
 export default function Swap({ swapType }: SwapProps) {
   const destinations = [
     { name: "Base", value: "base", image: "/tokens/base.svg" },
-    { name: "Solana", value: "solana", image: "/tokens/solana.svg" },
-    { name: "Hyperliquid", value: "hyper", image: "/tokens/hyper.svg" },
+    { name: "BSC", value: "bsc", image: "/tokens/bsc.svg" },
     { name: "Ethereum", value: "eth", image: "/tokens/ethereum.svg" },
+    { name: "Hyperliquid", value: "hyper", image: "/tokens/hyper.svg" },
+    { name: "Solana", value: "solana", image: "/tokens/solana.svg" },
   ];
 
   const availableDestinations =
@@ -247,6 +248,7 @@ export default function Swap({ swapType }: SwapProps) {
           destinationAddress={destinationAddress}
           setDestinationAddress={setDestinationAddress}
           swapType={swapType}
+          inputAmount={inputValue}
         />
         <DisconnectButton />
       </div>
