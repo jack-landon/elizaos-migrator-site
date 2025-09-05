@@ -8,7 +8,7 @@ import Badge from "../badge";
 ChartJS.register(ArcElement, Tooltip);
 
 export default function TokenOmics() {
-  const chartRef = useRef<any>(null);
+  const chartRef = useRef<ChartJS<"doughnut", number[], string>>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   const baseColors = [
@@ -64,7 +64,7 @@ export default function TokenOmics() {
     },
   };
 
-  const options: any = {
+  const options = {
     cutout: "60%",
     plugins: {
       legend: { display: false },
