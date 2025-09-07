@@ -3,7 +3,7 @@ import Badge from "./badge";
 
 export default function HowItWorks() {
   return (
-    <div className="relative h-full 2xl:h-[85vh] w-full ">
+    <div className="relative h-full 2xl:h-[100vh] w-full ">
       {/* Left-side background image */}
       <div className="hidden md:flex  absolute inset-y-0 left-0">
         <Image
@@ -99,28 +99,28 @@ interface IStepsProps {
 
 function Steps({ step, title, description }: IStepsProps) {
   return (
-    <div className="border-t w-full lg:w-full 2xl:w-2/3 border-[#002FFF] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
+    <div className="border-t w-full lg:w-full 2xl:w-2/3 border-[#FF5800] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
       {/* Step Number */}
-      <div className="sm:w-1/5">
+      <div className="h-full">
         <span
-          className="text-white font-extralight leading-none 
-        text-[48px] sm:text-[72px] md:text-[90px] 2xl:text-[80px]"
+          className="text-[#FF5800] font-light leading-none 
+        text-[48px] sm:text-[48px]"
         >
           0{step}
         </span>
       </div>
 
       {/* Title + Description */}
-      <div className="py-0 sm:py-3 flex flex-col sm:flex-row w-full items-start sm:items-start justify-between gap-2 sm:gap-4">
+      <div className="py-0 flex flex-col w-full items-start sm:items-start justify-between gap-2 sm:gap-0">
         <h2
           className="text-white font-normal leading-tight 
-        text-[20px] sm:text-[28px] md:text-[34px] 2xl:text-[33px] w-full sm:w-1/3"
+        text-[20px] sm:text-[28px] md:text-[34px] 2xl:text-[48px] w-full"
         >
           {title}
         </h2>
         <p
           className="text-white font-normal 
-        text-[14px] sm:text-[18px] md:text-[20px] lg:text-[24px] w-full sm:w-1/2 text-left"
+        text-[14px] sm:text-[18px] md:text-[20px] lg:text-[30px] w-full text-left"
         >
           {description}
         </p>
