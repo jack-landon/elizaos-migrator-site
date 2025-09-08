@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Badge from "./badge";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import HeroBar from "./hero-bar";
 
 export default function Portal() {
   return (
-    <div className="relative mt-0 flex flex-row h-full lg:h-[85vh] 2xl:h-[100vh] w-full bg-[#01071a]">
+    <div className="relative mt-0 flex flex-col h-[1000px] w-full bg-[#01071a]">
       {/* Background image */}
       <Image
-        src="/portal/migration-portal.png" // replace with your image path
+        src="/portal/migration-portal.png"
         alt="Portal background"
         fill
-        className="object-cover object-center z-0"
+        className="object-center z-0"
         priority
       />
 
@@ -25,7 +28,15 @@ export default function Portal() {
           AI16Z and claim your role in the next phase of ElizaOS.
         </p>
       </div>
-      <div className="bg-red-500">hier moet een bu</div>
+      <div className="z-20 h-full place-content-center">
+        <div className="justify-center flex">
+          <Link href="/migrate">
+            <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black md:text-[25px] relative font-bold w-full h-full max-w-[230px] max-h-[60px] flex items-center justify-center">
+              Start Migration
+            </Button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
