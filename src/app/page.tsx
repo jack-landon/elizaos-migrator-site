@@ -14,7 +14,7 @@ export default function Home() {
       <Hero />
 
       {/* HeroBar over Hero and Header, only on lg and up */}
-      <div className="absolute -top-27 right-6 md:right-12 xl:right-24">
+      <div className="absolute -top-27 right-6 md:right-12 xl:right-12">
         <HeroBar />
       </div>
       <div className="z-20">

@@ -3,6 +3,7 @@ import Badge from "./badge";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import HeroBar from "./hero-bar";
+import PortalBar from "./portal-bar";
 
 export default function Portal() {
   return (
@@ -12,7 +13,7 @@ export default function Portal() {
         src="/portal/migration-portal.png"
         alt="Portal background"
         fill
-        className="object-center z-0"
+        className="h-[700px] w-auto z-0"
         priority
       />
 
@@ -23,7 +24,7 @@ export default function Portal() {
         <h1 className="mt-8 text-white font-bold text-2xl lg:text-[54px] uppercase max-w-md">
           Your Portal to ElizaOS
         </h1>
-        <p className="mt-5 text-[20px] lg:text-[28px] font-normal text-white w-full lg:max-w-xl">
+        <p className="mt-5 text-[20px] lg:text-[28px] font-normal text-white w-full max-w-sm md:max-w-xl">
           The window to migrate is open — dont miss your chance to convert your
           AI16Z and claim your role in the next phase of ElizaOS.
         </p>
@@ -36,6 +37,9 @@ export default function Portal() {
             </Button>
           </Link>
         </div>
+      </div>
+      <div className="absolute top-0 h-full right-6 md:right-12 xl:right-12">
+        <PortalBar />
       </div>
     </div>
   );
