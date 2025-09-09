@@ -55,8 +55,8 @@ export default function Expansion() {
                   className={cn(
                     "h-auto",
                     src.includes("eliza.png")
-                      ? "h-full w-15 sm:w-21 md:w-23 lg:w-26 xl:w-44"
-                      : "h-full w-9 sm:w-13 md:w-15 lg:w-18 xl:w-32"
+                      ? "h-full w-15 sm:w-21 md:w-23 lg:w-26 xl:w-38"
+                      : "h-full w-9 sm:w-13 md:w-15 lg:w-18 xl:w-24"
                   )}
                 />
               </div>
