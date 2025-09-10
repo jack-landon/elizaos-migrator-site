@@ -142,7 +142,7 @@ export default function TokenOmics() {
       image.src = "/expansion/eliza.png";
       const x = (chartArea.left + chartArea.right) / 2;
       const y = (chartArea.top + chartArea.bottom) / 2;
-      const size = 150; // Adjusted size for inner ring
+      const size = 210; // Adjusted size for inner ring
 
       ctx.save();
       ctx.drawImage(image, x - size / 2, y - size / 2, size, size);
@@ -187,7 +187,7 @@ export default function TokenOmics() {
       </div>
 
       {/* --- Updated Custom Legend --- */}
-      <div className="grid col-span-4 xl:col-span-2 2xl:col-span-1 items-center place-items-center 2xl:place-items-center mx-12 lg:mx-8 mb-24">
+      <div className="grid col-span-4 xl:col-span-2 2xl:col-span-1 items-center place-items-center 2xl:place-items-center mx-4 lg:mx-8 mb-24">
         <div className="w-full max-w-[480px] flex flex-col gap-4">
           <div className="-my-4 border-t-[#0000FF] border-t-3"></div>
           {legendItems.map((item) => (
