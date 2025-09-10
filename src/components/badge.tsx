@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Badge({ title }: { title: string }) {
   return (
-    <div className="relative w-[147px] h-[55px] flex items-center justify-center">
+    <div className="relative w-[80px] h-[40px] lg:w-[147px] lg:h-[55px] flex items-center justify-center">
       {/* Corners */}
       <Image
         src="/arrows/left-up.svg"
@@ -38,7 +38,9 @@ export default function Badge({ title }: { title: string }) {
       />
 
       {/* Title */}
-      <span className="z-10 uppercase text-[#FF5800] text-[21px]">{title}</span>
+      <span className="z-10 uppercase text-[#FF5800] text-[12px] lg:text-[21px]">
+        {title}
+      </span>
     </div>
   );
 }
