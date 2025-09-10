@@ -1,3 +1,4 @@
+"use client"
 import Expansion from "@/components/expansion";
 import Faq from "@/components/faq";
 import Hero from "@/components/hero";
