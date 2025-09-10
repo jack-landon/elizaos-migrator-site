@@ -76,16 +76,61 @@ export default function TokenOmics() {
       value: 75,
       datasetIndex: 0,
       index: 0,
+      color: "#0000FF",
       subItems: [
-        { label: "Current Holders", value: 60, datasetIndex: 1, index: 0 },
-        { label: "LP Services", value: 5, datasetIndex: 1, index: 1 },
-        { label: "DAO trsry", value: 5, datasetIndex: 1, index: 2 },
-        { label: "E. Reserve", value: 2.5, datasetIndex: 1, index: 3 },
-        { label: "POL", value: 2.5, datasetIndex: 1, index: 4 },
+        {
+          label: "Current Holders",
+          value: 60,
+          datasetIndex: 1,
+          index: 0,
+          color: "#0827B3",
+        },
+        {
+          label: "LP Services",
+          value: 5,
+          datasetIndex: 1,
+          index: 1,
+          color: "#092CC9",
+        },
+        {
+          label: "DAO trsry",
+          value: 5,
+          datasetIndex: 1,
+          index: 2,
+          color: "#1840F1",
+        },
+        {
+          label: "E. Reserve",
+          value: 2.5,
+          datasetIndex: 1,
+          index: 3,
+          color: "#3358FF",
+        },
+        {
+          label: "POL",
+          value: 2.5,
+          datasetIndex: 1,
+          index: 4,
+          color: "#5977FF",
+        },
       ],
     },
-    { label: "Core Team", value: 10, datasetIndex: 0, index: 1, subItems: [] },
-    { label: "SAFT", value: 15, datasetIndex: 0, index: 2, subItems: [] },
+    {
+      label: "Core Team",
+      value: 10,
+      datasetIndex: 0,
+      index: 1,
+      subItems: [],
+      color: "#0BACF1",
+    },
+    {
+      label: "SAFT",
+      value: 15,
+      datasetIndex: 0,
+      index: 2,
+      subItems: [],
+      color: "#0AC9A9",
+    },
   ];
 
   const centerImagePlugin = {
@@ -144,6 +189,7 @@ export default function TokenOmics() {
       {/* --- Updated Custom Legend --- */}
       <div className="grid col-span-4 xl:col-span-2 2xl:col-span-1 items-center place-items-center 2xl:place-items-center mx-12 lg:mx-8 mb-24">
         <div className="w-full max-w-[480px] flex flex-col gap-4">
+          <div className="-my-4 border-t-[#0000FF] border-t-3"></div>
           {legendItems.map((item) => (
             <div key={item.label}>
               {/* Main Item */}
@@ -157,10 +203,16 @@ export default function TokenOmics() {
                 }
                 onMouseLeave={() => setHoverState(null)}
               >
-                <span className="md:text-[15px] xl:text-[21px] font-bold text-white w-[70px]">
+                <span
+                  style={{ color: item.color }}
+                  className="md:text-[15px] xl:text-[28px] font-bold w-[70px]"
+                >
                   {item.value}%
                 </span>
-                <span className="md:text-[15px] xl:text-[21px] font-bold flex-1 text-start text-white">
+                <span
+                  style={{ color: item.color }}
+                  className="md:text-[15px] xl:text-[28px] font-bold flex-1 text-start text-white"
+                >
                   {item.label}
                 </span>
               </div>
@@ -170,7 +222,8 @@ export default function TokenOmics() {
                   {item.subItems.map((subItem) => (
                     <div
                       key={subItem.label}
-                      className="flex items-center border-b-2 border-[#0B35F1]/50 cursor-pointer"
+                      style={{ borderColor: subItem.color }}
+                      className={"flex items-center border-b-2 cursor-pointer"}
                       onMouseEnter={() =>
                         setHoverState({
                           datasetIndex: subItem.datasetIndex,
@@ -179,10 +232,16 @@ export default function TokenOmics() {
                       }
                       onMouseLeave={() => setHoverState(null)}
                     >
-                      <span className="md:text-[15px] xl:text-[21px] font-normal text-white w-[70px]">
+                      <span
+                        style={{ color: subItem.color }}
+                        className="md:text-[15px] xl:text-[21px] font-normal w-[70px]"
+                      >
                         {subItem.value}%
                       </span>
-                      <span className="md:text-[15px] xl:text-[21px] font-normal flex-1 text-start text-white">
+                      <span
+                        style={{ color: subItem.color }}
+                        className="md:text-[15px] xl:text-[21px] font-normal flex-1 text-start"
+                      >
                         {subItem.label}
                       </span>
                     </div>
