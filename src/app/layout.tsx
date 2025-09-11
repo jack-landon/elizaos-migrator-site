@@ -11,7 +11,6 @@ import { usePathname } from "next/navigation";
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
 } from "@tanstack/react-query";
 
 const NHaasFont = localFont({

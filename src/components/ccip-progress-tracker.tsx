@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import Badge from "./badge";
 import { toast } from "sonner";
 import Image from "next/image";
 import { ChevronDown, ChevronUp, X } from "lucide-react";

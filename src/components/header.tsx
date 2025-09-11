@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const pathname = usePathname();
 
   return (
     <div className="px-6 py-12 bg-transparant md:p-12 flex flex-row items-center justify-between w-full">

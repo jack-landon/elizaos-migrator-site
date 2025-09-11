@@ -2,7 +2,6 @@ import Image from "next/image";
 import Badge from "./badge";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import HeroBar from "./hero-bar";
 import PortalBar from "./portal-bar";
 
 export default function Portal() {

@@ -25,6 +25,7 @@ export default function BridgeProgress({
         sourceTransactionHash={transactionHash}
         sourceChainSelectorName="solana-devnet"
         selectedDestination={selectedDestination}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onComplete={(data) => {
           toast.success("CCIP Transfer Complete!", {
             description:

@@ -1,12 +1,12 @@
 import ReusableModal from "./reusable-modal";
 
-const destinations = [
-  { name: "Base", value: "base", image: "/tokens/base.svg" },
-  { name: "BSC", value: "bsc", image: "/tokens/bsc.svg" },
-  { name: "Ethereum", value: "eth", image: "/tokens/ethereum.svg" },
-  { name: "Hyperliquid", value: "hyper", image: "/tokens/hyper.svg" },
-  { name: "Solana", value: "solana", image: "/tokens/solana.svg" },
-];
+// const destinations = [
+//   { name: "Base", value: "base", image: "/tokens/base.svg" },
+//   { name: "BSC", value: "bsc", image: "/tokens/bsc.svg" },
+//   { name: "Ethereum", value: "eth", image: "/tokens/ethereum.svg" },
+//   { name: "Hyperliquid", value: "hyper", image: "/tokens/hyper.svg" },
+//   { name: "Solana", value: "solana", image: "/tokens/solana.svg" },
+// ];
 
 export default function SelectChainModal({
   isOpen,
