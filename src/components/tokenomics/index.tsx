@@ -139,7 +139,7 @@ export default function TokenOmics() {
       const { ctx, chartArea } = chart;
       if (!chartArea) return; // Ensure chartArea is defined
       const image = new Image();
-      image.src = "/expansion/eliza.png";
+      image.src = "/chart/eliza.png";
       const x = (chartArea.left + chartArea.right) / 2;
       const y = (chartArea.top + chartArea.bottom) / 2;
       const size = 210; // Adjusted size for inner ring

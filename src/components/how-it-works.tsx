@@ -3,9 +3,9 @@ import Badge from "./badge";
 
 export default function HowItWorks() {
   return (
-    <div className="relative h-full 2xl:h-[100vh] w-full ">
+    <div className="relative h-full 2xl:h-[90vh] w-full ">
       {/* Left-side background image */}
-      <div className="hidden md:flex  absolute inset-y-0 left-0">
+      {/* <div className="hidden -z-20 md:flex  absolute inset-y-0 left-0">
         <Image
           src="/how-it-works/background.png"
           alt="Decorative strip"
@@ -15,9 +15,9 @@ export default function HowItWorks() {
           width={400}
           draggable={false}
         />
-      </div>
+      </div> */}
       {/* Center background video */}
-      <div className="hidden -z-10 md:flex absolute -inset-0 justify-center">
+      <div className="hidden -z-10 md:flex absolute -inset-0 justify-center items-center">
         <video
           src="/how-it-works/sequence.mp4"
           autoPlay
@@ -25,6 +25,15 @@ export default function HowItWorks() {
           muted
           playsInline
           className="h-full"
+          draggable={false}
+        />
+      </div>
+      <div className="hidden md:block absolute bottom-0 ">
+        <Image
+          src="/how-it-works/eliza.png"
+          height={950}
+          width={1200}
+          alt="eliza-image"
           draggable={false}
         />
       </div>
