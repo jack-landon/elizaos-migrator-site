@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import HeroBanner from "./hero-banner";
 
 export default function Hero() {
   return (

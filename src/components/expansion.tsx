@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Badge from "./badge";
+import { cn } from "@/lib/utils";
 
 export default function Expansion() {
   const images = [
@@ -11,15 +12,15 @@ export default function Expansion() {
   ];
 
   return (
-    <div className="relative h-[75vh] lg:max-h-[85vh] lg:h-[85vh] w-full overflow-hidden">
-      <div className="absolute inset-0 bg-[#0B35F1]/80 z-10" />
+    <div className="relative h-[75vh] lg:max-h-[85vh] lg:h-[100vh] w-full overflow-hidden">
+      <div className="absolute inset-0 z-10" />
       {/* Background video */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0 brightness-100"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 "
       >
         <source src="/expansion/solar.mp4" type="video/mp4" />
       </video>
@@ -40,7 +41,7 @@ export default function Expansion() {
           </p>
         </div>
 
-        <div className="flex justify-center items-center md:mt-0 lg:mt-24 lg:items-start h-full px-12">
+        <div className="flex justify-center items-center -mt-32 md:mt-0 lg:mt-40 lg:items-start h-full md:px-12">
           <div className="flex items-center w-full">
             {images.map((src, i) => (
               // make these images responsive
@@ -51,6 +52,12 @@ export default function Expansion() {
                   width={src.includes("eliza.png") ? 150 : 100}
                   height={src.includes("eliza.png") ? 150 : 100}
                   draggable={false}
+                  className={cn(
+                    "h-auto",
+                    src.includes("eliza.png")
+                      ? "h-full w-15 sm:w-21 md:w-23 lg:w-26 xl:w-38"
+                      : "h-full w-9 sm:w-13 md:w-15 lg:w-18 xl:w-24"
+                  )}
                 />
               </div>
             ))}
