@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import Expansion from "@/components/expansion";
 import Faq from "@/components/faq";
 import Hero from "@/components/hero";
 import HeroBar from "@/components/hero-bar";
 import HowItWorks from "@/components/how-it-works";
 import Portal from "@/components/portal";
-import BackedBySwarm from "@/components/swarm";
+import Partners from "@/components/partners";
 import TokenOmics from "@/components/tokenomics";
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
         <HeroBar />
       </div>
       <div className="z-20">
-        <BackedBySwarm />
+        <Partners />
         <HowItWorks />
         <Expansion />
         <TokenOmics />
