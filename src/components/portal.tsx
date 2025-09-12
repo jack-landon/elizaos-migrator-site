@@ -6,15 +6,15 @@ import PortalBar from "./portal-bar";
 
 export default function Portal() {
   return (
-    <div className="relative mt-0 flex flex-col h-[1000px] w-full bg-[#0a16f1]">
+    <div className="relative mt-0 flex flex-col h-[85vh] w-full bg-[#0a16f1]">
       {/* Background image */}
 
       <Image
         src="/portal/migration-portal.png"
         alt="Portal background"
-        height={1200}
+        height={100}
         width={1200}
-        className="absolute left-0 w-full h-full object-cover z-0"
+        className="absolute left-0 w-full h-full zoom-out-40 object-cover z-0"
         priority
       />
       {/* Content */}
