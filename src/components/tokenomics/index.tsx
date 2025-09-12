@@ -188,13 +188,14 @@ export default function TokenOmics() {
 
       {/* --- Updated Custom Legend --- */}
       <div className="grid col-span-4 xl:col-span-2 2xl:col-span-1 items-center place-items-center 2xl:place-items-center mx-4 lg:mx-8 mb-24">
-        <div className="w-full max-w-[480px] flex flex-col gap-4">
-          <div className="-my-4 border-t-[#0000FF] border-t-3"></div>
+        <div className="w-full max-w-[480px] flex flex-col gap-0">
+          <div className="border-t-[#0000FF] border-t-3"></div>
           {legendItems.map((item) => (
             <div key={item.label}>
               {/* Main Item */}
               <div
-                className="flex items-center border-b-2 border-[#0B35F1] cursor-pointer py-2"
+                className="flex items-center border-b-3 cursor-pointer py-0"
+                style={{ borderColor: item.color }}
                 onMouseEnter={() =>
                   setHoverState({
                     datasetIndex: item.datasetIndex,
@@ -205,25 +206,25 @@ export default function TokenOmics() {
               >
                 <span
                   style={{ color: item.color }}
-                  className="md:text-[15px] xl:text-[28px] font-bold w-[70px]"
+                  className="md:text-[22px] xl:text-[28px] py-2 font-bold w-[70px]"
                 >
                   {item.value}%
                 </span>
                 <span
                   style={{ color: item.color }}
-                  className="md:text-[15px] xl:text-[28px] font-bold flex-1 text-start text-white"
+                  className="md:text-[22px] xl:text-[28px] font-bold flex-1 text-start text-white"
                 >
                   {item.label}
                 </span>
               </div>
               {/* Sub Items */}
               {item.subItems && item.subItems.length > 0 && (
-                <div className="pl-8 pt-2 flex flex-col gap-3">
+                <div className="pl-0 pt-0 flex flex-col">
                   {item.subItems.map((subItem) => (
                     <div
                       key={subItem.label}
                       style={{ borderColor: subItem.color }}
-                      className={"flex items-center border-b-2 cursor-pointer"}
+                      className={"flex items-center py-2 border-b-2 cursor-pointer"}
                       onMouseEnter={() =>
                         setHoverState({
                           datasetIndex: subItem.datasetIndex,
