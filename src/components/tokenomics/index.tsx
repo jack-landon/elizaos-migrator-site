@@ -135,20 +135,32 @@ export default function TokenOmics() {
 
   const centerImagePlugin = {
     id: "centerImage",
-    afterDraw: (chart: Chart) => {
+    beforeDraw: (chart: Chart) => {
       const { ctx, chartArea } = chart;
-      if (!chartArea) return; // Ensure chartArea is defined
-      const image = new Image();
-      image.src = "/chart/eliza.png";
+      if (!chartArea) return;
+  
+      
+      if (!(chart as any).elizaImage) {
+        const image = new Image();
+        image.src = "/chart/eliza.png";
+        image.onload = () => {
+          (chart as any).elizaImage = image;
+          chart.draw(); // re-render once loaded
+        };
+        return;
+      }
+  
+      const image = (chart as any).elizaImage;
       const x = (chartArea.left + chartArea.right) / 2;
       const y = (chartArea.top + chartArea.bottom) / 2;
-      const size = 210; // Adjusted size for inner ring
-
+      const size = 210;
+  
       ctx.save();
       ctx.drawImage(image, x - size / 2, y - size / 2, size, size);
       ctx.restore();
     },
   };
+  
 
   const options = {
     cutout: "60%",
