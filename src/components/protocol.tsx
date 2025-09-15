@@ -25,7 +25,7 @@ export default function Protocol() {
         alt="Descriptive alt text for the image"
         width={950}
         height={724}
-        className="hidden md:flex absolute bottom-0 left-4/7 transform -translate-x-full md:w-2/5 md:h-2/4 2xl:w-[950px] 2xl:h-4/6"
+        className="hidden md:flex absolute bottom-0 left-4/7 transform -translate-x-full md:w-3/5 md:h-2/4 lg:w-3/7 lg:h-4/7 2xl:w-3/7 2xl:h-4/6"
       />
 
       {/* Your Original Content */}
@@ -36,7 +36,7 @@ export default function Protocol() {
             The Migration Sequence
           </h1>
         </div>
-        <div className="mx-7 md:mx-4 lg:mx-4 grid items-center">
+        <div className="mx-7 md:mx-4 grid items-center">
           <div className="place-items-end space-y-8 md:space-y-6 xl:space-y-12">
             <Steps
               step={1}
@@ -80,14 +80,14 @@ export default function Protocol() {
               </div>
 
               {/* Eliza positioned so right edge aligns with video center */}
-              <div className="absolute bottom-0 left-1/2 transform -translate-x-full lg:hidden">
+              <div className="absolute bottom-0 left-2/5 -my-8 transform -translate-x-full lg:hidden">
                 <Image
-                  src="/how-it-works/eliza.png"
-                  height={240}
-                  width={320}
+                  src="/how-it-works/eliza-mobile.png"
+                  height={450}
+                  width={650}
                   alt="eliza-image"
                   draggable={false}
-                  className="h-[265px] w-[430px]"
+                  className="w-full h-auto ml-20"
                 />
               </div>
             </div>
