@@ -4,7 +4,7 @@ import TokenImage from "./token-image";
 
 export default function Protocol() {
   return (
-    <div className="relative overflow-hidden md:h-full 2xl:h-screen">
+    <div className="relative overflow-hidden md:h-[60vh] xl:h-screen">
       {/* Video Background */}
       <video
         autoPlay
@@ -13,17 +13,19 @@ export default function Protocol() {
         playsInline
         className="hidden md:flex absolute z-[-1] top-1/2 left-1/2 md:w-[670px] md:h-[630px] 2xl:w-[850px] 2xl:h-[800px] -translate-x-1/2 -translate-y-1/2 object-cover"
       >
-        {/* Make sure your video is in the `public` folder */}
         <source src="/how-it-works/sequence.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-
+      <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 z-10">
+        {" "}
+        <TokenImage />
+      </div>
       <Image
         src="/how-it-works/eliza.png"
         alt="Descriptive alt text for the image"
         width={950}
         height={724}
-        className="hidden md:flex absolute bottom-0 place-self-start  md:right-1/2 2xl:place-self-center md:w-[660px] md:h-[500px] 2xl:right-2/5 2xl:mr-44 2xl:w-[950px] 2xl:h-[724px]"
+        className="hidden md:flex absolute bottom-0 left-4/7 transform -translate-x-full md:w-2/5 md:h-2/4 2xl:w-[950px] 2xl:h-4/6"
       />
 
       {/* Your Original Content */}
@@ -34,8 +36,8 @@ export default function Protocol() {
             The Migration Sequence
           </h1>
         </div>
-        <div className="mx-4 md:mx-0 grid items-center">
-          <div className="place-items-end space-y-12">
+        <div className="mx-7 md:mx-4 lg:mx-4 grid items-center">
+          <div className="place-items-end space-y-8 md:space-y-6 xl:space-y-12">
             <Steps
               step={1}
               title="Connect"
@@ -60,10 +62,8 @@ export default function Protocol() {
           </div>
         </div>
         <div className="grid col-span-1 md:hidden">
-          <div className="grid col-span-1 md:hidden ">
+          <div className="grid col-span-1 md:hidden">
             <div className="relative">
-              {" "}
-              {/* Added relative positioning */}
               <video
                 src="/how-it-works/sequence.mp4"
                 autoPlay
@@ -73,20 +73,23 @@ export default function Protocol() {
                 className="h-full"
                 draggable={false}
               />
+
               {/* Red div centered on top of video */}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 z-10">
                 <TokenImage />
               </div>
-            </div>
-            <div className="absolute bottom-0 -left-27 lg:hidden">
-              <Image
-                src="/how-it-works/eliza.png"
-                height={240}
-                width={320}
-                alt="eliza-image"
-                draggable={false}
-                className="w-[350px] h-[265px]"
-              />
+
+              {/* Eliza positioned so right edge aligns with video center */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-full lg:hidden">
+                <Image
+                  src="/how-it-works/eliza.png"
+                  height={240}
+                  width={320}
+                  alt="eliza-image"
+                  draggable={false}
+                  className="h-[265px] w-[430px]"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -103,7 +106,7 @@ interface IStepsProps {
 
 function Steps({ step, title, description }: IStepsProps) {
   return (
-    <div className="border-t w-full lg:w-3/5 xl:w-2/3 2xl:w-2/3 border-[#FF5800] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
+    <div className="border-t w-full md:w-3/4 lg:w-3/4 xl:w-2/3 2xl:w-2/3 border-[#FF5800] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
       {/* Step Number */}
       <div className="h-full">
         <span
