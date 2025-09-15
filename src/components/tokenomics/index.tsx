@@ -1,6 +1,6 @@
-"use-client";
+"use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Chart } from "chart.js";
 import Badge from "../badge";
@@ -9,22 +9,18 @@ ChartJS.register(ArcElement, Tooltip);
 
 export default function TokenOmics() {
   const chartRef = useRef<ChartJS<"doughnut", number[], string>>(null);
-  // State to handle hover for multiple rings { datasetIndex, index }
   const [hoverState, setHoverState] = useState<{
     datasetIndex: number;
     index: number;
   } | null>(null);
 
-  // --- New Data Structure for Two Rings ---
-
-  // Ring 1: Top-level allocation
+  // --- Data Structures ---
   const outerRing = {
     labels: ["Community", "Core Team", "SAFT"],
     data: [75, 10, 15],
     colors: ["#0000FF", "#0BACF1", "#0AC9A9"],
   };
 
-  // Ring 2: Breakdown of the "Community" slice
   const innerRing = {
     labels: [
       "Current Holders",
@@ -32,44 +28,63 @@ export default function TokenOmics() {
       "DAO trsry",
       "E. Reserve",
       "POL",
+      "Core Team Fill",
+      "SAFT Fill",
     ],
-    data: [60, 5, 5, 2.5, 2.5],
-    colors: ["#0827B3", "#092CC9", "#1840F1", "#3358FF", "#5977FF"],
-  };
-
-  // Data structure for the Chart.js component
-  const data = {
-    datasets: [
-      {
-        // Outer Ring
-        data: outerRing.data,
-        backgroundColor: outerRing.colors.map((c, i) => {
-          if (hoverState === null) return c;
-          // Highlight if hovered, otherwise fade
-          return hoverState.datasetIndex === 0 && hoverState.index === i
-            ? c
-            : c + "55";
-        }),
-        borderColor: "#01071f",
-        borderWidth: 0,
-      },
-      {
-        // Inner Ring
-        data: innerRing.data,
-        backgroundColor: innerRing.colors.map((c, i) => {
-          if (hoverState === null) return c;
-          // Highlight if hovered, otherwise fade
-          return hoverState.datasetIndex === 1 && hoverState.index === i
-            ? c
-            : c + "55";
-        }),
-        borderColor: "#01071f",
-        borderWidth: 0,
-      },
+    data: [60, 5, 5, 2.5, 2.5, 10, 15],
+    colors: [
+      "#0827B3",
+      "#092CC9",
+      "#1840F1",
+      "#3358FF",
+      "#5977FF",
+      "#0BACF1",
+      "#0AC9A9",
     ],
   };
 
-  // Data structure to build the hierarchical legend
+  const data = useMemo(
+    () => ({
+      datasets: [
+        {
+          data: outerRing.data,
+          backgroundColor: outerRing.colors.map((c, i) => {
+            if (hoverState === null) return c;
+            return hoverState.datasetIndex === 0 && hoverState.index === i
+              ? c
+              : c + "55";
+          }),
+          borderColor: "#01071f",
+          borderWidth: 0,
+        },
+        {
+          data: innerRing.data,
+          backgroundColor: innerRing.colors.map((c, i) => {
+            if (hoverState === null) return c;
+            if (i === 5) {
+              // Core Team fill
+              return hoverState.datasetIndex === 0 && hoverState.index === 1
+                ? c
+                : c + "55";
+            }
+            if (i === 6) {
+              // SAFT fill
+              return hoverState.datasetIndex === 0 && hoverState.index === 2
+                ? c
+                : c + "55";
+            }
+            return hoverState.datasetIndex === 1 && hoverState.index === i
+              ? c
+              : c + "55";
+          }),
+          borderColor: "#01071f",
+          borderWidth: 0,
+        },
+      ],
+    }),
+    [hoverState]
+  ); // Re-calculate data only when hoverState changes
+
   const legendItems = [
     {
       label: "Community",
@@ -138,44 +153,68 @@ export default function TokenOmics() {
     beforeDraw: (chart: Chart) => {
       const { ctx, chartArea } = chart;
       if (!chartArea) return;
-  
-      
       if (!(chart as any).elizaImage) {
         const image = new Image();
         image.src = "/chart/eliza.png";
         image.onload = () => {
           (chart as any).elizaImage = image;
-          chart.draw(); // re-render once loaded
+          chart.draw();
         };
         return;
       }
-  
       const image = (chart as any).elizaImage;
       const x = (chartArea.left + chartArea.right) / 2;
       const y = (chartArea.top + chartArea.bottom) / 2;
       const size = 210;
-  
       ctx.save();
       ctx.drawImage(image, x - size / 2, y - size / 2, size, size);
       ctx.restore();
     },
   };
-  
 
-  const options = {
-    cutout: "60%",
-    plugins: {
-      legend: { display: false },
-    },
-    animation: false,
-  };
+  const options = useMemo(
+    () => ({
+      cutout: "60%",
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          filter: (tooltipItem: any) =>
+            !(tooltipItem.datasetIndex === 1 && tooltipItem.dataIndex >= 5),
+        },
+      },
+      animation: false,
+      onHover: (event: any, elements: any[]) => {
+        let newHoverState: { datasetIndex: number; index: number } | null =
+          null;
+        if (elements.length > 0) {
+          const element = elements[0];
+          if (element.datasetIndex === 1 && element.index === 5) {
+            newHoverState = { datasetIndex: 0, index: 1 };
+          } else if (element.datasetIndex === 1 && element.index === 6) {
+            newHoverState = { datasetIndex: 0, index: 2 };
+          } else {
+            newHoverState = {
+              datasetIndex: element.datasetIndex,
+              index: element.index,
+            };
+          }
+        }
+        if (
+          newHoverState?.datasetIndex !== hoverState?.datasetIndex ||
+          newHoverState?.index !== hoverState?.index
+        ) {
+          setHoverState(newHoverState);
+        }
+      },
+    }),
+    [hoverState]
+  ); // Re-create options only when hoverState changes to get the latest value
 
   return (
     <div className="grid grid-cols-4 relative h-full 2xl:h-[100vh] w-full bg-[#D7D5CA] space-y-18 xl:space-y-0">
       {/* Header + text */}
       <div className="mt-4 md:mt-12 grid col-span-4 2xl:col-span-1 h-fit px-4 lg:px-12 space-y-0">
         <Badge title="matrix" />
-
         <h1 className="text-[#0B35F1] mt-4 font-bold text-[32px] md:text-[38px] lg:text-[54px]">
           Tokenomics
         </h1>
@@ -198,13 +237,12 @@ export default function TokenOmics() {
         </div>
       </div>
 
-      {/* --- Updated Custom Legend --- */}
+      {/* Custom Legend */}
       <div className="grid col-span-4 xl:col-span-2 2xl:col-span-1 items-center place-items-center 2xl:place-items-center mx-4 lg:mx-8 mb-24">
         <div className="w-full max-w-[480px] flex flex-col gap-0">
           <div className="border-t-[#0000FF] border-t-3"></div>
           {legendItems.map((item) => (
             <div key={item.label}>
-              {/* Main Item */}
               <div
                 className="flex items-center border-b-3 cursor-pointer py-0"
                 style={{ borderColor: item.color }}
@@ -229,14 +267,15 @@ export default function TokenOmics() {
                   {item.label}
                 </span>
               </div>
-              {/* Sub Items */}
               {item.subItems && item.subItems.length > 0 && (
                 <div className="pl-0 pt-0 flex flex-col">
                   {item.subItems.map((subItem) => (
                     <div
                       key={subItem.label}
                       style={{ borderColor: subItem.color }}
-                      className={"flex items-center py-2 border-b-2 cursor-pointer"}
+                      className={
+                        "flex items-center py-2 border-b-2 cursor-pointer"
+                      }
                       onMouseEnter={() =>
                         setHoverState({
                           datasetIndex: subItem.datasetIndex,
