@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Badge from "./badge";
+import TokenImage from "./token-image";
 
 export default function Protocol() {
   return (
@@ -33,8 +34,7 @@ export default function Protocol() {
             The Migration Sequence
           </h1>
         </div>
-
-        <div className="grid items-center">
+        <div className="mx-4 md:mx-0 grid items-center">
           <div className="place-items-end space-y-12">
             <Steps
               step={1}
@@ -57,6 +57,37 @@ export default function Protocol() {
               title="Join the Swarm"
               description="Start staking, governing, and building with ElizaOS"
             />
+          </div>
+        </div>
+        <div className="grid col-span-1 md:hidden">
+          <div className="grid col-span-1 md:hidden ">
+            <div className="relative">
+              {" "}
+              {/* Added relative positioning */}
+              <video
+                src="/how-it-works/sequence.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full"
+                draggable={false}
+              />
+              {/* Red div centered on top of video */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 z-10">
+                <TokenImage />
+              </div>
+            </div>
+            <div className="absolute bottom-0 -left-27 lg:hidden">
+              <Image
+                src="/how-it-works/eliza.png"
+                height={240}
+                width={320}
+                alt="eliza-image"
+                draggable={false}
+                className="w-[350px] h-[265px]"
+              />
+            </div>
           </div>
         </div>
       </div>
