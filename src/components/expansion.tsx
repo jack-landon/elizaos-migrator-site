@@ -41,10 +41,9 @@ export default function Expansion() {
           </p>
         </div>
 
-        <div className="flex justify-center items-center -mt-32 md:mt-0 lg:mt-40 lg:items-start h-full md:px-12">
+        <div className="flex justify-center items-center -mt-32 md:mt-0 lg:mt-0 lg:items-start h-full md:px-12">
           <div className="flex items-center w-full lg:mt-40">
             {images.map((src, i) => (
-              // make these images responsive
               <div key={i} className="flex-1 flex justify-center">
                 <Image
                   src={src}
