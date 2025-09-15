@@ -7,6 +7,7 @@ import HowItWorks from "@/components/how-it-works";
 import Portal from "@/components/portal";
 import Partners from "@/components/partners";
 import TokenOmics from "@/components/tokenomics";
+import Protocol from "@/components/protocol";
 
 export default function Home() {
   return (
@@ -20,7 +21,8 @@ export default function Home() {
       </div>
       <div className="z-20">
         <Partners />
-        <HowItWorks />
+        {/* <HowItWorks /> */}
+        <Protocol />
         <Expansion />
         <TokenOmics />
         <Portal />

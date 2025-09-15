@@ -12,7 +12,7 @@ export default function Expansion() {
   ];
 
   return (
-    <div className="relative h-[75vh] lg:max-h-[85vh] lg:h-[100vh] w-full overflow-hidden">
+    <div className="relative h-[75vh] lg:h-[100vh] w-full overflow-hidden">
       <div className="absolute inset-0 z-10" />
       {/* Background video */}
       <video
@@ -42,7 +42,7 @@ export default function Expansion() {
         </div>
 
         <div className="flex justify-center items-center -mt-32 md:mt-0 lg:mt-40 lg:items-start h-full md:px-12">
-          <div className="flex items-center w-full">
+          <div className="flex items-center w-full lg:mt-40">
             {images.map((src, i) => (
               // make these images responsive
               <div key={i} className="flex-1 flex justify-center">

@@ -38,9 +38,7 @@ export default function Portal() {
           </Link>
         </div>
       </div>
-      <div className="absolute top-0 h-full right-6 md:right-12 xl:right-12">
-        <PortalBar />
-      </div>
+      <PortalBar />
     </div>
   );
 }
