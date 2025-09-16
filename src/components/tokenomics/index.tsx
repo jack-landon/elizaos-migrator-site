@@ -226,7 +226,7 @@ export default function TokenOmics() {
       </div>
 
       {/* Chart */}
-      <div className="grid col-span-4 xl:col-span-2 items-center justify-center xl:justify-center px-12 lg:px-0">
+      {/* <div className="grid col-span-4 xl:col-span-2 items-center justify-center xl:justify-center px-12 lg:px-0">
         <div className="h-[370px] w-[370px] md:w-[450px] md:h-[450px] 2xl:w-[600px] 2xl:h-[600px]">
           <Doughnut
             ref={chartRef}
@@ -235,7 +235,7 @@ export default function TokenOmics() {
             plugins={[centerImagePlugin]}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Custom Legend */}
       <div className="grid col-span-4 xl:col-span-2 2xl:col-span-1 items-center place-items-center 2xl:place-items-center mx-4 lg:mx-8 mb-24">
