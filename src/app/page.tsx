@@ -3,7 +3,6 @@ import Expansion from "@/components/expansion";
 import Faq from "@/components/faq";
 import Hero from "@/components/hero";
 import HeroBar from "@/components/hero-bar";
-import HowItWorks from "@/components/how-it-works";
 import Portal from "@/components/portal";
 import Partners from "@/components/partners";
 import TokenOmics from "@/components/tokenomics";
@@ -21,7 +20,6 @@ export default function Home() {
       </div>
       <div className="z-20">
         <Partners />
-        {/* <HowItWorks /> */}
         <Protocol />
         <Expansion />
         <TokenOmics />
