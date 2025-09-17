@@ -9,7 +9,7 @@ export default function PortalBar() {
         {/* Animated wrapper that moves vertically */}
         <div className="animate-scroll-up h-[200%] flex flex-col">
           {/* First set of images */}
-          <div className="h-1/2 flex flex-col">
+          <div className="h-1/3 flex flex-col">
             <Image
               src="/portal/eliza-bar.svg"
               alt="Portal Bar"
@@ -20,7 +20,16 @@ export default function PortalBar() {
           </div>
 
           {/* Second set of images (duplicate for seamless loop) */}
-          <div className="h-1/2 flex flex-col">
+          <div className="h-1/3 flex flex-col">
+            <Image
+              src="/portal/eliza-bar.svg"
+              alt="Portal Bar"
+              width={22}
+              height={170}
+              className="h-full w-auto object-contain"
+            />
+          </div>
+          <div className="h-1/3 flex flex-col">
             <Image
               src="/portal/eliza-bar.svg"
               alt="Portal Bar"
