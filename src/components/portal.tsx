@@ -15,6 +15,7 @@ export default function Portal() {
         height={700}
         width={1200}
         className="absolute left-0 w-full h-full zoom-out-40 object-cover z-0"
+        loading="eager"
 
       />
       {/* Content */}
