@@ -286,7 +286,7 @@ export default function TokenOmics() {
                     >
                       <span
                         style={{ color: subItem.color }}
-                        className="md:text-[15px] xl:text-[21px] font-normal w-[70px]"
+                        className="md:text-[15px] ml-18 xl:text-[21px] font-normal w-[70px]"
                       >
                         {subItem.value}%
                       </span>
