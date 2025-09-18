@@ -3,9 +3,9 @@ import Badge from "./badge";
 
 export default function HowItWorks() {
   return (
-    <div className="relative h-[85vh] w-full bg-[#01071f]">
+    <div className="relative h-full 2xl:h-[90vh] w-full ">
       {/* Left-side background image */}
-      {/* <div className="hidden md:flex  absolute inset-y-0 left-0">
+      {/* <div className="hidden -z-20 md:flex  absolute inset-y-0 left-0">
         <Image
           src="/how-it-works/background.png"
           alt="Decorative strip"
@@ -17,17 +17,28 @@ export default function HowItWorks() {
         />
       </div> */}
       {/* Center background video */}
-      {/* <div className="hidden md:flex absolute -inset-0 justify-center">
+      <div className="hidden -z-10 md:flex absolute -inset-0 justify-center md:items-end xl:items-center">
         <video
           src="/how-it-works/sequence.mp4"
           autoPlay
           loop
           muted
           playsInline
-          className="h-full"
+          className="hidden lg:flex w-[575px] h-[530px] lg:w-[865px] lg:h-[800px]"
           draggable={false}
         />
-      </div> */}
+      </div>
+      {/* desktop/ipad image */}
+      <div className="absolute bottom-0 w-full flex lg:right-[200px] 2xl:right-[450px] justify-start 2xl:justify-center">
+        <Image
+          src="/how-it-works/eliza.png"
+          height={950}
+          width={1200}
+          alt="eliza-image"
+          draggable={false}
+          className="w-[351px] h-[265px] md:w-[660px] md:h-[500px] 2xl:w-[1100px] 2xl:h-[800px]"
+        />
+      </div>
 
       {/* Content */}
       <div className="relative h-full grid grid-cols-1 xl:grid-cols-2">
@@ -37,8 +48,8 @@ export default function HowItWorks() {
             The Migration Sequence
           </h1>
         </div>
-        <div className="p-6">
-          <div className="flex flex-col gap-8 2xl:gap-16 mt-0 md:mt-12 col-span-1 items-end">
+        <div className="xl:p-6 px-6">
+          <div className="h-full flex flex-col gap-8 2xl:gap-4 mt-0 xl:mt-12 col-span-1 items-end xl:space-y-2 2xl:space-y-8">
             <Steps
               step={1}
               title="Connect"
@@ -63,15 +74,29 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* <div className="absolute bottom-0 left-55">
-          <Image
-            src="/how-it-works/eliza.png"
-            height={682}
-            width={903}
-            alt="eliza-image"
-            draggable={false}
-          />
-        </div> */}
+        <div className="grid col-span-1 lg:hidden ">
+          <div className="">
+            <video
+              src="/how-it-works/sequence.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full"
+              draggable={false}
+            />
+          </div>
+          <div className="absolute bottom-0 -left-24 lg:hidden">
+            <Image
+              src="/how-it-works/eliza.png"
+              height={240}
+              width={320}
+              alt="eliza-image"
+              draggable={false}
+              className="w-full h-full"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -85,28 +110,28 @@ interface IStepsProps {
 
 function Steps({ step, title, description }: IStepsProps) {
   return (
-    <div className="border-t w-full lg:w-full 2xl:w-2/3 border-[#002FFF] flex flex-col sm:flex-row items-start gap-4 sm:gap-6 pt-2 mr-0 2xl:mr-12">
+    <div className="border-t w-full lg:w-1/3 xl:w-2/3 2xl:w-2/3 border-[#FF5800] flex flex-col sm:flex-row items-start gap-0 sm:gap-6 pt-2 mr-0 2xl:mr-12">
       {/* Step Number */}
-      <div className="sm:w-1/5">
+      <div className="h-full">
         <span
-          className="text-white font-extralight leading-none 
-        text-[48px] sm:text-[72px] md:text-[90px] 2xl:text-[80px]"
+          className="text-[#FF5800] font-light leading-none 
+        text-[48px] md:text-[25px] 2xl:text-[48px]"
         >
           0{step}
         </span>
       </div>
 
       {/* Title + Description */}
-      <div className="py-0 sm:py-3 flex flex-col sm:flex-row w-full items-start sm:items-start justify-between gap-2 sm:gap-4">
+      <div className="py-0 flex flex-col w-full items-start sm:items-start justify-between gap-2 sm:gap-0">
         <h2
           className="text-white font-normal leading-tight 
-        text-[20px] sm:text-[28px] md:text-[34px] 2xl:text-[33px] w-full sm:w-1/3"
+        text-[20px] sm:text-[28px] md:text-[28px] 2xl:text-[48px] w-full"
         >
           {title}
         </h2>
         <p
           className="text-white font-normal 
-        text-[14px] sm:text-[18px] md:text-[20px] lg:text-[24px] w-full sm:w-1/2 text-left"
+        text-[14px] sm:text-[18px] md:text-[25px] xl:text-[30px] w-full text-left"
         >
           {description}
         </p>

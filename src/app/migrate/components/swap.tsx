@@ -246,6 +246,7 @@ export default function Swap({ swapType }: SwapProps) {
         <SwapButton
           selectedDestination={selectedDestination}
           destinationAddress={destinationAddress}
+
           swapType={swapType}
           inputAmount={inputValue}
         />
