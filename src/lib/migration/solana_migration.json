@@ -1,5 +1,5 @@
 {
-  "address": "DV5HwDmfrjjM1BuMKvSF4t3MbwYTmHsoyQxLRFaDmdZN",
+  "address": "59ZM66TaUTVRjsyBZxXHXomUfWE33yidmAeoEtdjMtMV",
   "metadata": {
     "name": "solana_migration",
     "version": "0.1.0",
@@ -92,7 +92,10 @@
           "writable": true
         },
         {
-          "name": "token_program"
+          "name": "source_token_program"
+        },
+        {
+          "name": "target_token_program"
         },
         {
           "name": "system_program",
@@ -155,36 +158,11 @@
           }
         },
         {
-          "name": "from_ata",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "authority"
-              },
-              {
-                "kind": "account",
-                "path": "token_program"
-              },
-              {
-                "kind": "account",
-                "path": "state_account.source_token",
-                "account": "StateAccount"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
-                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
-                219, 233, 248, 89
-              ]
-            }
-          }
+          "name": "from_ta",
+          "writable": true
         },
         {
-          "name": "receive_ata",
+          "name": "receive_ta",
           "writable": true
         },
         {
@@ -216,7 +194,10 @@
           }
         },
         {
-          "name": "token_program"
+          "name": "source_token_program"
+        },
+        {
+          "name": "target_token_program"
         },
         {
           "name": "system_program",
@@ -239,6 +220,114 @@
               "array": ["u8", 32]
             }
           }
+        }
+      ]
+    },
+    {
+      "name": "update_state",
+      "discriminator": [135, 112, 215, 75, 247, 185, 53, 176],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "state_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 116, 101, 95, 97, 99, 99, 111, 117, 110, 116,
+                  95, 115, 101, 101, 100
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "faucet_authority",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102, 97, 117, 99, 101, 116, 95, 97, 99, 99, 111, 117, 110, 116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "source_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97, 105, 49, 54, 122, 95, 116, 111, 107, 101, 110, 95, 97, 99,
+                  99, 111, 117, 110, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "source_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "target_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101, 108, 105, 122, 97, 95, 116, 111, 107, 101, 110, 95, 97,
+                  99, 99, 111, 117, 110, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "target_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "source_token",
+          "writable": true
+        },
+        {
+          "name": "target_token",
+          "writable": true
+        },
+        {
+          "name": "target_token_program"
+        },
+        {
+          "name": "source_token_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "root",
+          "type": {
+            "array": ["u8", 32]
+          }
+        },
+        {
+          "name": "migration_rate",
+          "type": "u16"
         }
       ]
     },
@@ -286,7 +375,7 @@
           "signer": true
         },
         {
-          "name": "receive_ata",
+          "name": "receive_ta",
           "writable": true
         },
         {
@@ -345,7 +434,7 @@
           "signer": true
         },
         {
-          "name": "receive_ata",
+          "name": "receive_ta",
           "writable": true
         },
         {
@@ -430,6 +519,21 @@
       "code": 6004,
       "name": "OverMaxMigrationLimit",
       "msg": "Over Max Migration Limit Amount"
+    },
+    {
+      "code": 6005,
+      "name": "MismatchTokenAccount",
+      "msg": "Token Account Mismatch"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidTokenPair",
+      "msg": "Invalid Tokens"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidMigrationRate",
+      "msg": "Invalid Migration Rate"
     }
   ],
   "types": [
@@ -451,11 +555,11 @@
             "type": "pubkey"
           },
           {
-            "name": "source_token_ata",
+            "name": "source_token_ta",
             "type": "pubkey"
           },
           {
-            "name": "target_token_ata",
+            "name": "target_token_ta",
             "type": "pubkey"
           },
           {
