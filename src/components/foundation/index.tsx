@@ -7,9 +7,9 @@ export default function Foundation() {
   const [activeSlide, setActiveSlide] = useState(0);
 
   return (
-    <div className="relative h-screen max-h-screen bg-[#020A2E]">
+    <div className="relative h-screen bg-[#020A2E]">
       {/* Background centered div */}
-      <div className="absolute inset-0 w-full flex items-center -mt-24 justify-center">
+      <div className="absolute inset-0 w-full flex items-center justify-center">
         <Carrousel onSlideChange={setActiveSlide} />
       </div>
 

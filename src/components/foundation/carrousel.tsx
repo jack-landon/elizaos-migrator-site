@@ -6,6 +6,7 @@ import { Navigation } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
+import Image from "next/image";
 
 export default function Carrousel({ onSlideChange }) {
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
@@ -19,19 +20,19 @@ export default function Carrousel({ onSlideChange }) {
     {
       title: "Generative Networks",
       href: "#",
-      image: "#",
+      image: "/carrousel/star.png",
       text: "Generative networks are economic systems that learn and evolve in real time. Powered by autonomous agents, they compound value, adapt across chains at machine speed, and unlock strategies beyond human design.",
     },
     {
       title: "Autonomous capital",
       href: "#",
-      image: "#",
+      image: "/carrousel/circle.png",
       text: "Autonomous capital is money that runs itself. Intelligent agents deploy, rebalance, and compound value continuously, creating always-on treasuries that adapt and grow across chains.",
     },
     {
       title: "Cross-Chain Architecture",
       href: "#",
-      image: "#",
+      image: "/carrousel/orb.png",
       text: "Cross-chain architecture turns fragmented blockchains into a unified economic system. Agents move liquidity, share memory, and coordinate strategies seamlessly across chains, enabling networks to adapt globally at machine speed.",
     },
   ];
@@ -51,7 +52,7 @@ export default function Carrousel({ onSlideChange }) {
   };
 
   return (
-    <div className="w-4/5 h-3/5">
+    <div className="w-6/7 mt-20 h-full">
       {/* Header Navigation */}
       <div className="flex justify-end mb-6">
         <div className="flex z-30 space-x-8">
@@ -59,7 +60,7 @@ export default function Carrousel({ onSlideChange }) {
             <button
               key={index}
               onClick={() => handleSlideChange(index)}
-              className={`text-[18px] font-medium transition-colors duration-200 px-3 ${
+              className={`text-[18px] font-medium transition-colors duration-200 px-2 ${
                 activeIndex === index
                   ? "text-white border-white hover:text-[#FF5800] hover:border-[#FF5800] pb-1 border-l-2 border-r-2"
                   : "text-white/20 hover:text-[#FF5800]"
@@ -82,7 +83,7 @@ export default function Carrousel({ onSlideChange }) {
       >
         {items.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="relative bg-[#061B79] flex items-center justify-center overflow-hidden w-full h-[900px]">
+            <div className="rounded-md relative bg-[#061B79] flex items-center justify-center overflow-hidden w-full h-[900px]">
               {index === 0 ? (
                 // Video slide with play button
                 <div className="flex items-center justify-center w-full h-full">
@@ -98,17 +99,34 @@ export default function Carrousel({ onSlideChange }) {
                 </div>
               ) : (
                 // Blog slide layout
-                <div className="w-full h-full p-12 flex flex-col ">
+                <div className="w-full h-full p-12 grid grid-cols-1 lg:grid-cols-2">
                   {/* Top left content */}
                   <div className="max-w-2xl">
-                    <h2 className="text-4xl font-bold text-white mb-6">
+                    <h2 className="text-[40px] font-bold text-white mb-6">
                       {item.title}
                     </h2>
-                    <p className="text-lg text-gray-200 leading-relaxed">
+                    <p className="text-[28px] max-w-xl text-gray-200 leading-relaxed">
                       {item.text}
                     </p>
                   </div>
 
+                  <div>
+                    {item.image && item.image !== "#" ? (
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        height={500}
+                        width={500}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                        <span className="text-gray-400">
+                          No image available
+                        </span>
+                      </div>
+                    )}
+                  </div>
                   {/* Bottom right button */}
                   <div className="flex justify-end">
                     <a
