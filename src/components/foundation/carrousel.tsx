@@ -52,10 +52,10 @@ export default function Carrousel({ onSlideChange }) {
   };
 
   return (
-    <div className="w-6/7 mt-20 h-full">
+    <div className="w-full mt-20 h-full">
       {/* Header Navigation */}
       <div className="flex justify-end mb-6">
-        <div className="flex z-30 space-x-8">
+        <div className="flex z-30 space-x-4 mr-0 md:mr-12 mb-8">
           {items.map((item, index) => (
             <button
               key={index}
@@ -79,11 +79,11 @@ export default function Carrousel({ onSlideChange }) {
         slidesPerView={1}
         onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
         onSlideChange={handleSwiperSlideChange}
-        className="w-full h-full"
+        className="w-6/7 h-full"
       >
         {items.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="rounded-md bg-[#061B79] flex items-center justify-center overflow-hidden w-full">
+            <div className="rounded-md bg-[#061B79] flex items-center justify-center overflow-hidden w-6/7 place-self-center">
               {index === 0 ? (
                 // Video slide with play button
                 <div className="flex items-center justify-center w-full h-full">
@@ -110,7 +110,7 @@ export default function Carrousel({ onSlideChange }) {
                     </p>
                   </div>
 
-                  <div className="">
+                  <div>
                     {item.image && item.image !== "#" ? (
                       <Image
                         src={item.image}
@@ -128,7 +128,7 @@ export default function Carrousel({ onSlideChange }) {
                     )}
                   </div>
                   {/* Bottom right button */}
-                  <div className="flex justify-end">
+                  <div className="flex ">
                     <a
                       href={item.href}
                       className="text-white text-lg font-medium hover:text-orange-500 transition-colors duration-200 underline underline-offset-4"
