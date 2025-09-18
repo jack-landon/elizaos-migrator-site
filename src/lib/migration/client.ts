@@ -7,7 +7,6 @@ import logger from "../logger";
 
 export interface SolanaClientConfig {
     rpcUrl: string;
-    programId: string;
     wallet?: anchor.Wallet;
 }
 
@@ -15,9 +14,17 @@ export class SolanaMigrationClient {
     private connection: anchor.web3.Connection;
     private program: Program<SolanaMigration>;
     private wallet: anchor.Wallet;
+    private programId: anchor.web3.PublicKey;
 
     constructor(config: SolanaClientConfig) {
         this.connection = new anchor.web3.Connection(config.rpcUrl, "confirmed");
+
+        // Get programId from environment variables
+        const programIdString = process.env.NEXT_PUBLIC_SOLANA_MIGRATION_PROGRAM_ID;
+        if (!programIdString) {
+            throw new Error("NEXT_PUBLIC_SOLANA_MIGRATION_PROGRAM_ID environment variable is not set");
+        }
+        this.programId = new anchor.web3.PublicKey(programIdString);
 
         // Initialize wallet (you can pass a custom wallet or use a default one)
         this.wallet = config.wallet || new anchor.Wallet(anchor.web3.Keypair.generate());
@@ -29,14 +36,20 @@ export class SolanaMigrationClient {
             { commitment: "confirmed" }
         );
 
+        // Create IDL with the programId from environment
+        const idlWithProgramId = {
+            ...idl,
+            address: programIdString
+        };
+
         this.program = new Program<SolanaMigration>(
-            idl as unknown,
+            idlWithProgramId as unknown,
             provider
         );
 
         logger.info("[SolanaMigrationClient] Initialized", {
             rpcUrl: config.rpcUrl,
-            programId: config.programId,
+            programId: this.programId.toString(),
             walletAddress: this.wallet.publicKey.toString(),
         });
     }
@@ -177,6 +190,10 @@ export class SolanaMigrationClient {
         return this.wallet;
     }
 
+    getProgramId(): anchor.web3.PublicKey {
+        return this.programId;
+    }
+
 
     setWallet(wallet: anchor.Wallet): void {
         this.wallet = wallet;
@@ -187,8 +204,14 @@ export class SolanaMigrationClient {
             { commitment: "confirmed" }
         );
 
+        // Create IDL with the programId from environment
+        const idlWithProgramId = {
+            ...idl,
+            address: this.programId.toString()
+        };
+
         this.program = new Program<SolanaMigration>(
-            idl as unknown,
+            idlWithProgramId as unknown,
             provider
         );
 

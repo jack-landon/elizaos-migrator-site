@@ -2,10 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { useSolanaWallet } from "@/hooks/useSolanaWallet";
 import { useBridge } from "@/hooks/useBridge";
+import { useMigration } from "@/hooks/useMigration";
 import BridgeProgress from "./bridge-progress";
 import { SwapType } from "./swap-selector";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { PublicKey } from "@solana/web3.js";
 
 type SwapConfirmButtonProps = {
   selectedDestination: string | null;
@@ -20,20 +22,35 @@ export default function SwapButton({
   swapType,
   inputAmount,
 }: SwapConfirmButtonProps) {
-  const { connect, connected } = useSolanaWallet();
+  const { connect, connected, publicKey } = useSolanaWallet();
   const {
     executeBridge,
     approveTokens,
     checkTokenDelegation,
-    isLoading,
-    error,
+    isLoading: bridgeLoading,
+    error: bridgeError,
     showProgress,
     setShowProgress,
     transactionHash,
   } = useBridge();
-  const [bridgeError, setBridgeError] = useState<string | null>(null);
+  const {
+    client,
+    executeMigration,
+    isLoading: migrationLoading,
+    error: migrationError,
+    initializeClient,
+  } = useMigration();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isApproved, setIsApproved] = useState<boolean>(false);
   const [approvalLoading, setApprovalLoading] = useState<boolean>(false);
+
+  // Initialize migration client when component mounts
+  useEffect(() => {
+    if (!client) {
+      const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com";
+      initializeClient({ rpcUrl });
+    }
+  }, [client, initializeClient]);
 
   // Check approval status when component mounts or input changes
   useEffect(() => {
@@ -58,7 +75,7 @@ export default function SwapButton({
     if (!inputAmount) return;
 
     setApprovalLoading(true);
-    setBridgeError(null);
+    setErrorMessage(null);
 
     try {
       const result = await approveTokens({ amount: inputAmount });
@@ -70,11 +87,11 @@ export default function SwapButton({
         });
       }
     } catch (err) {
-      const errorMessage =
+      const errorMsg =
         err instanceof Error ? err.message : "Approval failed";
-      setBridgeError(errorMessage);
+      setErrorMessage(errorMsg);
       toast.error("Approval Failed", {
-        description: errorMessage,
+        description: errorMsg,
         duration: 5000,
       });
       console.error("Approval error:", err);
@@ -125,7 +142,7 @@ export default function SwapButton({
     }
 
     try {
-      setBridgeError(null);
+      setErrorMessage(null);
 
       const gasLimit = 200000;
       const allowOutOfOrderExecution = true;
@@ -139,7 +156,7 @@ export default function SwapButton({
       });
 
       if (result) {
-        setBridgeError(null);
+        setErrorMessage(null);
         toast.success("Bridge Successful!", {
           description: `Transaction: ${result.signature}`,
           duration: 5000,
@@ -150,13 +167,52 @@ export default function SwapButton({
         });
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Bridge failed";
-      setBridgeError(errorMessage);
+      const errorMsg = err instanceof Error ? err.message : "Bridge failed";
+      setErrorMessage(errorMsg);
       toast.error("Bridge Failed", {
-        description: errorMessage,
+        description: errorMsg,
         duration: 5000,
       });
       console.error("Bridge error:", err);
+    }
+  };
+
+  const handleMigrate = async () => {
+    if (swapType !== SwapType.Migrate || !inputAmount || !publicKey) {
+      return;
+    }
+
+    try {
+      setErrorMessage(null);
+
+      // Convert amount to the correct format (assuming 6 decimals)
+      const amountInSmallestUnit = Math.floor(parseFloat(inputAmount) * Math.pow(10, 6));
+      
+      // For now, using empty proof array - this should be replaced with actual merkle proof
+      const proof: Buffer[] = [];
+
+      const result = await executeMigration({
+        authority: new PublicKey(publicKey!),
+        amount: amountInSmallestUnit.toString(),
+        limitAmount: amountInSmallestUnit.toString(),
+        proof,
+      });
+
+      if (result) {
+        setErrorMessage(null);
+        toast.success("Migration Successful!", {
+          description: `Transaction: ${result}`,
+          duration: 5000,
+        });
+      }
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Migration failed";
+      setErrorMessage(errorMsg);
+      toast.error("Migration Failed", {
+        description: errorMsg,
+        duration: 5000,
+      });
+      console.error("Migration error:", err);
     }
   };
 
@@ -166,15 +222,18 @@ export default function SwapButton({
     inputAmount &&
     selectedDestination &&
     destinationAddress;
+  const isMigrateReady = swapType === SwapType.Migrate && inputAmount && publicKey;
+  const isLoading = bridgeLoading || migrationLoading;
+  const error = errorMessage || migrationError;
   const isDisabled =
-    isLoading || (swapType === SwapType.Bridge && !isBridgeReady);
+    isLoading || (swapType === SwapType.Bridge && !isBridgeReady) || (swapType === SwapType.Migrate && !isMigrateReady);
   const isApprovalDisabled = approvalLoading || !inputAmount;
 
   return (
     <div className="w-full max-w-[648px]">
-      {bridgeError && (
+      {errorMessage && (
         <div className="mb-2 p-2 bg-red-500/20 border border-red-500/50 rounded text-red-300 text-sm">
-          {bridgeError}
+          {errorMessage}
         </div>
       )}
       {error && (
@@ -214,7 +273,7 @@ export default function SwapButton({
         </div>
       ) : (
         <Button
-          onClick={undefined}
+          onClick={handleMigrate}
           disabled={isDisabled}
           className={`items-center rounded-sm w-full h-[52px] sm:h-[68px] uppercase text-[18px] sm:text-[24px] ${
             isDisabled
