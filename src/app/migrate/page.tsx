@@ -1,6 +1,5 @@
 "use client";
 import { Card } from "@/components/ui/card";
-import Image from "next/image";
 import Swap from "./components/swap";
 import SwapSelector, { SwapType } from "./components/swap-selector";
 import { useState } from "react";

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import HeroBanner from "./hero-banner";
 
 export default function Hero() {
   return (
@@ -32,7 +31,7 @@ export default function Hero() {
               </h1>
               {/* this is temporary until I get the font files */}
               <Image
-                className="mt-4"
+                className="mt-4 w-4/5 lg:w-2/5 xl:w-full 2xl:w-4/5"
                 src="/hero/begins.svg"
                 alt="hero-text"
                 height={184}
@@ -42,7 +41,7 @@ export default function Hero() {
             </div>
 
             <div>
-              <p className="text-[20px] md:text-[28px] text-white font-normal max-w-xl md:leading-9">
+              <p className="text-[16px] md:text-[28px] text-white font-normal max-w-65 md:max-w-xl md:leading-9">
                 Convert your $AI16Z tokens and step into the next phase of
                 ElizaOS — governance, staking, and full protocol access.
               </p>

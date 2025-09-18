@@ -1,13 +1,3 @@
-import Image from "next/image";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useSolanaWallet } from "@/hooks/useSolanaWallet";
 import { Button } from "@/components/ui/button";
 

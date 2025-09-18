@@ -17,7 +17,7 @@ export default function SwapSelector({
   return (
     <div className="flex gap-5 pb-4 relative">
       <button
-        className="justify-start flex flex-col align-start space-y-1 group"
+        className="justify-start cursor-pointer flex flex-col align-start space-y-1 group"
         onClick={() => onChange(SwapType.Migrate)}
       >
         <div
@@ -40,7 +40,7 @@ export default function SwapSelector({
 
       <button
         onClick={() => onChange(SwapType.Bridge)}
-        className="justify-start flex flex-col align-start space-y-1 group"
+        className="justify-start cursor-pointer flex flex-col align-start space-y-1 group"
       >
         <div
           className={twMerge(
