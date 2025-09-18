@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import Swap from "./components/swap";
 import SwapSelector, { SwapType } from "./components/swap-selector";
 import { useState } from "react";
+import SvgParticleSimulation from "./components/animation";
 
 export default function Page() {
   const [currentSwapType, setCurrentSwapType] = useState<SwapType>(
@@ -10,7 +11,7 @@ export default function Page() {
   );
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col relative">
       <div className="flex flex-col justify-center items-center z-10 flex-1 px-4 sm:px-6 py-4 sm:py-8 ">
         <div className="w-full max-w-[680px]">
           <SwapSelector
@@ -22,6 +23,7 @@ export default function Page() {
           </Card>
         </div>
       </div>
+      <SvgParticleSimulation />
     </div>
   );
 }
