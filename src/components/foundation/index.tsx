@@ -9,9 +9,6 @@ export default function Foundation() {
   return (
     <div className="relative h-screen bg-[#020A2E]">
       {/* Background centered div */}
-      <div className="absolute inset-0 w-full flex items-center justify-center">
-        <Carrousel onSlideChange={setActiveSlide} />
-      </div>
 
       {/* Foreground content - only visible on slide 0 */}
       <div className="relative z-20 justify-between p-6 lg:p-12 space-y-4">
@@ -28,6 +25,9 @@ export default function Foundation() {
             </p>
           </>
         )}
+      <div className="absolute place-self-center -z-20 inset-0 w-full flex items-center justify-center">
+        <Carrousel onSlideChange={setActiveSlide} />
+      </div>
       </div>
     </div>
   );

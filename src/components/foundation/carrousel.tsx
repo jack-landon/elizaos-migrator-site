@@ -79,11 +79,11 @@ export default function Carrousel({ onSlideChange }) {
         slidesPerView={1}
         onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
         onSlideChange={handleSwiperSlideChange}
-        className="w-full"
+        className="w-full h-full"
       >
         {items.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="rounded-md relative bg-[#061B79] flex items-center justify-center overflow-hidden w-full h-[900px]">
+            <div className="rounded-md bg-[#061B79] flex items-center justify-center overflow-hidden w-full">
               {index === 0 ? (
                 // Video slide with play button
                 <div className="flex items-center justify-center w-full h-full">
@@ -110,7 +110,7 @@ export default function Carrousel({ onSlideChange }) {
                     </p>
                   </div>
 
-                  <div>
+                  <div className="">
                     {item.image && item.image !== "#" ? (
                       <Image
                         src={item.image}
