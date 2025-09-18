@@ -64,7 +64,10 @@ const SvgParticleSimulation: React.FC<ParticleSimulationProps> = ({
       }}
     >
       <Canvas
-        style={{ width: "100vw", height: "100vh" }}
+        style={{
+          width: "100vw",
+          height: "100vh",
+        }}
         orthographic
         camera={{
           position: [0, 0, 100],
@@ -76,6 +79,7 @@ const SvgParticleSimulation: React.FC<ParticleSimulationProps> = ({
         gl={{
           alpha: true,
           antialias: true,
+          preserveDrawingBuffer: true,
         }}
       >
         <ambientLight intensity={1.0} />

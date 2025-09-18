@@ -11,8 +11,8 @@ export default function Page() {
   );
 
   return (
-    <div className="h-full flex flex-col relative">
-      <div className="flex flex-col justify-center items-center z-10 flex-1 px-4 sm:px-6 py-4 sm:py-8 ">
+    <div className="h-full flex flex-col relative bg-[#000322]">
+      <div className="flex flex-col justify-center items-center z-10 flex-1 px-4 sm:px-6 py-4 sm:py-8 bg-transparent">
         <div className="w-full max-w-[680px]">
           <SwapSelector
             onChange={setCurrentSwapType}

@@ -13,7 +13,7 @@ export function PointsRenderer({
   color,
 }: PointsRendererProps) {
   const pointsRef = useRef<THREE.InstancedMesh>(null);
-  const { viewport } = useThree();
+  const { viewport, scene, gl } = useThree();
 
   const animationRef = useRef({
     time: 0,
@@ -33,6 +33,15 @@ export function PointsRenderer({
       opacity: 0.8,
     });
   }, [color]);
+
+  useEffect(() => {
+    if (scene) {
+      scene.background = null;
+    }
+    if (gl) {
+      gl.setClearColor(0x000000, 0); // Fully transparent
+    }
+  }, [scene, gl]);
 
   const bounds = useMemo(() => calculateBounds(coordinates), [coordinates]);
 
