@@ -10,6 +10,9 @@ export interface PointsRendererProps {
   coordinates: [number, number][];
   targetCoordinates: [number, number][] | null;
   progress: number;
+  isSpinning?: boolean;
+  isHovering: boolean;
+  spinPhase?: number;
   squareSize: number;
   color: string;
 }

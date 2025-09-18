@@ -8,6 +8,7 @@ export function PointsRenderer({
   coordinates,
   targetCoordinates,
   progress,
+  isHovering,
   squareSize,
   color,
 }: PointsRendererProps) {
@@ -17,6 +18,7 @@ export function PointsRenderer({
   const animationRef = useRef({
     time: 0,
     originalPositions: [] as Array<{ x: number; y: number }>,
+    hoverHeight: 0,
   });
 
   const squareGeometry = useMemo(() => {
@@ -52,14 +54,15 @@ export function PointsRenderer({
 
     const positions = coordinates.map(([x, y], index) => {
       const normalizedHeight = dataHeight === 0 ? 0.5 : (maxY - y) / dataHeight;
-      const cappedHeight = Math.min(normalizedHeight, 100);
+      const cappedHeight = Math.min(normalizedHeight, 0.9);
 
       let scaledX = (x - (minX + maxX) / 2) * scale;
       let scaledY = -viewport.height / 2 + cappedHeight * viewport.height * 0.4;
 
       if (targetCoordinates && targetBounds && progress > 0) {
-        const targetX = targetCoordinates[index % targetCoordinates.length][0];
-        const targetY = targetCoordinates[index % targetCoordinates.length][1];
+        const targetIndex = index % targetCoordinates.length;
+        const targetX = targetCoordinates[targetIndex][0];
+        const targetY = targetCoordinates[targetIndex][1];
 
         const targetDataWidth = targetBounds.maxX - targetBounds.minX;
         const targetDataHeight = targetBounds.maxY - targetBounds.minY;
@@ -76,7 +79,6 @@ export function PointsRenderer({
         const targetScaledX = targetNormalizedX * targetScale;
         const targetScaledY = -targetNormalizedY * targetScale;
 
-        // Interpolate between current and target position
         scaledX = lerp(scaledX, targetScaledX, progress);
         scaledY = lerp(scaledY, targetScaledY, progress);
       }
@@ -96,7 +98,6 @@ export function PointsRenderer({
     progress,
   ]);
 
-  // Animation frame - wave effect
   useFrame(() => {
     if (
       !pointsRef.current ||
@@ -104,38 +105,50 @@ export function PointsRenderer({
     )
       return;
 
-    // Update time
     animationRef.current.time += 0.0015;
     const time = animationRef.current.time;
+
+    if (isHovering) {
+      animationRef.current.hoverHeight = Math.sin(time * 3) * 0.25;
+    } else {
+      animationRef.current.hoverHeight = 0;
+    }
 
     const dummy = new THREE.Object3D();
     const { originalPositions } = animationRef.current;
 
-    // Wave parameters
     const waveSpeed = 0.5;
     const waveFrequency = 2;
     const waveAmplitude = 0.05;
 
-    // Less wave effect during transition
     const currentWaveAmplitude =
-      targetCoordinates && progress > 0
-        ? waveAmplitude * (1 - progress)
-        : waveAmplitude;
+      progress > 0 ? waveAmplitude * (1 - progress) : waveAmplitude;
 
-    // Update each instance with wave movement
     originalPositions.forEach((pos, i) => {
-      // Create wave effect that moves from left to right
-      const wavePos = pos.x - time * waveSpeed;
+      let finalX = pos.x;
+      let finalY = pos.y;
 
-      // Calculate vertical offset using sine wave
-      const yOffset = Math.sin(wavePos * waveFrequency) * currentWaveAmplitude;
+      dummy.rotation.set(0, 0, 0);
 
-      // Add slight random variation to make it more natural
-      const uniqueOffset = (pos.x * 0.1 + pos.y * 0.13) % 10;
-      const randomOffset =
-        Math.sin(time * 0.5 + uniqueOffset) * 0.01 * (1 - progress);
+      if (progress < 1) {
+        const wavePos = pos.x - time * waveSpeed;
+        const yOffset =
+          Math.sin(wavePos * waveFrequency) * currentWaveAmplitude;
+        const uniqueOffset = (pos.x * 0.1 + pos.y * 0.13) % 10;
+        const randomOffset =
+          Math.sin(time * 0.5 + uniqueOffset) * 0.01 * (1 - progress);
 
-      dummy.position.set(pos.x, pos.y + yOffset + randomOffset, 0);
+        finalY += yOffset + randomOffset;
+      }
+
+      if (isHovering) {
+        finalY += animationRef.current.hoverHeight;
+
+        dummy.rotation.x = Math.sin(time * 0.7) * 0.05;
+        dummy.rotation.z = Math.sin(time * 0.5) * 0.02;
+      }
+
+      dummy.position.set(finalX, finalY, 0);
       dummy.updateMatrix();
       pointsRef.current?.setMatrixAt(i, dummy.matrix);
     });
@@ -143,7 +156,6 @@ export function PointsRenderer({
     pointsRef.current.instanceMatrix.needsUpdate = true;
   });
 
-  // Initial positioning
   useEffect(() => {
     if (!pointsRef.current || scaledPositions.length === 0) return;
 

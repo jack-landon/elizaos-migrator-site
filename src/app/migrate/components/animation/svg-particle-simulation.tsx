@@ -18,7 +18,8 @@ const SvgParticleSimulation: React.FC<ParticleSimulationProps> = ({
   const [elizaCoordinates, setElizaCoordinates] = useState<
     [number, number][] | null
   >(null);
-  const { isElizaMode, transition, toggleElizaMode } = useAnimationState();
+  const { isElizaMode, transition, toggleElizaMode, isHovering } =
+    useAnimationState();
 
   useEffect(() => {
     const fetchElizaCoordinates = async () => {
@@ -82,11 +83,33 @@ const SvgParticleSimulation: React.FC<ParticleSimulationProps> = ({
           coordinates={coordinates}
           targetCoordinates={elizaCoordinates}
           progress={transition}
+          isHovering={isHovering}
           squareSize={squareSize}
           color={color}
         />
       </Canvas>
-      {/* just for dev */}
+
+      <div
+        className="absolute inset-0 flex items-center justify-center flex-col gap-10"
+        style={{
+          opacity: transition > 0.98 ? 1 : 0,
+          transition: "opacity 0.5s ease-in",
+          pointerEvents: "auto",
+          zIndex: 200,
+        }}
+      >
+        <img
+          src="/migrate/welcome-text.svg"
+          alt="Welcome"
+          className="w-1/2 max-w-lg md:max-w-lg lg:max-w-xl"
+        />
+        <button className="bg-white rounded-sm p-3 hover:cursor-pointer">
+          <p className="text-sm md:text-xl lg:text-2xl font-bold">
+            Make it YOURS
+          </p>
+        </button>
+      </div>
+
       {elizaCoordinates && (
         <div className="fixed bottom-5 left-5 z-10 text-sm text-white bg-black/50 px-2 py-1 rounded">
           Press <kbd className="px-2 py-1 bg-gray-700 rounded">Space</kbd> to
