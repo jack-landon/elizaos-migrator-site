@@ -46,11 +46,17 @@ export default function SwapButton({
 
   // Initialize migration client when component mounts
   useEffect(() => {
-    if (!client) {
-      const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com";
+    if (!client && !migrationLoading) {
+      console.log("[SwapButton] Initializing migration client...");
+
+      // Get RPC URL-
+      const rpcUrl =
+        process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
+        "https://api.mainnet-beta.solana.com";
+      // Initialize client without wallet - wallet will be set when user connects
       initializeClient({ rpcUrl });
     }
-  }, [client, initializeClient]);
+  }, [client, initializeClient, migrationLoading]);
 
   // Check approval status when component mounts or input changes
   useEffect(() => {
@@ -87,8 +93,7 @@ export default function SwapButton({
         });
       }
     } catch (err) {
-      const errorMsg =
-        err instanceof Error ? err.message : "Approval failed";
+      const errorMsg = err instanceof Error ? err.message : "Approval failed";
       setErrorMessage(errorMsg);
       toast.error("Approval Failed", {
         description: errorMsg,
@@ -186,8 +191,10 @@ export default function SwapButton({
       setErrorMessage(null);
 
       // Convert amount to the correct format (assuming 6 decimals)
-      const amountInSmallestUnit = Math.floor(parseFloat(inputAmount) * Math.pow(10, 6));
-      
+      const amountInSmallestUnit = Math.floor(
+        parseFloat(inputAmount) * Math.pow(10, 6)
+      );
+
       // For now, using empty proof array - this should be replaced with actual merkle proof
       const proof: Buffer[] = [];
 
@@ -222,11 +229,15 @@ export default function SwapButton({
     inputAmount &&
     selectedDestination &&
     destinationAddress;
-  const isMigrateReady = swapType === SwapType.Migrate && inputAmount && publicKey;
+  const isMigrateReady =
+    swapType === SwapType.Migrate && inputAmount && publicKey && client;
   const isLoading = bridgeLoading || migrationLoading;
   const error = errorMessage || migrationError;
   const isDisabled =
-    isLoading || (swapType === SwapType.Bridge && !isBridgeReady) || (swapType === SwapType.Migrate && !isMigrateReady);
+    isLoading ||
+    (swapType === SwapType.Bridge && !isBridgeReady) ||
+    (swapType === SwapType.Migrate && !isMigrateReady) ||
+    (swapType === SwapType.Migrate && !client);
   const isApprovalDisabled = approvalLoading || !inputAmount;
 
   return (
@@ -239,6 +250,11 @@ export default function SwapButton({
       {error && (
         <div className="mb-2 p-2 bg-red-500/20 border border-red-500/50 rounded text-red-300 text-sm">
           {error}
+        </div>
+      )}
+      {swapType === SwapType.Migrate && !client && !migrationLoading && (
+        <div className="mb-2 p-2 bg-yellow-500/20 border border-yellow-500/50 rounded text-yellow-300 text-sm">
+          Initializing migration client... Please wait.
         </div>
       )}
       {swapType === SwapType.Bridge ? (

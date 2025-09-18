@@ -7,7 +7,11 @@ import logger from "../logger";
 
 export interface SolanaClientConfig {
     rpcUrl: string;
-    wallet?: anchor.Wallet;
+    wallet?: {
+        publicKey: anchor.web3.PublicKey;
+        signTransaction: <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(tx: T) => Promise<T>;
+        signAllTransactions: <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(txs: T[]) => Promise<T[]>;
+    };
 }
 
 export class SolanaMigrationClient {
@@ -17,6 +21,12 @@ export class SolanaMigrationClient {
     private programId: anchor.web3.PublicKey;
 
     constructor(config: SolanaClientConfig) {
+        // Validate RPC URL
+        if (!config.rpcUrl || (!config.rpcUrl.startsWith('http://') && !config.rpcUrl.startsWith('https://'))) {
+            throw new Error(`Invalid RPC URL: ${config.rpcUrl}. URL must start with 'http://' or 'https://'`);
+        }
+        
+        logger.info(`[SolanaMigrationClient] Creating connection with RPC URL: ${config.rpcUrl}`);
         this.connection = new anchor.web3.Connection(config.rpcUrl, "confirmed");
 
         // Get programId from environment variables
@@ -26,15 +36,26 @@ export class SolanaMigrationClient {
         }
         this.programId = new anchor.web3.PublicKey(programIdString);
 
-        // Initialize wallet (you can pass a custom wallet or use a default one)
-        this.wallet = config.wallet || new anchor.Wallet(anchor.web3.Keypair.generate());
-
-        // Initialize the program
+        // Create wallet adapter - use provided wallet or create a spoofed one
+        const walletToUse = config.wallet || this.createSpoofedWallet();
+        
+        // Initialize the program with AnchorProvider (following the same pattern as your working code)
         const provider = new anchor.AnchorProvider(
             this.connection,
-            this.wallet,
-            { commitment: "confirmed" }
+            {
+                publicKey: walletToUse.publicKey,
+                signTransaction: walletToUse.signTransaction,
+                signAllTransactions: walletToUse.signAllTransactions,
+            },
+            anchor.AnchorProvider.defaultOptions()
         );
+
+        // Store the wallet adapter for later use
+        this.wallet = {
+            publicKey: walletToUse.publicKey,
+            signTransaction: walletToUse.signTransaction,
+            signAllTransactions: walletToUse.signAllTransactions,
+        } as any; // Type assertion to avoid payer property issues
 
         // Create IDL with the programId from environment
         const idlWithProgramId = {
@@ -52,6 +73,46 @@ export class SolanaMigrationClient {
             programId: this.programId.toString(),
             walletAddress: this.wallet.publicKey.toString(),
         });
+        
+        // Test the connection
+        this.testConnection();
+    }
+
+    private async testConnection() {
+        try {
+            const version = await this.connection.getVersion();
+            logger.info("[SolanaMigrationClient] RPC connection test successful", {
+                version: version['solana-core']
+            });
+        } catch (error) {
+            logger.error("[SolanaMigrationClient] RPC connection test failed:", error);
+            throw new Error(`Failed to connect to RPC endpoint: ${error}`);
+        }
+    }
+
+    private createSpoofedWallet() {
+        const keypair = anchor.web3.Keypair.generate();
+        return {
+            publicKey: keypair.publicKey,
+            signTransaction: async <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(tx: T): Promise<T> => {
+                if (tx instanceof anchor.web3.Transaction) {
+                    tx.partialSign(keypair);
+                } else if (tx instanceof anchor.web3.VersionedTransaction) {
+                    tx.sign([keypair]);
+                }
+                return tx;
+            },
+            signAllTransactions: async <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(txs: T[]): Promise<T[]> => {
+                return txs.map((tx) => {
+                    if (tx instanceof anchor.web3.Transaction) {
+                        tx.partialSign(keypair);
+                    } else if (tx instanceof anchor.web3.VersionedTransaction) {
+                        tx.sign([keypair]);
+                    }
+                    return tx;
+                });
+            },
+        };
     }
 
 
@@ -195,13 +256,20 @@ export class SolanaMigrationClient {
     }
 
 
-    setWallet(wallet: anchor.Wallet): void {
-        this.wallet = wallet;
+    setWallet(wallet: {
+        publicKey: anchor.web3.PublicKey;
+        signTransaction: <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(tx: T) => Promise<T>;
+        signAllTransactions: <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(txs: T[]) => Promise<T[]>;
+    }): void {
         // Update the provider with the new wallet
         const provider = new anchor.AnchorProvider(
             this.connection,
-            this.wallet,
-            { commitment: "confirmed" }
+            {
+                publicKey: wallet.publicKey,
+                signTransaction: wallet.signTransaction,
+                signAllTransactions: wallet.signAllTransactions,
+            },
+            anchor.AnchorProvider.defaultOptions()
         );
 
         // Create IDL with the programId from environment
@@ -214,6 +282,13 @@ export class SolanaMigrationClient {
             idlWithProgramId as unknown,
             provider
         );
+
+        // Update stored wallet
+        this.wallet = {
+            publicKey: wallet.publicKey,
+            signTransaction: wallet.signTransaction,
+            signAllTransactions: wallet.signAllTransactions,
+        } as any; // Type assertion to avoid payer property issues
 
         logger.info("[SolanaMigrationClient] Wallet updated", {
             walletAddress: this.wallet.publicKey.toString(),
