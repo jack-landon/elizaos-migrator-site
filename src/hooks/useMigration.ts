@@ -39,10 +39,23 @@ export function useMigration(): UseMigrationReturn {
   const initializeClient = useCallback((config: SolanaClientConfig) => {
     try {
       setError(null);
+      setIsLoading(true);
+      console.log('[useMigration] Initializing client with config:', {
+        rpcUrl: config.rpcUrl,
+        hasWallet: !!config.wallet,
+        walletType: config.wallet ? typeof config.wallet : 'undefined'
+      });
+      
       const newClient = new SolanaMigrationClient(config);
       setClient(newClient);
+      console.log('[useMigration] Client initialized successfully');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to initialize client');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to initialize client';
+      setError(errorMessage);
+      console.error('[useMigration] Client initialization failed:', errorMessage);
+      console.error('[useMigration] Full error:', err);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -50,13 +63,12 @@ export function useMigration(): UseMigrationReturn {
   useEffect(() => {
     if (client && wallet && isConnected && wallet.publicKey) {
       try {
-        // Create an anchor wallet adapter that wraps the wallet adapter
-        const anchorWallet = {
+        // Pass the wallet adapter directly to the client
+        client.setWallet({
           publicKey: wallet.publicKey,
           signTransaction: wallet.signTransaction!,
           signAllTransactions: wallet.signAllTransactions!,
-        };
-        client.setWallet(anchorWallet as anchor.Wallet);
+        });
       } catch (err) {
         console.error('Failed to update client wallet:', err);
       }
@@ -70,21 +82,33 @@ export function useMigration(): UseMigrationReturn {
     proof: Buffer[];
   }): Promise<string | null> => {
     if (!client) {
-      setError('Client not initialized');
+      const errorMsg = 'Client not initialized. Please ensure the migration client is properly set up.';
+      setError(errorMsg);
+      console.error('[useMigration]', errorMsg);
       return null;
     }
 
     if (!isConnected || !wallet?.publicKey) {
-      setError('Wallet not connected');
+      const errorMsg = 'Wallet not connected. Please connect your wallet first.';
+      setError(errorMsg);
+      console.error('[useMigration]', errorMsg);
       return null;
     }
 
     try {
       setIsLoading(true);
       setError(null);
+      console.log('[useMigration] Starting migration with params:', {
+        authority: params.authority.toString(),
+        amount: params.amount,
+        limitAmount: params.limitAmount,
+        proofLength: params.proof.length
+      });
+      
       const result = await client.executeMigration(params);
 
       if (result) {
+        console.log('[useMigration] Migration completed successfully:', result);
         // Add transaction to listener for monitoring
         addTransaction(result, 'migrate', parseFloat(params.amount), 0);
       }
@@ -93,6 +117,7 @@ export function useMigration(): UseMigrationReturn {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Migration failed';
       setError(errorMessage);
+      console.error('[useMigration] Migration failed:', err);
       return null;
     } finally {
       setIsLoading(false);

@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/solana_migration.json`.
  */
 export type SolanaMigration = {
-  "address": "DV5HwDmfrjjM1BuMKvSF4t3MbwYTmHsoyQxLRFaDmdZN",
+  "address": "59ZM66TaUTVRjsyBZxXHXomUfWE33yidmAeoEtdjMtMV",
   "metadata": {
     "name": "solanaMigration",
     "version": "0.1.0",
@@ -170,7 +170,10 @@ export type SolanaMigration = {
           "writable": true
         },
         {
-          "name": "tokenProgram"
+          "name": "sourceTokenProgram"
+        },
+        {
+          "name": "targetTokenProgram"
         },
         {
           "name": "systemProgram",
@@ -271,65 +274,11 @@ export type SolanaMigration = {
           }
         },
         {
-          "name": "fromAta",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "authority"
-              },
-              {
-                "kind": "account",
-                "path": "tokenProgram"
-              },
-              {
-                "kind": "account",
-                "path": "state_account.source_token",
-                "account": "stateAccount"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140,
-                151,
-                37,
-                143,
-                78,
-                36,
-                137,
-                241,
-                187,
-                61,
-                16,
-                41,
-                20,
-                142,
-                13,
-                131,
-                11,
-                90,
-                19,
-                153,
-                218,
-                255,
-                16,
-                132,
-                4,
-                142,
-                123,
-                216,
-                219,
-                233,
-                248,
-                89
-              ]
-            }
-          }
+          "name": "fromTa",
+          "writable": true
         },
         {
-          "name": "receiveAta",
+          "name": "receiveTa",
           "writable": true
         },
         {
@@ -377,7 +326,10 @@ export type SolanaMigration = {
           }
         },
         {
-          "name": "tokenProgram"
+          "name": "sourceTokenProgram"
+        },
+        {
+          "name": "targetTokenProgram"
         },
         {
           "name": "systemProgram",
@@ -403,6 +355,189 @@ export type SolanaMigration = {
               ]
             }
           }
+        }
+      ]
+    },
+    {
+      "name": "updateState",
+      "discriminator": [
+        135,
+        112,
+        215,
+        75,
+        247,
+        185,
+        53,
+        176
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "stateAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  97,
+                  116,
+                  101,
+                  95,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "faucetAuthority",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102,
+                  97,
+                  117,
+                  99,
+                  101,
+                  116,
+                  95,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "sourceTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  105,
+                  49,
+                  54,
+                  122,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "sourceToken"
+              }
+            ]
+          }
+        },
+        {
+          "name": "targetTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  108,
+                  105,
+                  122,
+                  97,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "targetToken"
+              }
+            ]
+          }
+        },
+        {
+          "name": "sourceToken",
+          "writable": true
+        },
+        {
+          "name": "targetToken",
+          "writable": true
+        },
+        {
+          "name": "targetTokenProgram"
+        },
+        {
+          "name": "sourceTokenProgram"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "root",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "migrationRate",
+          "type": "u16"
         }
       ]
     },
@@ -487,7 +622,7 @@ export type SolanaMigration = {
           "signer": true
         },
         {
-          "name": "receiveAta",
+          "name": "receiveTa",
           "writable": true
         },
         {
@@ -584,7 +719,7 @@ export type SolanaMigration = {
           "signer": true
         },
         {
-          "name": "receiveAta",
+          "name": "receiveTa",
           "writable": true
         },
         {
@@ -716,6 +851,21 @@ export type SolanaMigration = {
       "code": 6004,
       "name": "overMaxMigrationLimit",
       "msg": "Over Max Migration Limit Amount"
+    },
+    {
+      "code": 6005,
+      "name": "mismatchTokenAccount",
+      "msg": "Token Account Mismatch"
+    },
+    {
+      "code": 6006,
+      "name": "invalidTokenPair",
+      "msg": "Invalid Tokens"
+    },
+    {
+      "code": 6007,
+      "name": "invalidMigrationRate",
+      "msg": "Invalid Migration Rate"
     }
   ],
   "types": [
@@ -737,11 +887,11 @@ export type SolanaMigration = {
             "type": "pubkey"
           },
           {
-            "name": "sourceTokenAta",
+            "name": "sourceTokenTa",
             "type": "pubkey"
           },
           {
-            "name": "targetTokenAta",
+            "name": "targetTokenTa",
             "type": "pubkey"
           },
           {

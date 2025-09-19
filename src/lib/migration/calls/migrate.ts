@@ -38,16 +38,17 @@ export async function migrate(params: MigrateParams): Promise<string> {
     const tx = await program.rpc.migrate(amount, limitAmount, proof, {
         accounts: {
             authority: authority,
-            faucetAuthority: faucetAuthority,
-            fromAta: fromAta,
             userState: userStateAccount,
-            receiveAta: receiveAta,
+            faucetAuthority: faucetAuthority,
+            fromTa: fromAta,
+            receiveTa: receiveAta,
             targetToken: targetToken,
             sourceToken: sourceToken,
             globalSourceTokenAccount: sourceTokenAccount,
             globalTargetTokenAccount: targetTokenAccount,
             stateAccount: stateAccount,
-            tokenProgram: spl.TOKEN_PROGRAM_ID,
+            sourceTokenProgram: spl.TOKEN_2022_PROGRAM_ID,
+            targetTokenProgram: spl.TOKEN_PROGRAM_ID,
             systemProgram: anchor.web3.SystemProgram.programId,
         },
     });
