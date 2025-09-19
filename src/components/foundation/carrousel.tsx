@@ -14,9 +14,15 @@ export default function Carrousel({ onSlideChange }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const items = [
+    // {
+    //   title: "New Economy Video",
+    //   href: "#",
+    // },
     {
-      title: "New Economy Video",
+      title: "Generative Networks",
       href: "#",
+      image: "/carrousel/star.png",
+      text: "Generative networks are economic systems that learn and evolve in real time. Powered by autonomous agents, they compound value, adapt across chains at machine speed, and unlock strategies beyond human design.",
     },
     {
       title: "Generative Networks",
@@ -53,9 +59,9 @@ export default function Carrousel({ onSlideChange }) {
   };
 
   return (
-    <div className="w-full mt-20 h-full">
-      {/* Header Navigation */}
-      <div className="flex justify-end mb-6">
+    <div className="w-full mt-4 md:mt-20 h-full">
+      {/* Header Navigation for desktop and ipad */}
+      <div className="hidden md:flex justify-end mb-6">
         <div className="flex z-30 space-x-4 mr-0 md:mr-12 mb-8">
           {items.map((item, index) => (
             <button
@@ -80,43 +86,45 @@ export default function Carrousel({ onSlideChange }) {
         slidesPerView={1}
         onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
         onSlideChange={handleSwiperSlideChange}
-        className="w-6/7 h-full"
+        className="w-5/6"
+        style={{ height: "auto", maxHeight: "80vh" }}
       >
         {items.map((item, index) => (
-          <SwiperSlide key={index}>
-            <div className="rounded-md bg-[#061B79] flex items-center justify-center overflow-hidden w-6/7 place-self-center">
+          <SwiperSlide key={index} className="lg:!h-screen">
+            <div className="rounded-md bg-[#061B79] flex items-center justify-center overflow-hidden w-full h-full">
               {index === 0 ? (
-                // Video slide with play button
-                <div className="flex items-center justify-center w-full">
-                    <PlayButton />
+                // Video slide with play button - FIXED HEIGHT
+                <div className="flex items-center justify-center w-full h-[600px] sm:h-80 md:h-96 lg:h-[500px]">
+                  <PlayButton />
                 </div>
               ) : (
                 // Blog slide layout
-                <div className="w-full h-full space-y-12 lg:space-y-12 p-12 grid grid-cols-1 xl:grid-cols-2">
+                <div className="w-full h-full space-y-6 lg:space-y-12 p-6 sm:p-8 md:p-12 grid grid-cols-1 xl:grid-cols-2 gap-6">
                   {/* Top left content */}
                   <div className="max-w-2xl">
-                    <h2 className="text-[20px] 2xl:text-[40px] font-bold text-white mb-6">
+                    <h2 className="text-lg sm:text-xl md:text-2xl 2xl:text-[40px] font-bold text-white mb-4 md:mb-6">
                       {item.title}
                     </h2>
-                    <p className="md:text-[20px] 2xl:text-[28px] max-w-xl text-gray-200 leading-relaxed">
+                    <p className="text-sm sm:text-base md:text-lg 2xl:text-[28px] max-w-xl text-gray-200 leading-relaxed">
                       {item.text}
                     </p>
                   </div>
 
-                  <div className="">
+                  {/* Image container with responsive sizing */}
+                  <div className="flex items-center justify-center">
                     {item.image && item.image !== "#" ? (
-                      <div className="">
+                      <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">
                         <Image
                           src={item.image}
                           alt={item.title}
-                          height={700}
-                          width={700}
-                          className="object-contain"
+                          height={400}
+                          width={400}
+                          className="w-full h-auto object-contain max-h-64 md:max-h-80 lg:max-h-96"
                         />
                       </div>
                     ) : (
-                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                        <span className="text-gray-400">
+                      <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl h-64 bg-gray-700 flex items-center justify-center rounded-lg">
+                        <span className="text-gray-400 text-sm md:text-base">
                           No image available
                         </span>
                       </div>
@@ -124,17 +132,17 @@ export default function Carrousel({ onSlideChange }) {
                   </div>
 
                   {/* Bottom right button */}
-                  <div className="col-span-1 xl:col-span-2 xl:grid">
+                  <div className="col-span-1 xl:col-span-2 xl:grid mt-6">
                     <a
                       href={item.href}
-                      className="xl:place-self-end text-white text-[22px] lg:text-[32px] font-normal hover:text-[#FF5800] transition-colors duration-200 flex flex-row gap-x-3 items-center group"
+                      className="xl:place-self-end text-white text-lg md:text-xl lg:text-2xl xl:text-[32px] font-normal hover:text-[#FF5800] transition-colors duration-200 flex flex-row gap-x-3 items-center group"
                     >
                       Article
                       <Image
                         src="/carrousel/article.svg"
                         height={32}
                         width={32}
-                        className="h-[22px] w-[22px] lg:h-[32px] lg:w-[32px] group-hover:[filter:brightness(0)_saturate(100%)_invert(45%)_sepia(100%)_saturate(2000%)_hue-rotate(0deg)] transition-all duration-200"
+                        className="h-5 w-5 md:h-6 md:w-6 lg:h-[32px] lg:w-[32px] group-hover:[filter:brightness(0)_saturate(100%)_invert(45%)_sepia(100%)_saturate(2000%)_hue-rotate(0deg)] transition-all duration-200"
                         alt="article-icon"
                       />
                     </a>
@@ -145,6 +153,24 @@ export default function Carrousel({ onSlideChange }) {
           </SwiperSlide>
         ))}
       </Swiper>
+      {/* mobile carrousel header */}
+      <div className="flex md:hidden justify-end mt-12 place-self-center">
+        <div className="flex z-30 space-x-4 mr-0 md:mr-12 mb-8">
+          {items.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => handleSlideChange(index)}
+              className={`text-[12px] lg:text-[18px] font-medium transition-colors duration-200 px-2 ${
+                activeIndex === index
+                  ? "text-white border-white hover:text-[#FF5800] hover:border-[#FF5800] pb-1 border-l-2 border-r-2"
+                  : "text-white/20 hover:text-[#FF5800]"
+              }`}
+            >
+              <span>{item.title}</span>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

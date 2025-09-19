@@ -7,7 +7,7 @@ export default function Foundation() {
   const [activeSlide, setActiveSlide] = useState(0);
 
   return (
-    <div className="relative h-screen bg-[#020A2E]">
+    <div className="relative md:h-screen bg-[#020A2E]">
       {/* Background centered div */}
 
       {/* Foreground content - only visible on slide 0 */}
@@ -25,9 +25,9 @@ export default function Foundation() {
             </p>
           </>
         )}
-      <div className="absolute place-self-center -z-20 inset-0 w-full flex items-center justify-center">
-        <Carrousel onSlideChange={setActiveSlide} />
-      </div>
+        <div className="md:absolute place-self-center -z-20 inset-0 w-full flex items-center justify-center">
+          <Carrousel onSlideChange={setActiveSlide} />
+        </div>
       </div>
     </div>
   );
