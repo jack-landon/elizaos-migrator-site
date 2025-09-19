@@ -182,6 +182,7 @@ export default function SwapButton({
     }
   };
 
+
   const handleMigrate = async () => {
     if (swapType !== SwapType.Migrate || !inputAmount || !publicKey) {
       return;
@@ -190,18 +191,18 @@ export default function SwapButton({
     try {
       setErrorMessage(null);
 
-      // Convert amount to the correct format (assuming 6 decimals)
+
+      // Convert amount to the correct format (9 decimals for ai16z token)
       const amountInSmallestUnit = Math.floor(
-        parseFloat(inputAmount) * Math.pow(10, 6)
+        parseFloat(inputAmount) * Math.pow(10, 9)
       );
 
-      // For now, using empty proof array - this should be replaced with actual merkle proof
+      // Proof will be generated in the migrate function
       const proof: Buffer[] = [];
 
       const result = await executeMigration({
         authority: new PublicKey(publicKey!),
         amount: amountInSmallestUnit.toString(),
-        limitAmount: amountInSmallestUnit.toString(),
         proof,
       });
 

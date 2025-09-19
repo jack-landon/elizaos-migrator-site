@@ -12,7 +12,6 @@ export interface UseMigrationReturn {
   executeMigration: (params: {
     authority: anchor.web3.PublicKey;
     amount: string;
-    limitAmount: string;
     proof: Buffer[];
   }) => Promise<string | null>;
   updateWhitelist: (params: {
@@ -78,7 +77,6 @@ export function useMigration(): UseMigrationReturn {
   const executeMigration = useCallback(async (params: {
     authority: anchor.web3.PublicKey;
     amount: string;
-    limitAmount: string;
     proof: Buffer[];
   }): Promise<string | null> => {
     if (!client) {
@@ -98,17 +96,18 @@ export function useMigration(): UseMigrationReturn {
     try {
       setIsLoading(true);
       setError(null);
-      console.log('[useMigration] Starting migration with params:', {
-        authority: params.authority.toString(),
-        amount: params.amount,
-        limitAmount: params.limitAmount,
-        proofLength: params.proof.length
-      });
       
-      const result = await client.executeMigration(params);
+      // Pass the Phantom wallet for signing
+      const result = await client.executeMigration({
+        ...params,
+        wallet: wallet ? {
+          publicKey: wallet.publicKey,
+          signTransaction: wallet.signTransaction!,
+          signAllTransactions: wallet.signAllTransactions!,
+        } : undefined
+      });
 
       if (result) {
-        console.log('[useMigration] Migration completed successfully:', result);
         // Add transaction to listener for monitoring
         addTransaction(result, 'migrate', parseFloat(params.amount), 0);
       }
