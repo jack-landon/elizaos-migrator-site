@@ -87,11 +87,10 @@ export default function Carrousel({ onSlideChange }) {
         onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
         onSlideChange={handleSwiperSlideChange}
         className="w-5/6"
-        style={{ height: "auto", maxHeight: "80vh" }}
       >
         {items.map((item, index) => (
-          <SwiperSlide key={index} className="lg:!h-screen">
-            <div className="rounded-md bg-[#061B79] flex items-center justify-center overflow-hidden w-full h-full">
+          <SwiperSlide key={index}>
+            <div className="rounded-md bg-[#061B79] flex items-center justify-center overflow-hidden w-full h-[80vh]">
               {index === 0 ? (
                 // Video slide with play button - FIXED HEIGHT
                 <div className="flex items-center justify-center w-full h-[600px] sm:h-80 md:h-96 lg:h-[500px]">
@@ -119,7 +118,7 @@ export default function Carrousel({ onSlideChange }) {
                           alt={item.title}
                           height={400}
                           width={400}
-                          className="w-full h-auto object-contain max-h-64 md:max-h-80 lg:max-h-96"
+                          className="w-full h-auto object-contain max-h-64 md:max-h-80 lg:max-h-full"
                         />
                       </div>
                     ) : (
@@ -132,7 +131,7 @@ export default function Carrousel({ onSlideChange }) {
                   </div>
 
                   {/* Bottom right button */}
-                  <div className="col-span-1 xl:col-span-2 xl:grid mt-6">
+                  <div className="grid col-span-full h-full w-full">
                     <a
                       href={item.href}
                       className="xl:place-self-end text-white text-lg md:text-xl lg:text-2xl xl:text-[32px] font-normal hover:text-[#FF5800] transition-colors duration-200 flex flex-row gap-x-3 items-center group"
