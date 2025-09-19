@@ -134,7 +134,7 @@ export function PointsRenderer({
       progress > 0 ? waveAmplitude * (1 - progress) : waveAmplitude;
 
     originalPositions.forEach((pos, i) => {
-      let finalX = pos.x;
+      const finalX = pos.x;
       let finalY = pos.y;
 
       dummy.rotation.set(0, 0, 0);

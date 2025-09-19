@@ -11,11 +11,11 @@ import {
 export interface WithdrawTargetTokenParams {
     program: Program<SolanaMigration>;
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
 }
 
 export async function withdrawTargetToken(params: WithdrawTargetTokenParams): Promise<string> {
-    const { program, authority, receiveAta } = params;
+    const { program, authority, receiveTa } = params;
 
     const faucetAuthority = getFaucetAuthority(program.programId);
     const targetTokenAccount = getTargetTokenAccount(targetToken, program.programId);
@@ -28,7 +28,7 @@ export async function withdrawTargetToken(params: WithdrawTargetTokenParams): Pr
     const tx = await program.rpc.withdrawTargetToken({
         accounts: {
             authority: authority,
-            receiveAta: receiveAta,
+            receiveTa: receiveTa,
             faucetAuthority: faucetAuthority,
             stateAccount: stateAccount,
             targetToken: targetToken,

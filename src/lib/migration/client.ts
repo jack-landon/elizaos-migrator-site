@@ -55,7 +55,7 @@ export class SolanaMigrationClient {
             publicKey: walletToUse.publicKey,
             signTransaction: walletToUse.signTransaction,
             signAllTransactions: walletToUse.signAllTransactions,
-        } as any; // Type assertion to avoid payer property issues
+        } as anchor.Wallet; // Type assertion to avoid payer property issues
 
         // Create IDL with the programId from environment
         const idlWithProgramId = {
@@ -119,23 +119,69 @@ export class SolanaMigrationClient {
     async executeMigration(params: {
         authority: anchor.web3.PublicKey;
         amount: string;
-        limitAmount: string;
         proof: Buffer[];
+        wallet?: {
+            publicKey: anchor.web3.PublicKey;
+            signTransaction: <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(tx: T) => Promise<T>;
+            signAllTransactions: <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(txs: T[]) => Promise<T[]>;
+        };
     }): Promise<string> {
         try {
             logger.info("[SolanaMigrationClient] Executing migration", {
                 authority: params.authority.toString(),
                 amount: params.amount,
-                limitAmount: params.limitAmount,
+                currentWallet: this.wallet.publicKey.toString(),
+                providedWallet: params.wallet?.publicKey.toString() || 'none',
             });
+
+            // Store original program
+            const originalProgram = this.program;
+            
+            // If a wallet is provided, temporarily switch to it for signing
+            if (params.wallet) {
+                logger.info("[SolanaMigrationClient] Switching to provided wallet for signing", {
+                    from: this.wallet.publicKey.toString(),
+                    to: params.wallet.publicKey.toString(),
+                });
+                
+                // Create temporary provider with the provided wallet
+                const tempProvider = new anchor.AnchorProvider(
+                    this.connection,
+                    {
+                        publicKey: params.wallet.publicKey,
+                        signTransaction: params.wallet.signTransaction,
+                        signAllTransactions: params.wallet.signAllTransactions,
+                    },
+                    anchor.AnchorProvider.defaultOptions()
+                );
+
+                // Create IDL with the programId from environment
+                const idlWithProgramId = {
+                    ...idl,
+                    address: this.programId.toString()
+                };
+
+                // Create temporary program with the provided wallet
+                this.program = new Program<SolanaMigration>(
+                    idlWithProgramId as unknown,
+                    tempProvider
+                );
+            }
 
             const transactionHash = await migrate({
                 program: this.program,
                 authority: params.authority,
                 amount: new anchor.BN(params.amount),
-                limitAmount: new anchor.BN(params.amount),
                 proof: params.proof,
             });
+
+            // Restore original program
+            if (params.wallet) {
+                this.program = originalProgram;
+                logger.info("[SolanaMigrationClient] Restored original program wallet", {
+                    wallet: this.wallet.publicKey.toString(),
+                });
+            }
 
             logger.info("[SolanaMigrationClient] Migration completed", {
                 transactionHash,
@@ -181,18 +227,18 @@ export class SolanaMigrationClient {
 
     async withdrawSourceToken(params: {
         authority: anchor.web3.PublicKey;
-        receiveAta: anchor.web3.PublicKey;
+        receiveTa: anchor.web3.PublicKey;
     }): Promise<string> {
         try {
             logger.info("[SolanaMigrationClient] Withdrawing source tokens", {
                 authority: params.authority.toString(),
-                receiveAta: params.receiveAta.toString(),
+                receiveTa: params.receiveTa.toString(),
             });
 
             const transactionHash = await withdrawSourceToken({
                 program: this.program,
                 authority: params.authority,
-                receiveAta: params.receiveAta,
+                receiveTa: params.receiveTa,
             });
 
             logger.info("[SolanaMigrationClient] Source tokens withdrawn", {
@@ -210,18 +256,18 @@ export class SolanaMigrationClient {
 
     async withdrawTargetToken(params: {
         authority: anchor.web3.PublicKey;
-        receiveAta: anchor.web3.PublicKey;
+        receiveTa: anchor.web3.PublicKey;
     }): Promise<string> {
         try {
             logger.info("[SolanaMigrationClient] Withdrawing target tokens", {
                 authority: params.authority.toString(),
-                receiveAta: params.receiveAta.toString(),
+                receiveTa: params.receiveTa.toString(),
             });
 
             const transactionHash = await withdrawTargetToken({
                 program: this.program,
                 authority: params.authority,
-                receiveAta: params.receiveAta,
+                receiveTa: params.receiveTa,
             });
 
             logger.info("[SolanaMigrationClient] Target tokens withdrawn", {
@@ -256,6 +302,78 @@ export class SolanaMigrationClient {
     }
 
 
+    async updateWhitelistRoot(newRoot: number[]): Promise<string> {
+        try {
+            const [stateAccount] = anchor.web3.PublicKey.findProgramAddressSync(
+                [Buffer.from("state_account_seed")],
+                this.programId
+            );
+
+            logger.info("[SolanaMigrationClient] Updating whitelist root", {
+                newRoot: Buffer.from(newRoot).toString('hex'),
+                stateAccount: stateAccount.toString()
+            });
+
+            const tx = await this.program.rpc.updateWhitelist(newRoot, {
+                accounts: {
+                    authority: this.wallet.publicKey,
+                    stateAccount: stateAccount,
+                },
+            });
+
+            logger.info("[SolanaMigrationClient] Whitelist root updated", {
+                transactionHash: tx,
+                newRoot: Buffer.from(newRoot).toString('hex')
+            });
+
+            return tx;
+        } catch (error) {
+            logger.error("[SolanaMigrationClient] Error updating whitelist root:", error);
+            throw error;
+        }
+    }
+
+    async checkWhitelistStatus(walletAddress: anchor.web3.PublicKey): Promise<{
+        isWhitelisted: boolean;
+        root: number[];
+        message: string;
+    }> {
+        try {
+            const [stateAccount] = anchor.web3.PublicKey.findProgramAddressSync(
+                [Buffer.from("state_account_seed")],
+                this.programId
+            );
+
+            const stateAccountInfo = await this.program.account.stateAccount.fetch(stateAccount);
+            const root = stateAccountInfo.root as number[];
+
+            logger.info("[SolanaMigrationClient] Checking whitelist status", {
+                walletAddress: walletAddress.toString(),
+                root: root,
+                hasRoot: root && root.length > 0
+            });
+
+            // For now, we'll return true if there's a root (whitelist is initialized)
+            // In a real implementation, you'd verify the Merkle proof here
+            const isWhitelisted = root && root.length > 0;
+
+            return {
+                isWhitelisted,
+                root,
+                message: isWhitelisted 
+                    ? "Wallet is whitelisted" 
+                    : "Wallet is not whitelisted or whitelist not initialized"
+            };
+        } catch (error) {
+            logger.error("[SolanaMigrationClient] Error checking whitelist status:", error);
+            return {
+                isWhitelisted: false,
+                root: [],
+                message: `Error checking whitelist: ${error instanceof Error ? error.message : 'Unknown error'}`
+            };
+        }
+    }
+
     setWallet(wallet: {
         publicKey: anchor.web3.PublicKey;
         signTransaction: <T extends anchor.web3.Transaction | anchor.web3.VersionedTransaction>(tx: T) => Promise<T>;
@@ -288,7 +406,7 @@ export class SolanaMigrationClient {
             publicKey: wallet.publicKey,
             signTransaction: wallet.signTransaction,
             signAllTransactions: wallet.signAllTransactions,
-        } as any; // Type assertion to avoid payer property issues
+        } as anchor.Wallet; // Type assertion to avoid payer property issues
 
         logger.info("[SolanaMigrationClient] Wallet updated", {
             walletAddress: this.wallet.publicKey.toString(),

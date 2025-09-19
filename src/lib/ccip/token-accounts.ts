@@ -1,7 +1,7 @@
 import { Connection, PublicKey, AccountMeta, AddressLookupTableAccount } from '@solana/web3.js';
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { BN } from '@coral-xyz/anchor';
-import { TokenLookupAccounts, CCIPSendRequest } from './types';
+import { CCIPSendRequest } from './types';
 import { findFqPerChainPerTokenConfigPDA, findBurnMintPoolChainConfigPDA, FEE_QUOTER_PROGRAM_ID, CCIP_ROUTER_PROGRAM_ID } from './pdas';
 import { getTokenAdminRegistry, getLookupTableAccount, getPoolProgram, isWritable } from './token-admin-registry';
 
@@ -34,7 +34,7 @@ export async function buildTokenAccountsForSend(
         } else {
           tokenProgram = TOKEN_2022_PROGRAM_ID;
         }
-      } catch (error) {
+      } catch (_error) {
         tokenProgram = TOKEN_2022_PROGRAM_ID;
       }
 
@@ -76,14 +76,14 @@ export async function buildTokenAccountsForSend(
       );
       
       // Also try with the pool program for comparison
-      const [poolChainConfigWithPool] = findBurnMintPoolChainConfigPDA(
+      const [_poolChainConfigWithPool] = findBurnMintPoolChainConfigPDA(
         BigInt(request.destChainSelector.toString()),
         tokenMint,
         poolProgram
       );
       
       // Try with different token mints to see if we can find the right one
-      const [poolChainConfigWithLink] = findBurnMintPoolChainConfigPDA(
+      const [_poolChainConfigWithLink] = findBurnMintPoolChainConfigPDA(
         BigInt(request.destChainSelector.toString()),
         new PublicKey('LinkhB3afbBKb2EQQu7s7umdZceV3wcvAUJhQAfQ23L'), // LINK token
         CCIP_ROUTER_PROGRAM_ID

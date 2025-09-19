@@ -82,7 +82,7 @@ export default function TokenOmics() {
         },
       ],
     }),
-    [hoverState]
+    [hoverState, outerRing.colors, outerRing.data, innerRing.colors, innerRing.data]
   ); // Re-calculate data only when hoverState changes
 
   const legendItems = [
@@ -153,16 +153,18 @@ export default function TokenOmics() {
     beforeDraw: (chart: Chart) => {
       const { ctx, chartArea } = chart;
       if (!chartArea) return;
-      if (!(chart as any).elizaImage) {
+      if (!(chart as Chart & { elizaImage?: HTMLImageElement }).elizaImage) {
         const image = new Image();
         image.src = "/chart/eliza.png";
         image.onload = () => {
-          (chart as any).elizaImage = image;
+          (chart as Chart & { elizaImage?: HTMLImageElement }).elizaImage = image;
           chart.draw();
         };
         return;
       }
-      const image = (chart as any).elizaImage;
+      const image = (chart as Chart & { elizaImage?: HTMLImageElement }).elizaImage;
+      if (!image) return;
+      
       const x = (chartArea.left + chartArea.right) / 2;
       const y = (chartArea.top + chartArea.bottom) / 2;
       const size = 210;
@@ -178,16 +180,16 @@ export default function TokenOmics() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          filter: (tooltipItem: any) =>
+          filter: (tooltipItem: { datasetIndex: number; dataIndex: number }) =>
             !(tooltipItem.datasetIndex === 1 && tooltipItem.dataIndex >= 5),
         },
       },
       animation: false,
-      onHover: (event: any, elements: any[]) => {
+      onHover: (event: unknown, elements: unknown[]) => {
         let newHoverState: { datasetIndex: number; index: number } | null =
           null;
         if (elements.length > 0) {
-          const element = elements[0];
+          const element = elements[0] as { datasetIndex: number; index: number };
           if (element.datasetIndex === 1 && element.index === 5) {
             newHoverState = { datasetIndex: 0, index: 1 };
           } else if (element.datasetIndex === 1 && element.index === 6) {

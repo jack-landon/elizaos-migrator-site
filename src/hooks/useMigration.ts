@@ -12,7 +12,6 @@ export interface UseMigrationReturn {
   executeMigration: (params: {
     authority: anchor.web3.PublicKey;
     amount: string;
-    limitAmount: string;
     proof: Buffer[];
   }) => Promise<string | null>;
   updateWhitelist: (params: {
@@ -21,11 +20,11 @@ export interface UseMigrationReturn {
   }) => Promise<string | null>;
   withdrawSourceToken: (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }) => Promise<string | null>;
   withdrawTargetToken: (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }) => Promise<string | null>;
 }
 
@@ -33,7 +32,7 @@ export function useMigration(): UseMigrationReturn {
   const [client, setClient] = useState<SolanaMigrationClient | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { wallet, publicKey, disconnect, connected: isConnected } = useSolanaWallet();
+  const { wallet, connected: isConnected } = useSolanaWallet();
   const { addTransaction } = useTransactionListener();
 
   const initializeClient = useCallback((config: SolanaClientConfig) => {
@@ -73,12 +72,11 @@ export function useMigration(): UseMigrationReturn {
         console.error('Failed to update client wallet:', err);
       }
     }
-  }, [client, wallet, isConnected]);
+  }, [client, wallet, isConnected, initializeClient]);
 
   const executeMigration = useCallback(async (params: {
     authority: anchor.web3.PublicKey;
     amount: string;
-    limitAmount: string;
     proof: Buffer[];
   }): Promise<string | null> => {
     if (!client) {
@@ -98,17 +96,18 @@ export function useMigration(): UseMigrationReturn {
     try {
       setIsLoading(true);
       setError(null);
-      console.log('[useMigration] Starting migration with params:', {
-        authority: params.authority.toString(),
-        amount: params.amount,
-        limitAmount: params.limitAmount,
-        proofLength: params.proof.length
-      });
       
-      const result = await client.executeMigration(params);
+      // Pass the Phantom wallet for signing
+      const result = await client.executeMigration({
+        ...params,
+        wallet: wallet ? {
+          publicKey: wallet.publicKey,
+          signTransaction: wallet.signTransaction!,
+          signAllTransactions: wallet.signAllTransactions!,
+        } : undefined
+      });
 
       if (result) {
-        console.log('[useMigration] Migration completed successfully:', result);
         // Add transaction to listener for monitoring
         addTransaction(result, 'migrate', parseFloat(params.amount), 0);
       }
@@ -160,7 +159,7 @@ export function useMigration(): UseMigrationReturn {
 
   const withdrawSourceToken = useCallback(async (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }): Promise<string | null> => {
     if (!client) {
       setError('Client not initialized');
@@ -194,7 +193,7 @@ export function useMigration(): UseMigrationReturn {
 
   const withdrawTargetToken = useCallback(async (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }): Promise<string | null> => {
     if (!client) {
       setError('Client not initialized');

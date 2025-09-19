@@ -124,31 +124,31 @@ async function createCcipMessageInstruction({
     extraArgs
   };
 
-        // Build accounts for the ccipSend instruction
-      const accounts = await buildCCIPSendAccounts(
-        destinationChainSelector,
-        feeTokenMint,
-        isNativeSol,
-        payer
-      );
-      
-      const destChainStateInfo = await connection.getAccountInfo(accounts.destChainState);
-      
-      if (!destChainStateInfo) {
-        const isDevnet = process.env.NEXT_PUBLIC_NETWORK === 'devnet';
-        const chainName = targetChain === 'eth' ? (isDevnet ? 'Ethereum Sepolia' : 'Ethereum') : 
-                         targetChain === 'base' ? (isDevnet ? 'Base Sepolia' : 'Base') : 
-                         targetChain === 'bsc' ? (isDevnet ? 'BSC Testnet' : 'BSC') : 
-                         targetChain === 'hyper' ? (isDevnet ? 'Hyperliquid Testnet' : 'Hyperliquid') : targetChain;
-        
-        
-        throw new Error(
-          `Destination chain "${chainName}" is not yet supported by the CCIP router. ` +
-          `The chain needs to be initialized by the router administrator before users can send messages to it. ` +
-          `Please contact the administrator to add support for ${chainName} chain. ` +
-          `Chain selector: ${destinationChainSelector.toString()}`
-        );
-      }
+  // Build accounts for the ccipSend instruction
+  const accounts = await buildCCIPSendAccounts(
+    destinationChainSelector,
+    feeTokenMint,
+    isNativeSol,
+    payer
+  );
+
+  const destChainStateInfo = await connection.getAccountInfo(accounts.destChainState);
+
+  if (!destChainStateInfo) {
+    const isDevnet = process.env.NEXT_PUBLIC_NETWORK === 'devnet';
+    const chainName = targetChain === 'eth' ? (isDevnet ? 'Ethereum Sepolia' : 'Ethereum') :
+      targetChain === 'base' ? (isDevnet ? 'Base Sepolia' : 'Base') :
+        targetChain === 'bsc' ? (isDevnet ? 'BSC Testnet' : 'BSC') :
+          targetChain === 'hyper' ? (isDevnet ? 'Hyperliquid Testnet' : 'Hyperliquid') : targetChain;
+
+
+    throw new Error(
+      `Destination chain "${chainName}" is not yet supported by the CCIP router. ` +
+      `The chain needs to be initialized by the router administrator before users can send messages to it. ` +
+      `Please contact the administrator to add support for ${chainName} chain. ` +
+      `Chain selector: ${destinationChainSelector.toString()}`
+    );
+  }
 
   // Build token accounts and lookup tables
   const { tokenIndexes, remainingAccounts, lookupTableList } = await buildTokenAccountsForSend(
@@ -190,7 +190,7 @@ async function buildCCIPSendAccounts(
   const [fqDestChain] = findFqDestChainPDA(selectorBigInt, FEE_QUOTER_PROGRAM_ID);
   const [fqBillingTokenConfig] = findFqBillingTokenConfigPDA(feeTokenMint, FEE_QUOTER_PROGRAM_ID);
   const [fqLinkBillingTokenConfig] = findFqBillingTokenConfigPDA(LINK_TOKEN_MINT, FEE_QUOTER_PROGRAM_ID);
-  
+
   const [rmnRemoteCurses] = findRMNRemoteCursesPDA(RMN_REMOTE_PROGRAM_ID);
   const [rmnRemoteConfig] = findRMNRemoteConfigPDA(RMN_REMOTE_PROGRAM_ID);
 
@@ -248,7 +248,7 @@ async function checkTokenDelegation(
 
     // Check if the account has a delegate and if it matches our delegate
     return accountInfo.delegate !== null && accountInfo.delegate.equals(delegatePubkey);
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -287,9 +287,9 @@ async function delegateTokens(
       blockhash: transaction.recentBlockhash!,
       lastValidBlockHeight: (await connection.getLatestBlockhash()).lastValidBlockHeight
     }, 'finalized');
-    
+
     return signature;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -304,15 +304,15 @@ function extractMessageIdFromLogs(logs: string[]): string | null {
         try {
           // Decode the base64 return data
           const returnData = Buffer.from(match[1], 'base64');
-                    if (returnData.length >= 32) {
+          if (returnData.length >= 32) {
             const messageId = '0x' + returnData.slice(0, 32).toString('hex');
             return messageId;
           }
-        } catch (error) {
+        } catch {
         }
       }
     }
-    
+
     // Fallback: Look for CCIP message sent event
     if (log.includes('CCIP message sent event')) {
       const match = log.match(/messageId: (0x[a-fA-F0-9]+)/);
@@ -329,7 +329,7 @@ export function useBridge(): UseBridgeReturn {
   const [error, setError] = useState<string | null>(null);
   const [showProgress, setShowProgress] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
-  const { wallet, publicKey, connected: isConnected } = useSolanaWallet();
+  const { wallet, connected: isConnected } = useSolanaWallet();
   const { addTransaction } = useTransactionListener();
 
   const approveTokens = useCallback(async (params: {
@@ -344,8 +344,8 @@ export function useBridge(): UseBridgeReturn {
 
     try {
       const connection = new Connection(
-        process.env.NEXT_PUBLIC_NETWORK === 'devnet' 
-          ? 'https://api.devnet.solana.com' 
+        process.env.NEXT_PUBLIC_NETWORK === 'devnet'
+          ? 'https://api.devnet.solana.com'
           : 'https://api.mainnet-beta.solana.com'
       );
 
@@ -383,7 +383,7 @@ export function useBridge(): UseBridgeReturn {
     } finally {
       setIsLoading(false);
     }
-  }, [isConnected, wallet?.publicKey]);
+  }, [isConnected, wallet]);
 
   const executeBridge = useCallback(async (params: {
     allowOutOfOrderExecution: boolean;
@@ -430,14 +430,14 @@ export function useBridge(): UseBridgeReturn {
       const amountBigInt = BigInt(Math.floor(parseFloat(params.amount) * Math.pow(10, mintInfo.decimals)));
 
       const tokenAccount = await getAccount(connection, userTokenAccount);
-      
+
       if (tokenAccount.amount < amountBigInt) {
         throw new Error('Insufficient token balance');
       }
 
       // Check if tokens are delegated (but don't delegate here - that should be done separately)
       const feeBillingSignerPDA = await deriveFeeBillingSignerPDA(CCIP_ROUTER_PROGRAM_ID);
-      
+
       const isDelegated = await checkTokenDelegation(
         connection,
         sourceTokenMint,
@@ -449,7 +449,7 @@ export function useBridge(): UseBridgeReturn {
         throw new Error('Tokens not approved. Please approve tokens first before bridging.');
       }
 
-      const { instruction: ccipMessageInstruction, remainingAccounts, lookupTableList } = await createCcipMessageInstruction({
+      const { instruction: ccipMessageInstruction, lookupTableList } = await createCcipMessageInstruction({
         connection,
         payer: wallet.publicKey,
         sourceTokenMint,
@@ -473,7 +473,7 @@ export function useBridge(): UseBridgeReturn {
       const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash({
         commitment: "finalized",
       });
-      
+
       // Validate blockhash
       if (!blockhash || blockhash === '11111111111111111111111111111111') {
         throw new Error('Invalid blockhash received from RPC');
@@ -486,25 +486,25 @@ export function useBridge(): UseBridgeReturn {
       }).compileToV0Message(lookupTableList);
 
       let transaction = new VersionedTransaction(messageV0);
-      
+
       // Verify wallet supports VersionedTransaction signing
       if (!('signTransaction' in wallet) || !wallet.signTransaction) {
         throw new Error("Wallet does not support VersionedTransaction signing");
       }
-      
+
       const freshBlockhash = await connection.getLatestBlockhash();
       transaction.message.recentBlockhash = freshBlockhash.blockhash;
-      
+
       // Try signTransaction first, fallback to signAllTransactions if needed
       try {
         const signedTransaction = await wallet.signTransaction(transaction);
         transaction = signedTransaction;
-      } catch (signError: any) {
-        
+      } catch {
+
         if (!('signAllTransactions' in wallet) || !wallet.signAllTransactions) {
           throw new Error("Wallet does not support signAllTransactions fallback");
         }
-        
+
         const [signedTx] = await wallet.signAllTransactions([transaction]);
         transaction = signedTx;
       }
@@ -516,24 +516,25 @@ export function useBridge(): UseBridgeReturn {
           preflightCommitment: "processed",
           maxRetries: 3,
         });
-        
+
         if (signature === '1111111111111111111111111111111111111111111111111111111111111111') {
           throw new Error('Transaction failed to send - invalid signature received');
         }
-      } catch (sendError: any) {
-        
-        if (sendError.message && sendError.message.includes('Simulation failed') && sendError.logs) {
-          
+      } catch (sendError: unknown) {
+
+        if (sendError instanceof Error && sendError.message && sendError.message.includes('Simulation failed') && 'logs' in sendError) {
+
           // Check if all programs completed successfully in the logs
-          const logs = sendError.logs;
-          const hasSuccessLogs = logs.some((log: string) => 
+          const logs = (sendError as { logs: string[] }).logs;
+          const hasSuccessLogs = logs.some((log: string) =>
             log.includes('Program Ccip842gzYHhvdDkSyi2YVCoAWPbYJoApMFzSxQroE9C success')
           );
-          
+
           if (hasSuccessLogs) {
-            
+
             // Try to extract the transaction signature from the error
-            const errorSignature = sendError.signature || sendError.transaction?.signature;
+            const errorSignature = (sendError as { signature?: string; transaction?: { signature?: string } }).signature ||
+              (sendError as { signature?: string; transaction?: { signature?: string } }).transaction?.signature;
             if (errorSignature) {
               signature = errorSignature;
             } else {
@@ -548,7 +549,7 @@ export function useBridge(): UseBridgeReturn {
         }
       }
 
-      
+
       // Add timeout for confirmation
       const confirmationPromise = connection.confirmTransaction(
         {
@@ -558,12 +559,12 @@ export function useBridge(): UseBridgeReturn {
         },
         "confirmed" // Use "confirmed" instead of "finalized" for faster confirmation
       );
-      
+
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('Transaction confirmation timeout after 60 seconds')), 60000);
       });
-      
-      const confirmation = await Promise.race([confirmationPromise, timeoutPromise]) as any;
+
+      const confirmation = await Promise.race([confirmationPromise, timeoutPromise]) as { value?: { logs?: string[] } };
 
       // Extract message ID from transaction logs
       let messageId: string | null = null;
@@ -592,22 +593,22 @@ export function useBridge(): UseBridgeReturn {
         solanaExplorerUrl,
       };
     } catch (err) {
-      
+
       // Enhanced error logging
       if (err instanceof Error) {
-        
+
         // Check if it's a SendTransactionError
         if ('logs' in err) {
         }
       }
-      
+
       const errorMessage = err instanceof Error ? err.message : 'Bridge transaction failed';
       setError(errorMessage);
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [isConnected, wallet?.publicKey, addTransaction]);
+  }, [isConnected, wallet, addTransaction]);
 
   const checkTokenDelegationCallback = useCallback(async (tokenMint: string, requiredAmount?: string): Promise<boolean> => {
     if (!isConnected || !wallet?.publicKey) {
@@ -649,10 +650,10 @@ export function useBridge(): UseBridgeReturn {
 
 
       return delegatedAmount >= requiredAmountBigInt;
-    } catch (error) {
+    } catch {
       return isDelegated; // Fallback to basic delegation check
     }
-  }, [isConnected, wallet?.publicKey]);
+  }, [isConnected, wallet]);
 
   const delegateTokensCallback = useCallback(async (tokenMint: string, amount: bigint): Promise<string | null> => {
     if (!isConnected || !wallet?.publicKey) {
@@ -677,7 +678,7 @@ export function useBridge(): UseBridgeReturn {
       amount,
       wallet
     );
-  }, [isConnected, wallet?.publicKey]);
+  }, [isConnected, wallet]);
 
   return {
     isLoading,
