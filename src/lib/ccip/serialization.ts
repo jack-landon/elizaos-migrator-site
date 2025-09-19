@@ -1,6 +1,4 @@
 import * as borsh from '@coral-xyz/borsh';
-import { PublicKey } from '@solana/web3.js';
-import { BN } from '@coral-xyz/anchor';
 import { SVMTokenAmountFields, SVM2AnyMessageFields, CCIPSendRequest } from './types';
 
 

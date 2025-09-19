@@ -1,7 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import * as spl from "@solana/spl-token";
 import { Program } from "@coral-xyz/anchor";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { SolanaMigration } from "../solana_migration";
 import {
     getFaucetAuthority,
@@ -13,7 +12,7 @@ import {
     allowedAddresses,
     limitAmount,
 } from "../utils";
-const merkle = require("@metaplex-foundation/js");
+import { getMerkleProof } from "@metaplex-foundation/js";
 import { createHash } from "crypto";
 
 export interface MigrateParams {
@@ -24,7 +23,7 @@ export interface MigrateParams {
 }
 
 export async function migrate(params: MigrateParams): Promise<string> {
-    const { program, authority, amount, proof } = params;
+    const { program, authority, amount, proof: _proof } = params;
     // Use the constant limitAmount from utils instead of the parameter
     const limitAmountValue = new anchor.BN(limitAmount);
 
@@ -49,7 +48,7 @@ export async function migrate(params: MigrateParams): Promise<string> {
         }
         currentLevel = nextLevel;
     }
-    const merkleRoot = currentLevel[0];
+    const _merkleRoot = currentLevel[0];
 
     // Generate Merkle proof
     let merkleProof: Buffer[] = [];
@@ -78,9 +77,10 @@ export async function migrate(params: MigrateParams): Promise<string> {
         ]);
         
         // Generate Merkle proof
-        merkleProof = merkle.getMerkleProof(leaves, leaf, walletIndex);
-    } catch (error) {
-        console.error("Error generating Merkle proof:", error);
+        const proofUint8Arrays = getMerkleProof(leaves, leaf, walletIndex);
+        merkleProof = proofUint8Arrays.map(proof => Buffer.from(proof));
+    } catch (_error) {
+        console.error("Error generating Merkle proof:", _error);
         throw new Error("Failed to generate Merkle proof for wallet");
     }
 
@@ -96,7 +96,7 @@ export async function migrate(params: MigrateParams): Promise<string> {
         false, // allowOwnerOffCurve
         spl.TOKEN_2022_PROGRAM_ID // token program ID for source token
     );
-    const receiveAta = await spl.getAssociatedTokenAddress(
+    const receiveTa = await spl.getAssociatedTokenAddress(
         targetToken, 
         authority, 
         false, // allowOwnerOffCurve
@@ -111,7 +111,7 @@ export async function migrate(params: MigrateParams): Promise<string> {
     // Check if source token ATA exists, create if not
     try {
         await program.provider.connection.getTokenAccountBalance(fromAta);
-    } catch (error) {
+    } catch (_error) {
         const createSourceAtaIx = spl.createAssociatedTokenAccountInstruction(
             authority, // payer
             fromAta, // ata
@@ -127,11 +127,11 @@ export async function migrate(params: MigrateParams): Promise<string> {
 
     // Check if target token ATA exists, create if not
     try {
-        await program.provider.connection.getTokenAccountBalance(receiveAta);
-    } catch (error) {
+        await program.provider.connection.getTokenAccountBalance(receiveTa);
+    } catch (_error) {
         const createTargetAtaIx = spl.createAssociatedTokenAccountInstruction(
             authority, // payer
-            receiveAta, // ata
+            receiveTa, // ata
             authority, // owner
             targetToken, // mint
             spl.TOKEN_PROGRAM_ID // token program ID for target token
@@ -148,7 +148,7 @@ export async function migrate(params: MigrateParams): Promise<string> {
             userState: userStateAccount,
             faucetAuthority: faucetAuthority,
             fromTa: fromAta,
-            receiveTa: receiveAta,
+            receiveTa: receiveTa,
             targetToken: targetToken,
             sourceToken: sourceToken,
             globalSourceTokenAccount: sourceTokenAccount,

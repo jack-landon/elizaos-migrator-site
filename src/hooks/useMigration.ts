@@ -20,11 +20,11 @@ export interface UseMigrationReturn {
   }) => Promise<string | null>;
   withdrawSourceToken: (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }) => Promise<string | null>;
   withdrawTargetToken: (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }) => Promise<string | null>;
 }
 
@@ -32,7 +32,7 @@ export function useMigration(): UseMigrationReturn {
   const [client, setClient] = useState<SolanaMigrationClient | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { wallet, publicKey, disconnect, connected: isConnected } = useSolanaWallet();
+  const { wallet, connected: isConnected } = useSolanaWallet();
   const { addTransaction } = useTransactionListener();
 
   const initializeClient = useCallback((config: SolanaClientConfig) => {
@@ -72,7 +72,7 @@ export function useMigration(): UseMigrationReturn {
         console.error('Failed to update client wallet:', err);
       }
     }
-  }, [client, wallet, isConnected]);
+  }, [client, wallet, isConnected, initializeClient]);
 
   const executeMigration = useCallback(async (params: {
     authority: anchor.web3.PublicKey;
@@ -159,7 +159,7 @@ export function useMigration(): UseMigrationReturn {
 
   const withdrawSourceToken = useCallback(async (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }): Promise<string | null> => {
     if (!client) {
       setError('Client not initialized');
@@ -193,7 +193,7 @@ export function useMigration(): UseMigrationReturn {
 
   const withdrawTargetToken = useCallback(async (params: {
     authority: anchor.web3.PublicKey;
-    receiveAta: anchor.web3.PublicKey;
+    receiveTa: anchor.web3.PublicKey;
   }): Promise<string | null> => {
     if (!client) {
       setError('Client not initialized');

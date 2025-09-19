@@ -55,7 +55,7 @@ export class SolanaMigrationClient {
             publicKey: walletToUse.publicKey,
             signTransaction: walletToUse.signTransaction,
             signAllTransactions: walletToUse.signAllTransactions,
-        } as any; // Type assertion to avoid payer property issues
+        } as anchor.Wallet; // Type assertion to avoid payer property issues
 
         // Create IDL with the programId from environment
         const idlWithProgramId = {
@@ -227,18 +227,18 @@ export class SolanaMigrationClient {
 
     async withdrawSourceToken(params: {
         authority: anchor.web3.PublicKey;
-        receiveAta: anchor.web3.PublicKey;
+        receiveTa: anchor.web3.PublicKey;
     }): Promise<string> {
         try {
             logger.info("[SolanaMigrationClient] Withdrawing source tokens", {
                 authority: params.authority.toString(),
-                receiveAta: params.receiveAta.toString(),
+                receiveTa: params.receiveTa.toString(),
             });
 
             const transactionHash = await withdrawSourceToken({
                 program: this.program,
                 authority: params.authority,
-                receiveAta: params.receiveAta,
+                receiveTa: params.receiveTa,
             });
 
             logger.info("[SolanaMigrationClient] Source tokens withdrawn", {
@@ -256,18 +256,18 @@ export class SolanaMigrationClient {
 
     async withdrawTargetToken(params: {
         authority: anchor.web3.PublicKey;
-        receiveAta: anchor.web3.PublicKey;
+        receiveTa: anchor.web3.PublicKey;
     }): Promise<string> {
         try {
             logger.info("[SolanaMigrationClient] Withdrawing target tokens", {
                 authority: params.authority.toString(),
-                receiveAta: params.receiveAta.toString(),
+                receiveTa: params.receiveTa.toString(),
             });
 
             const transactionHash = await withdrawTargetToken({
                 program: this.program,
                 authority: params.authority,
-                receiveAta: params.receiveAta,
+                receiveTa: params.receiveTa,
             });
 
             logger.info("[SolanaMigrationClient] Target tokens withdrawn", {
@@ -406,7 +406,7 @@ export class SolanaMigrationClient {
             publicKey: wallet.publicKey,
             signTransaction: wallet.signTransaction,
             signAllTransactions: wallet.signAllTransactions,
-        } as any; // Type assertion to avoid payer property issues
+        } as anchor.Wallet; // Type assertion to avoid payer property issues
 
         logger.info("[SolanaMigrationClient] Wallet updated", {
             walletAddress: this.wallet.publicKey.toString(),

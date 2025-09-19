@@ -44,13 +44,13 @@ export default function Carrousel({ onSlideChange }: { onSlideChange?: (index: n
     },
   ];
 
-  const handleSlideChange = (index: any) => {
+  const handleSlideChange = (index: number) => {
     if (swiper) {
       swiper.slideTo(index);
     }
   };
 
-  const handleSwiperSlideChange = (swiperInstance: any) => {
+  const handleSwiperSlideChange = (swiperInstance: SwiperType) => {
     const newIndex = swiperInstance.activeIndex;
     setActiveIndex(newIndex);
     if (onSlideChange) {

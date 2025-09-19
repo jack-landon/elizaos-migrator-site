@@ -11,7 +11,7 @@ type SolanaWalletType = {
 
 export const useSolanaWallet = () => {
   const wallet = useWallet();
-  const { connect, connected, publicKey, disconnect } = wallet;
+  const { connected, publicKey, disconnect } = wallet;
   const modal = useWalletModal();
 
   const handleConnect = async () => {

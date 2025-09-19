@@ -44,15 +44,15 @@ export async function getTokenAdminRegistry(
     let offset = 8;
     
     // version (u8)
-    const version = data.readUInt8(offset);
+    const _version = data.readUInt8(offset);
     offset += 1;
     
     // administrator (PublicKey)
-    const administrator = new PublicKey(data.slice(offset, offset + 32));
+    const _administrator = new PublicKey(data.slice(offset, offset + 32));
     offset += 32;
     
     // pendingAdministrator (PublicKey)
-    const pendingAdministrator = new PublicKey(data.slice(offset, offset + 32));
+    const _pendingAdministrator = new PublicKey(data.slice(offset, offset + 32));
     offset += 32;
     
     // lookupTable (PublicKey)
@@ -68,7 +68,7 @@ export async function getTokenAdminRegistry(
     }
     
     // mint (PublicKey)
-    const mint = new PublicKey(data.slice(offset, offset + 32));
+    const _mint = new PublicKey(data.slice(offset, offset + 32));
     
     return {
       lookupTable,

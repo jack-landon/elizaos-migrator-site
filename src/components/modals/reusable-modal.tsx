@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 
 interface ReusableModalProps {
@@ -18,6 +18,14 @@ export default function ReusableModal({
 }: ReusableModalProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setIsAnimating(false);
+    setTimeout(() => {
+      setIsVisible(false);
+      onClose();
+    }, 200);
+  }, [onClose]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -39,15 +47,7 @@ export default function ReusableModal({
       document.removeEventListener("keydown", handleEscape);
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
-
-  const handleClose = () => {
-    setIsAnimating(false);
-    setTimeout(() => {
-      setIsVisible(false);
-      onClose();
-    }, 200);
-  };
+  }, [isOpen, handleClose]);
 
   const handleBackdropClick = () => {
     handleClose();

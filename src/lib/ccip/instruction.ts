@@ -1,5 +1,4 @@
-import { TransactionInstruction, PublicKey, AccountMeta } from '@solana/web3.js';
-import { BN } from '@coral-xyz/anchor';
+import { TransactionInstruction, AccountMeta } from '@solana/web3.js';
 import { CCIPSendRequest, CCIPSendAccounts, SVM2AnyMessageFields } from './types';
 import { CCIPSendLayout } from './serialization';
 import { CCIP_ROUTER_PROGRAM_ID } from './pdas';

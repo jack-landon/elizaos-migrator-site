@@ -27,7 +27,7 @@ const fetchTokenBalance = async ({ address, tokenMint }: BalanceParams) => {
     const tokenAccount = await getAccount(connection, tokenAccountAddress);
 
     return Number(tokenAccount.amount);
-  } catch (error) {
+  } catch {
     return 0;
   }
 };

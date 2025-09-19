@@ -28,7 +28,6 @@ export default function SwapButton({
     approveTokens,
     checkTokenDelegation,
     isLoading: bridgeLoading,
-    error: bridgeError,
     showProgress,
     setShowProgress,
     transactionHash,

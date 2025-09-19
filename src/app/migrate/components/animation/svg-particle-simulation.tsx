@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
+import Image from "next/image";
 import { ParticleSimulationProps } from "./types";
 import { PointsRenderer } from "./points-renderer";
 import { useCoordinates, useKeyPress } from "./hooks/useCoordinates";
@@ -18,7 +19,7 @@ const SvgParticleSimulation: React.FC<ParticleSimulationProps> = ({
   const [elizaCoordinates, setElizaCoordinates] = useState<
     [number, number][] | null
   >(null);
-  const { isElizaMode, transition, toggleElizaMode, isHovering } =
+  const { transition, toggleElizaMode, isHovering } =
     useAnimationState();
 
   useEffect(() => {
@@ -102,9 +103,11 @@ const SvgParticleSimulation: React.FC<ParticleSimulationProps> = ({
           zIndex: 200,
         }}
       >
-        <img
+        <Image
           src="/migrate/welcome-text.svg"
           alt="Welcome"
+          width={400}
+          height={100}
           className="w-1/2 max-w-lg md:max-w-lg lg:max-w-xl"
         />
         <button className="bg-white rounded-sm p-3 hover:cursor-pointer">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import Image from "next/image";
@@ -53,8 +53,8 @@ export function CCIPProgressTracker({
   const [progressData, setProgressData] = useState<CCIPProgressData | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setIsLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -62,7 +62,7 @@ export function CCIPProgressTracker({
   const pollInterval = 12000; // 12 seconds
   const retryInterval = 10000; // 10 seconds for 400 errors
 
-  const fetchProgress = async () => {
+  const fetchProgress = useCallback(async () => {
     try {
       const response = await fetch(
         `/api/ccip-progress?sourceChainSelectorName=${sourceChainSelectorName}&sourceTransactionHash=${sourceTransactionHash}`
@@ -123,7 +123,7 @@ export function CCIPProgressTracker({
       });
       onError?.(errorMsg);
     }
-  };
+  }, [sourceChainSelectorName, sourceTransactionHash, isCompleted, onComplete, onError]);
 
   useEffect(() => {
     // Don't poll if already completed
@@ -145,7 +145,7 @@ export function CCIPProgressTracker({
         intervalRef.current = null;
       }
     };
-  }, [sourceTransactionHash, sourceChainSelectorName, isCompleted]);
+  }, [sourceTransactionHash, sourceChainSelectorName, isCompleted, fetchProgress]);
 
   const getProgressSteps = (): ProgressStep[] => {
     if (!progressData) {
