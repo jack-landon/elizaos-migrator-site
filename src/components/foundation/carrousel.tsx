@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import PlayButton from "../play-button";
 
-export default function Carrousel({ onSlideChange }) {
+export default function Carrousel({ onSlideChange }: { onSlideChange?: (index: number) => void }) {
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
