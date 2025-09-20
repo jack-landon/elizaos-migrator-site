@@ -22,7 +22,7 @@ export default function Home() {
       <div className="z-20">
         <Partners />
         <Foundation />
-        {/* <Protocol /> */}
+        <Protocol />
         {/* <Expansion /> */}
         {/* <TokenOmics /> */}
         {/* <Portal /> */}
