@@ -4,7 +4,7 @@ import TokenImage from "./token-image";
 
 export default function Protocol() {
   return (
-    <div className="relative overflow-hidden md:h-[60vh] xl:h-screen">
+    <div className="relative overflow-hidden h-fit md:h-[60vh] xl:h-screen">
       {/* Video Background */}
       <video
         autoPlay
