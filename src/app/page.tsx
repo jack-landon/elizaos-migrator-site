@@ -20,13 +20,13 @@ export default function Home() {
         <HeroBar />
       </div>
       <div className="z-20">
-        <Partners />
-        <Foundation />
-        <Protocol />
-        <Expansion />
-        <TokenOmics />
-        <Portal />
-        <Faq />
+        {/* <Partners /> */}
+        {/* <Foundation /> */}
+        {/* <Protocol /> */}
+        {/* <Expansion /> */}
+        {/* <TokenOmics /> */}
+        {/* <Portal /> */}
+        {/* <Faq /> */}
       </div>
     </div>
   );
