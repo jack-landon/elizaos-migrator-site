@@ -20,8 +20,8 @@ export default function Home() {
         <HeroBar />
       </div>
       <div className="z-20">
-        {/* <Partners /> */}
-        {/* <Foundation /> */}
+        <Partners />
+        <Foundation />
         {/* <Protocol /> */}
         {/* <Expansion /> */}
         {/* <TokenOmics /> */}
