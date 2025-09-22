@@ -50,7 +50,7 @@ export default function Hero() {
             </div>
 
             <div className="flex flex-col gap-0">
-              <Link href={migrationIsLive ? "/migrate" : "https://mirror.xyz/elizaos.eth/c4oM_ZA_nSlaXWf4xXfzI67i_eP8OCQglMDz4BN4_QM"}>
+              <Link href="https://mirror.xyz/elizaos.eth/c4oM_ZA_nSlaXWf4xXfzI67i_eP8OCQglMDz4BN4_QM">
                 <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black md:text-[25px] relative font-bold w-full h-full max-w-[230px] max-h-[60px] flex items-center justify-center">
                   {migrationIsLive ? "Start Migration" : "Learn more"}
                 </Button>
