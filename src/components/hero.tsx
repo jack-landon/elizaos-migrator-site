@@ -3,6 +3,8 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 export default function Hero() {
+  const migrationIsLive = process.env.NEXT_PUBLIC_IS_MIGRATION_LIVE === "true";
+
   return (
     <div className="relative w-full h-[90vh] overflow-hidden">
       <video
@@ -42,15 +44,15 @@ export default function Hero() {
 
             <div>
               <p className="text-[16px] md:text-[28px] text-white font-normal max-w-65 md:max-w-xl md:leading-9">
-                Convert your $AI16Z tokens and step into the next phase of
-                ElizaOS — governance, staking, and full protocol access.
+                $ai16z is evolving into $elizaOS: the first generative token
+                network.
               </p>
             </div>
 
             <div className="flex flex-col gap-0">
-              <Link href="/migrate">
+              <Link href={migrationIsLive ? "/migrate" : "#"}>
                 <Button className="cursor-pointer hover:bg-none rounded-sm bg-white text-black md:text-[25px] relative font-bold w-full h-full max-w-[230px] max-h-[60px] flex items-center justify-center">
-                  Start Migration
+                  {migrationIsLive ? "Start Migration" : "Learn more"}
                 </Button>
               </Link>
             </div>

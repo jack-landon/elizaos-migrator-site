@@ -4,8 +4,13 @@ import Swap from "./components/swap";
 import SwapSelector, { SwapType } from "./components/swap-selector";
 import { useState } from "react";
 import SvgParticleSimulation from "./components/animation";
+import { redirect } from "next/navigation";
 
 export default function Page() {
+  if (process.env.NEXT_PUBLIC_IS_MIGRATION_LIVE === "false") {
+    redirect("/");
+  }
+
   const [currentSwapType, setCurrentSwapType] = useState<SwapType>(
     SwapType.Migrate
   );
