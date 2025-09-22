@@ -44,8 +44,8 @@ export default function Hero() {
 
             <div>
               <p className="text-[16px] md:text-[28px] text-white font-normal max-w-65 md:max-w-xl md:leading-9">
-                Convert your $AI16Z tokens and step into the next phase of
-                ElizaOS — governance, staking, and full protocol access.
+                $ai16z is evolving into $elizaOS: the first generative token
+                network.
               </p>
             </div>
 
