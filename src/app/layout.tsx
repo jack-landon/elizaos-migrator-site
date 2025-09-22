@@ -68,7 +68,7 @@ export default function RootLayout({
               <div className="h-full flex flex-col">
                 <Header />
                 <main className="flex-1">{children}</main>
-                {pathname !== "/migrate" && <Footer />}
+                {/* {pathname !== "/migrate" && <Footer />} */}
               </div>
               <Toaster />
             </TransactionListenerProvider>

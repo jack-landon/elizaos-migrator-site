@@ -1,13 +1,6 @@
 "use client";
-import Expansion from "@/components/expansion";
-import Faq from "@/components/faq";
 import Hero from "@/components/hero";
 import HeroBar from "@/components/hero-bar";
-import Portal from "@/components/portal";
-import Partners from "@/components/partners";
-import TokenOmics from "@/components/tokenomics";
-import Protocol from "@/components/protocol";
-import Foundation from "@/components/foundation";
 
 export default function Home() {
   return (
@@ -20,9 +13,9 @@ export default function Home() {
         <HeroBar />
       </div>
       <div className="z-20">
-        <Partners />
-        <Foundation />
-        <Protocol />
+        {/* <Partners /> */}
+        {/* <Foundation /> */}
+        {/* <Protocol /> */}
         {/* <Expansion /> */}
         {/* <TokenOmics /> */}
         {/* <Portal /> */}
